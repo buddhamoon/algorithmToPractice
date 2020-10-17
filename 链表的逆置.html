@@ -8,6 +8,69 @@
 <body>
 
     <script>
+        // 链表对象结构构造
+        function LinkList(root){
+            this.name = root;
+            this.next = null;
+        };
+        const nowList_01 = new LinkList(1);
+        const nowList_02 = new LinkList(2);
+        const nowList_03 = new LinkList(3);
+        const nowList_04 = new LinkList(4);
+        const nowList_05 = new LinkList(5);
+
+        // 链表关联指向
+        nowList_01.next = nowList_02;
+        nowList_02.next = nowList_03;
+        nowList_03.next = nowList_04;
+        nowList_04.next = nowList_05;
+        console.info(nowList_05);
+
+        //  链表遍历 - 循环 - 简写
+        ((data) => {
+            while (data.next) {
+                console.log('链表循环遍历(简写)：' + data.name);
+                data = data.next;
+            };
+        })(nowList_01);
+
+        //  链表遍历 - 循环 - 常规写法
+        function linkIterate (data) {
+            var temp = data;
+            while (!!temp.next) {
+                console.log('链表循环遍历(常规)：' + temp.name);
+                temp = temp.next;
+            }
+        };
+        linkIterate(nowList_01);
+
+        //  链表遍历 - 递归
+        function linkRecursiveIterate (data) {
+            if (!!data.next) {
+                console.log('链表递归遍历：' + data.name);
+                return linkRecursiveIterate(data.next);
+            } else {
+                return console.info('链表递归遍历：' + data.name + ' [over]');
+            };
+        };
+        linkRecursiveIterate(nowList_01);
+
+        // 链表的逆（置）转换
+        // 递归功能需要先设计出口（即在函数逻辑中，需要有必然能够到达的结束条件，避免无限循环的产生）
+        function linkTableReverse (data) {
+            if (!!data.next.next) {
+                const result = linkTableReverse(data.next);
+                data.next.next = data;
+                data.next = null;
+                return result;
+            } else {
+                data.next.next = data;
+                return data.next;
+            }
+        };
+        const lastList = linkTableReverse(nowList_01);
+        linkRecursiveIterate(lastList);
+
         
     </script>
 </body>
