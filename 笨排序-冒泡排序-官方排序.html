@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算法：冒泡排序</title>
+</head>
+<body>
+
+    <!-- 思考 1 -->
+    <!-- 人类常规思维排序 -->
+    <!-- 核心思想：在数组中找到最小/最大的值 ，然后写入新数组后，删除该值 ，然后继续找最小/最大,直到原数组中没有值 -->
+    <!-- 特点：符合人类常规思维，但需要非常多的循环查找，性能较差。 -->
+    
+    <!-- 思考 2 -->
+    <!-- 冒泡排序 -->
+    <!-- 核心思想：逐个比较相邻的两个数，如果前者大于后者，则调换他们的位置 -->
+    <!-- 特点：性能优于最基础的常规算法，但也算不上性能最优的排序算法 -->
+
+    <script>
+
+        // 常规逻辑思维（笨排序）
+        const nowArr_01 = [1,3,49,34,0,383,53,8,21];
+        console.info('笨排序前',nowArr_01);
+        function stupidSort (data) {
+            const afterArr = [];
+            function childSort (data) {
+                if (data.length != 0) {
+                    for (let i = 0; i < data.length; i++ ) {
+                        // 设定以状态开关，如果变成 1 ，则说明数组中有小于当前的依据比对数
+                        var loft = false;
+                        for ( let a = 0; a < data.length; a++) {
+                            // 如果当前数大于比对数，则将状态设置为 1
+                            if(data[i] > data[a]) { 
+                                loft = true;
+                                // 只要发生一次就结束当前循环，再比对已经没有意义
+                                break;
+                            }
+                        };
+                        // 如果开关没有变成 true 则表示当前数为数组内最小
+                        if (!loft) {
+                            afterArr.push(data[i]);
+                            data.splice(i,1);
+                            // 删除值后递归调用自身
+                            return childSort(data);
+                        }; 
+                    };
+                } else { return afterArr };
+            };
+            return childSort (data);
+        };
+        console.info('笨排序后',stupidSort (nowArr_01));
+
+        // 基础数组
+        const nowArr_02 = [1,3,49,34,0,383,53,8,21];
+        console.info('冒泡排序前',nowArr_02);
+        // for 循环嵌套实现冒泡排序
+        function forBubbleSort (data) {
+            for (let i = 0; i < data.length; i++) {
+                for (let a = 0; a < data.length; a++) {
+                    var nowNum = data[a];
+                    if (data[a] > data[a + 1]) {
+                        data[a] = data[a + 1];
+                        data[a + 1] = nowNum;
+                    }
+                };
+            };
+        };
+        forBubbleSort (nowArr_02);
+        console.log('冒泡排序后',nowArr_02);
+
+        // 官方标准提供的 sort 排序方式
+        const nowArr_03 = [1,3,49,34,0,383,53,8,21];
+        console.info('官方sort排前',nowArr_03);
+        console.info('官方sort排后',nowArr_03.sort((a,b)=> a -b));
+
+    </script>
+</body>
+</html>
