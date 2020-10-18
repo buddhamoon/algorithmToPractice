@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二叉树：前序遍历</title>
+</head>
+<body>
+    
+    <!-- 
+        1、前序遍历（先根次序遍历）
+        - 先打印当前 ，再打印左边的（子树：子树也遵循对应的遍历顺序） ，再打印右边的。
+        - 可以这样理解 ，以当前节点为起点 ，然后依照从左到右的顺序遍历当前节点的子节点。
+        2、中序遍历（中根次序遍历）
+            - 先打印左边的，再打印当前的，再打印右边的。
+            - 直接遵循从左到右的顺序规则 ，从左为起点遍历，回到自身，再到右边节点。
+        3、后续遍历（后根次序遍历）
+            - 先打印左边的，再打印右边的，再打印当前的。 
+            - 后置自身 ，遵循从左到右的规律先遍历子节点，最后打印自身。
+
+        上面的三个遍历注意 3 个特点：
+        1、前中后序，中的“序”指的是当前遍历二叉树的当前节点 。
+        2、左边、右边，指的是左边的子树或（叶节点）、右边的子树或（叶节点）。
+        3、在遍历子树时，需要沿用当前二叉树的遍历规则（即：当前树为前序遍历，其子树也要依赖前序遍历） 
+    -->
+
+    <script>
+
+        class FeiTo {
+            constructor (value) {
+                this.value = value;
+                this.left = null;
+                this.right = null;
+            }
+
+            iterTwo (root) {
+                if (!root) return;
+                console.log(root.value);
+                this.iterTwo(root.left);
+                this.iterTwo(root.right);
+            }
+        }
+
+        const nowTwo_01 = new FeiTo('a');
+        const nowTwo_02 = new FeiTo('b');
+        const nowTwo_03 = new FeiTo('c');
+        const nowTwo_04 = new FeiTo('d');
+        const nowTwo_05 = new FeiTo('e');
+        const nowTwo_06 = new FeiTo('f');
+        const nowTwo_07 = new FeiTo('g');
+
+        nowTwo_01.left = nowTwo_02;
+        nowTwo_01.right = nowTwo_03;
+        nowTwo_02.left = nowTwo_04;
+        nowTwo_02.right = nowTwo_05;
+        nowTwo_03.left = nowTwo_06;
+        nowTwo_03.right = nowTwo_07;
+
+        nowTwo_01.iterTwo(nowTwo_01);
+    </script>
+</body>
+</html>
