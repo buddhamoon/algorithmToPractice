@@ -39,8 +39,64 @@
         };
         console.info('概念-快速排序后',fastSort_concept(arrList_01));
 
-        // 标准
+        // 标准形式的快速排序
         const arrList_02 = [30,82,1,34,22,903,23,33,45,231,9,5,5];
+        console.info('标准快速排序前-while', arrList_02);
+
+        // 快速排序 - 标准
+        // 特点 ：使用变量指针替代数组分裂的方式来实现快速排序逻辑
+        // 基于 while 循环的标准快速排序
+        function fastSort_standard_for (arr, start, end) {
+            if ( typeof(arr) !== "object") return;
+            if ( arr.length == 0 ) return [];
+            if (start >= end - 1) return;
+            let left = start + 1, right = end - 1;
+            function swapVal (a, b) {
+                const cacha = arr[a];
+                arr[a] = arr[b];
+                arr[b] = cacha;
+            }
+            // 主whlie循环体
+            while ( left < right ) {
+                if ( left < right && arr[left] <= arr[start] ) left ++;
+                if ( left < right && arr[right] >= arr[start] ) right --;
+                if ( left < right ) swapVal (left, right); 
+            };
+            console.log('指针位置：',left, right, '指针值：',arr[left], arr[right]);
+            const scale = arr[left] < arr[start] ? left : left - 1;
+            swapVal ( start, scale );
+            console.log('游标指针：',scale)
+            fastSort_standard_while (arr, start, scale);
+            fastSort_standard_while (arr, scale + 1, end);
+        };
+        fastSort_standard_for (arrList_02, 0, arrList_02.length)
+        console.info('标准快速排序后-while', arrList_02);
+
+
+        // 利用 do {} while 循环先执行一次的循环特性实现标准的指针快速排序
+        const arrList_03 = [30,82,1,34,22,903,23,33,45,231,9,5,5];
+        console.info('标准快速排序前（do）：',arrList_03);
+        // 快速排序-标准-do{}whlie循环
+        function fastSort_standard_do (arr, start, end) {
+            if (start >= end - 1) return;
+            function swapVal (arr, start, end ) { 
+                let cache = arr[start];
+                arr[start] = arr[end];
+                arr[end] = cache;
+            };
+            let left = start, right = end;
+            do {
+                do left ++; while (left < right && arr[left] < arr[start]);
+                do right --; while (left < right && arr[right] > arr[start]);
+                if (left < right) swapVal(arr, left, right );
+            } while (left < right);
+            let swapPoint = left == right ? right - 1 : right;
+            swapVal(arr, start, swapPoint);
+            fastSort_standard_do (arr, start, swapPoint);
+            fastSort_standard_do (arr, swapPoint + 1, end);
+        };
+        fastSort_standard_do (arrList_03, 0, arrList_03.length);
+        console.info('标准快速排序后（do）：', arrList_03);
 
     </script>
 </body>
