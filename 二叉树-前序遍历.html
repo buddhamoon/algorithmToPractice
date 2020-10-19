@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二叉树：前序遍历</title>
+    <title>二叉树：前、中、后序遍历</title>
 </head>
 <body>
     
@@ -33,11 +33,25 @@
                 this.right = null;
             }
 
-            iterTwo (root) {
+            iterTwoBefore (root) {
                 if (!root) return;
                 console.log(root.value);
-                this.iterTwo(root.left);
-                this.iterTwo(root.right);
+                this.iterTwoBefore(root.left);
+                this.iterTwoBefore(root.right);
+            }
+
+            iterTwoCenter (root) {
+                if (!root) return;
+                this.iterTwoCenter(root.left);
+                console.log(root.value);
+                this.iterTwoCenter(root.right);
+            }
+
+            iterTwoLast (root) {
+                if (!root) return;
+                this.iterTwoLast(root.left);
+                this.iterTwoLast(root.right);
+                console.log(root.value);
             }
         }
 
@@ -56,7 +70,9 @@
         nowTwo_03.left = nowTwo_06;
         nowTwo_03.right = nowTwo_07;
 
-        nowTwo_01.iterTwo(nowTwo_01);
+        nowTwo_01.iterTwoBefore(nowTwo_01);
+        nowTwo_01.iterTwoCenter(nowTwo_01);
+        nowTwo_01.iterTwoLast(nowTwo_01);
     </script>
 </body>
 </html>
