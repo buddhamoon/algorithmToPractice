@@ -46,7 +46,7 @@
         // 快速排序 - 标准
         // 特点 ：使用变量指针替代数组分裂的方式来实现快速排序逻辑
         // 基于 while 循环的标准快速排序
-        function fastSort_standard_for (arr, start, end) {
+        function fastSort_standard_while (arr, start, end) {
             if ( typeof(arr) !== "object") return;
             if ( arr.length == 0 ) return [];
             if (start >= end - 1) return;
@@ -69,7 +69,7 @@
             fastSort_standard_while (arr, start, scale);
             fastSort_standard_while (arr, scale + 1, end);
         };
-        fastSort_standard_for (arrList_02, 0, arrList_02.length)
+        fastSort_standard_while (arrList_02, 0, arrList_02.length)
         console.info('标准快速排序后-while', arrList_02);
 
 
