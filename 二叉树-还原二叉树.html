@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二叉树：还原二叉树</title>
+</head>
+<body>
+    
+    <!--
+    这类题目主要考察的是按照二叉树的遍历规则，推理出一些结果。
+    常见的题目有 ：
+    1、根据前序遍历、中序遍历结果，还原二叉树结构，并给出后续遍历结果。
+    1、根据中序遍历、后序遍历结果，还原二叉树结构，并给出前续遍历结果。
+    -->
+
+    <script>
+
+        const nowObj = {
+            before:{
+                state:true,
+                tag:'',
+                arrList:['a','c','f','g','b','d','e']
+            },
+            center:{
+                state:true,
+                tag:'',
+                arrList:['f','c','g','a','d','b','e']
+            },
+            last:{
+                state:false,
+                tag:'',
+                arrList:[]
+            },
+            tree:{}
+        }
+
+        function binaryTreeReasoning ( obj ) {
+            // 判断退出错误的情况
+            if (!obj.center.state) return console.error('推理依据不足，缺失中序数组！');
+            if (!obj.before.state && !obj.last.state) return console.error('推理依据不足!');
+            if ( obj.before.state && obj.last.state ) return console.error('既然都有了，还推理什么？');
+            class StrNode {
+                constructor (value) {
+                    this.value = value;
+                    this.left = null;
+                    this.right = null;
+                };
+            }
+            const be = obj.before, ce = obj.center, la = obj.last;
+            // 依据前中推断后
+            if ( !!be.state && be.arrList.length != 0 ) {
+                be.tag = '依据'; ce.tag = '依据'; la.tag = '推论结果';
+                
+                function beforeCal ( arrBe, arrCe ) {
+                    if ( !arrBe && !arrCe ) return;
+                    const root = new StrNode( arrBe.arrList[0] );
+                    const rootName = be.arrList[0];
+                    const centerNum = ce.arrList.indexOf( rootName );
+                    const leftArr = ce.slice(0,centerNum), rightArr = ce.slice(centerNum + 1, centerNum.length);
+                    if ( leftArr.length > 3 ) {
+                        root.left = beforeCal
+                    }
+                    root.left = new StrNode(leftArr[0]);
+                    root.right = new StrNode(rightArr[0]);
+                };
+                const nowTree = beforeCal( be.arrList, ce.arrList );
+
+            };
+            // 依据中后推断前
+            if ( !!la.state && la.arrList.length != 0 ) {
+                be.tag = '推论结果'; ce.tag = '依据'; la.tag = '依据';
+            };
+
+            
+        };
+
+        binaryTreeReasoning(nowObj);
+
+    </script>
+</body>
+</html>
