@@ -11,12 +11,40 @@
     这类题目主要考察的是按照二叉树的遍历规则，推理出一些结果。
     常见的题目有 ：
     1、根据前序遍历、中序遍历结果，还原二叉树结构，并给出后续遍历结果。
-    1、根据中序遍历、后序遍历结果，还原二叉树结构，并给出前续遍历结果。
+        思路：
+            1.1 前序的第一位就是根节点。
+            1.2 根据前序根节点找到中序中的根节点，其左侧为左子树，右侧为右子树。
+            1.3 创建函数功能，分析当前二叉树，判断子树数目。
+            1.4 子树节点数小于 3 ，则按序列规则还原树，如果大于 3 ，递归调用函数。
+    2、根据中序遍历、后序遍历结果，还原二叉树结构，并给出前续遍历结果。
+    -->
+
+    <!--
+        复合函数功能设计：
+        1、设计测试对象 nowObj_before 提供前中 ，推理后序 ，设计测试对象 nowObj_last 提供中后 ，推理前序。
+        2、建立功能性函数 binaryTreeReasoning 用来实现对指定模板对象的遍历推理功能。
+        3、模板函数中有 4 个属性 ：
+            before : 挂载前序对象。
+                state ：状态为 true 表示为依据对象 ，为 flase 表示为被推理对象 。
+                tag ：标签，默认留空，功能函数在运行时依照 state 状态，为其打上标签。
+                arrList ：遍历序列名称 value 数组 ，为依据对象时 ，必须准确提供。
+            center ：挂载中序对象。
+                state ：状态为 true 表示为依据对象 ，为 flase 表示为被推理对象 。
+                tag ：标签，默认留空，功能函数在运行时依照 state 状态，为其打上标签。
+                arrList ：遍历序列名称 value 数组 ，为依据对象时 ，必须准确提供。
+            last ：挂载后序对象。
+                state ：状态为 true 表示为依据对象 ，为 flase 表示为被推理对象 。
+                tag ：标签，默认留空，功能函数在运行时依照 state 状态，为其打上标签。
+                arrList ：遍历序列名称 value 数组 ，为依据对象时 ，必须准确提供。
+            tree ：二叉树结果对象 ，默认留空，功能推理完毕后，会将对应的二叉树结构挂载到 tree 对象上。
+        4、默认必须传递 【before 与 center】 或 【center 与 last】为 true 的依据对象挂载。
+        5、binaryTreeReasoning 函数中存在 StrNode 构造函数，负责将节点生成对象模式。
+
     -->
 
     <script>
 
-        const nowObj = {
+        const nowObj_before = {
             before:{
                 state:true,
                 tag:'',
@@ -33,7 +61,28 @@
                 arrList:[]
             },
             tree:{}
-        }
+        };
+
+        const nowObj_last = {
+            before:{
+                state:false,
+                tag:'',
+                arrList:[]
+            },
+            center:{
+                state:true,
+                tag:'',
+                arrList:['f','c','g','a','d','b','e']
+            },
+            last:{
+                state:true,
+                tag:'',
+                arrList:["f", "g", "c", "d", "e", "b", "a"]
+            },
+            tree:{}
+        };
+
+        
 
         function binaryTreeReasoning ( obj ) {
             // 判断退出错误的情况
@@ -41,11 +90,69 @@
             if (!obj.before.state && !obj.last.state) return console.error('推理依据不足!');
             if ( obj.before.state && obj.last.state ) return console.error('既然都有了，还推理什么？');
             class StrNode {
-                constructor (value) {
-                    this.value = value;
-                    this.left = null;
-                    this.right = null;
+                constructor (type, value) {
+                    //判断遍历构造方法
+                    if (type === "before") {
+                        if ( typeof(value) === "string" || typeof(value) === "number") {
+                        this.value = value;
+                        this.left = null;
+                        this.right = null;
+                        };
+                        if ( typeof(value) === "object" && value.length !== 0 ) {
+                            this.value = value[0];
+                            this.left = value[1] ? new StrNode (type, value[1]) : null;
+                            this.right = value[2] ? new StrNode (type, value[2]) : null;
+                        }; 
+                    };
+                    if (type === "center") {
+                        if ( typeof(value) === "string" || typeof(value) === "number") {
+                        this.left = value;
+                        this.value = null;
+                        this.right = null;
+                        };
+                        if ( typeof(value)==="object" && value.length !== 0 ) {
+                            this.left = value[0] ? new StrNode ("before", value[0]) : null;
+                            this.value = value[1] ? value[1] : null;
+                            this.right = value[2] ? new StrNode ("before", value[2]) : null;
+                        }; 
+                    };
+                    if (type === "last") {
+                        if ( typeof(value) === "string" || typeof(value) === "number") {
+                        this.left = value;
+                        this.right = null;
+                        this.value = null;
+                        };
+                        if ( typeof(value)==="object" && value.length !== 0 ) {
+                            this.left = value[0] ? new StrNode ("before", value[0]) : null;
+                            this.right = value[1] ? new StrNode ("before", value[1]) : null;
+                            this.value = value[2] ? value[2] : null;
+                        }; 
+                    };        
                 };
+
+                beforeIte (root) {
+                    const arr = [];
+                    function traverse (root) {
+                        if (!root) return;
+                        arr.push(root.value);
+                        traverse (root.left);
+                        traverse (root.right);
+                    };
+                    traverse (root);
+                    return arr;
+                }
+                lastIte (root) {
+                    const arr = [];
+                    function traverse (root) {
+                        if (!root) return;
+                        traverse (root.left);
+                        traverse (root.right);
+                        arr.push(root.value);
+                    };
+                    traverse (root)
+                    return arr;
+                }
+              
             }
             const be = obj.before, ce = obj.center, la = obj.last;
             // 依据前中推断后
@@ -54,28 +161,58 @@
                 
                 function beforeCal ( arrBe, arrCe ) {
                     if ( !arrBe && !arrCe ) return;
-                    const root = new StrNode( arrBe.arrList[0] );
+                    const root = new StrNode( 'before', arrBe[0] );
                     const rootName = be.arrList[0];
                     const centerNum = ce.arrList.indexOf( rootName );
-                    const leftArr = ce.slice(0,centerNum), rightArr = ce.slice(centerNum + 1, centerNum.length);
-                    if ( leftArr.length > 3 ) {
-                        root.left = beforeCal
-                    }
-                    root.left = new StrNode(leftArr[0]);
-                    root.right = new StrNode(rightArr[0]);
+                    const leftArr = ce.arrList.slice(0,centerNum), rightArr = ce.arrList.slice(centerNum + 1, centerNum.length);
+                    const leftArr_be = arrBe.slice(1,leftArr.length + 1), rightArr_be = arrBe.slice(leftArr.length + 1, rightArr.length + 1 + leftArr.length);
+                    if ( leftArr.length <= 3 ) {
+                        root.left = new StrNode( 'center', leftArr);
+                    } else { root.left = beforeCal (leftArr_be, leftArr)  };
+                    if (rightArr.length <= 3) {
+                        root.right = new StrNode( 'center', rightArr);
+                    } else { root.right = beforeCal (rightArr_be, rightArr) };
+                    obj.last.arrList = root.beforeIte(root);
+                    return root;
                 };
-                const nowTree = beforeCal( be.arrList, ce.arrList );
+                // 将推断出的二叉树给到对象的 tree 属性中
+                obj.tree = beforeCal( be.arrList, ce.arrList );
+                // 依据二叉树进行后序遍历，将结果推送给对象中的推理结果中
+                obj.last.arrList = new StrNode().lastIte(obj.tree);
 
             };
             // 依据中后推断前
             if ( !!la.state && la.arrList.length != 0 ) {
                 be.tag = '推论结果'; ce.tag = '依据'; la.tag = '依据';
+                function lastCal ( arrLa, arrCe ) {
+                    if ( !arrLa && !arrCe ) return;
+                    const root = new StrNode( 'before', arrLa[ arrLa.length - 1] );
+                    const rootName =  arrLa[ arrLa.length - 1];
+                    const centerNum = ce.arrList.indexOf( rootName );
+                    const leftArr = ce.arrList.slice(0,centerNum), rightArr = ce.arrList.slice(centerNum + 1, centerNum.length);
+                    const leftArr_la = arrLa.slice(0,leftArr.length), rightArr_la = arrLa.slice(leftArr.length, arrCe.length - 1);
+                    if ( leftArr.length <= 3 ) {
+                        root.left = new StrNode( 'center', leftArr);
+                    } else { root.left = lastCal (leftArr_la, leftArr)  };
+                    if (rightArr.length <= 3) {
+                        root.right = new StrNode( 'center', rightArr);
+                    } else { root.right = lastCal (rightArr_la, rightArr) };
+                    obj.last.arrList = root.beforeIte(root);
+                    return root;
+                };
+                // 将推断出的二叉树给到对象的 tree 属性中
+                obj.tree = lastCal( la.arrList, ce.arrList );
+                // 依据二叉树进行前序遍历，将结果推送给对象中的推理结果中
+                obj.before.arrList = new StrNode().beforeIte(obj.tree);
             };
 
             
         };
-
-        binaryTreeReasoning(nowObj);
+        binaryTreeReasoning(nowObj_before);
+        binaryTreeReasoning(nowObj_last);
+        console.info('前中序推理后序（推理后）：', nowObj_before);
+        console.info('中后序推理前序（推理后）：', nowObj_last);
+       
 
     </script>
 </body>
