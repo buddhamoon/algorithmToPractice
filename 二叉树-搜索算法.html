@@ -19,6 +19,29 @@
 
     <script>
 
+        class BinaryNode {
+            constructor (value) {
+                this.value = value;
+                this.left = null;
+                this.right = null;
+            }
+        };
+
+        class NewBinaryTree {
+            constructor ( value ) {
+                if ( typeof(value) !== "number" ) return;
+                this.len = value;
+                this.arr = [];
+                for ( let i = 0; i < this.len; i ++ ) { this.arr.push(i++) };
+                this.tree = {};
+            };
+
+            connode ( arr ) {
+
+            }
+
+        }
+
     </script>
 </body>
 </html>
