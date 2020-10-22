@@ -13,8 +13,25 @@
         1、输入一些指定的参数 ，来生成数组形式的多条目数据，用来进行数据测试。
 
     -->
-
+    <input id="numVal" type="number">
+    <button >模拟数据并将其添加到JSON文件夹</button>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script>
+        const butDiv = document.querySelector('button');
+        butDiv.addEventListener('click',saveJsonFile);
+        function saveJsonFile () {
+            const valDiv = document.querySelector('#numVal');
+            const val = Number(valDiv.value);
+            console.log(val)
+            const data = generateMockJsonData ( wareHouse, val );
+            console.info (data);
+            $.post('http://127.0.0.1:3055/tojson.json',{
+                data:JSON.stringify(data)
+            },function(data){
+                console.log(data);
+            })
+        };
+
         const wareHouse = {
             firstName : ['赵','钱','孙','李','周','武','郑','王','马','黄','刘','邓','慕容','诸葛','南宫','管','朴','张','郭','宋','谢'],
             secondName : ['建国','紫萱','强','杰','飞羽','意','尚德','乾坤','轩','武','文','天赐','广','蓉','珍','明月','广坤','峰','传','飞燕','艳','雅菲'],
