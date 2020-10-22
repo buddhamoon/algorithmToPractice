@@ -14,16 +14,22 @@ function genSomeKey () {
     });
 }
 
-app.use(express.static('./node_modules/jquery/dist'))
+app.use(express.static('./node_modules/jquery/dist'));
 
-app.get('/', (req, res) => res.send('Hello World!'));
-app.post('/tojson.json',urlencodedParser,(req, res) => {
+app.route('/').get((req, res) => {
+    fs.readFile('./index.html',function (err, data) {
+        res.send(data.toString());
+    });
+    
+    
+});
 
-    const data = req.body;
-    console.info(data);
+app.route('/tojson.json').post( urlencodedParser,(req, res) => {
+
+    const nowData = req.body;
     const filerName = genSomeKey ();
     fs.writeFile('./public/datajson/' + filerName + '.json',data.data,(err) => {console.log(err)})
-    res.send('ok');
+    res.send();
 }
 );
 app.listen(port, () => console.log(`算法Node服务运行成功！`))
