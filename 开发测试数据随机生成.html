@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>构造器：生成开发测试数据</title>
+</head>
+<body>
+    
+    <!--
+
+        本主题主要想实现的函数功能：
+        1、输入一些指定的参数 ，来生成数组形式的多条目数据，用来进行数据测试。
+
+    -->
+
+    <script>
+        const wareHouse = {
+            firstName : ['赵','钱','孙','李','周','武','郑','王','马','黄','刘','邓','慕容','诸葛','南宫','管','朴','张','郭','宋','谢'],
+            secondName : ['建国','紫萱','强','杰','飞羽','意','尚德','乾坤','轩','武','文','天赐','广','蓉','珍','明月','广坤','峰','传','飞燕','艳','雅菲'],
+            ascii_num : [],
+            ascii_small : [],
+        };
+        
+        // 数据库准备
+        for ( let i = 0; i < 10; i++ ) { let num = 48; wareHouse.ascii_num.push( num + i ) };
+        for ( let i = 0; i < 26; i++ ) { let num = 97; wareHouse.ascii_num.push( num + i ) };
+
+        function genUuid () {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0,
+                    v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function genSomeNum () {
+            return 'xxxxx-xxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0,
+                    v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function genSomeKey () {
+            return 'fiexxxx-xxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0,
+                    v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function generateMockJsonData ( dep, num ) {
+            const data = [];
+            const fieVal = [,,,,];
+            const fieId01 = fieVal[0] ? fieVal[0] : genSomeKey (),
+            fieId02 = fieVal[1] ? fieVal[1] : genSomeKey ();
+            fieId03 = fieVal[2] ? fieVal[2] : genSomeKey ();
+            fieId04 = fieVal[3] ? fieVal[3] : genSomeKey ();
+            for ( let i = 0; i < num; i++ ) {
+                const obj = { };
+                obj['instanceId'] = genUuid();
+                obj['name'] = dep.firstName[Math.floor(Math.random() * dep.firstName.length)] + dep.secondName[Math.floor(Math.random() * dep.secondName.length)];
+                obj['sex'] = ['男','女'][Math.floor(Math.random() * 2)];
+                obj[fieId01] = genSomeNum();
+                obj[fieId02] = genSomeNum();
+                obj[fieId03] = genSomeNum();
+                obj[fieId04] = Math.round(Math.random()*10000);
+                data.push(obj);
+            };
+            return data;
+        }
+
+        console.log(generateMockJsonData ( wareHouse, 100 ))
+    </script>
+</body>
+</html>
