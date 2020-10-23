@@ -18,18 +18,30 @@
 
         class AddNode {
             constructor ( value ) {
+                if ( !value ) return;
                 this.value = value;
                 this.left = null;
                 this.right = null;
             }
 
             conNode ( value ) {
-
+                let nowNum = this.value;
+                while ( nowNum < value ) {
+                    this.value = 1;
+                };
+                console.log( this.value );
+                console.log( this.left );
+                console.log( this.right );
             }
         };
 
         function nodeTree ( num ) {
-            
+            if ( typeof(num) !== "number" || num < 1) return;
+            const arr = [];
+            for ( let i = 1; i < num + 1; i ++) {
+                arr.push ( new AddNode (i) );
+            };
+            console.log(arr);
         };
     </script>
 </body>
