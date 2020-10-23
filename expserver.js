@@ -25,7 +25,6 @@ app.route('/').get((req, res) => {
 });
 
 app.route('/tojson.json').post( urlencodedParser,(req, res) => {
-
     const nowData = req.body;
     const filerName = genSomeKey ();
     fs.writeFile('./public/datajson/' + filerName + '.json',data.data,(err) => {console.log(err)})
