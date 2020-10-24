@@ -8,8 +8,15 @@
 <body>
     
     <!--
+
         二叉树节点生成函数
         功能描述：输入指定数字 ，生成对应节点数的二叉树。
+        难点 ：
+            1、创建出指定数量的节点 ，然后将这些节点按照二叉树的连接规则进行连接。
+
+        实现思路：
+        方法一 ：
+            1、创建指定数目的节点 ，按照一定规则将节点循环挂载到对应节点的 left right
 
     -->
 
@@ -25,23 +32,20 @@
             }
 
             conNode ( value ) {
-                let nowNum = this.value;
-                while ( nowNum < value ) {
-                    this.value = 1;
-                };
-                console.log( this.value );
-                console.log( this.left );
-                console.log( this.right );
+                
             }
         };
 
         function nodeTree ( num ) {
+            // 严谨性校验
             if ( typeof(num) !== "number" || num < 1) return;
+            // 创建指定数量的节点数组，供连接使用。
             const arr = [];
             for ( let i = 1; i < num + 1; i ++) {
                 arr.push ( new AddNode (i) );
             };
             console.log(arr);
+
         };
     </script>
 </body>
