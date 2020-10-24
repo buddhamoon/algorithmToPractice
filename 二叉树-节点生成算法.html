@@ -15,8 +15,14 @@
             1、创建出指定数量的节点 ，然后将这些节点按照二叉树的连接规则进行连接。
 
         实现思路：
+
         方法一 ：
-            1、创建指定数目的节点 ，按照一定规则将节点循环挂载到对应节点的 left right
+            1、创建指定数目的节点层数 ，按照一定规则将节点循环挂载到对应节点的 left right 。
+            2、一种较为简单的思路是，使用函数生成随机数，该随机数作为节点名称 ，这样只需要按照二叉树结构去挂载节点 ，不用担心节点重复。
+
+        方法二 ：
+            1、循环创建指定的节点数，并对应其节点名称为[1,2,3,4,5,...]
+            2、这时候依次去挂载到二叉树上 ，这样做的一个难点在于 ，你如何让名称相同的节点不重复的挂载在二叉树上。
 
     -->
 
@@ -31,11 +37,40 @@
                 this.right = null;
             }
 
-            conNode ( value ) {
-                
+            conNode ( valone, valtwo ) {
+                if ( !valone && !!this.left ) return;
+                this.left = valone;
+                if ( !valtwo && !!this.right ) return;
+                this.right = valtwo;
             }
         };
 
+        function guid() {
+            return 'xxxxx-xxxx-xxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0,
+                    v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // 方法 1：
+        function nodeTree_one ( num ) {
+            if ( typeof(num) !== "number" || num < 1) return;
+            class NodeAdd {
+                constructor ( val ) {
+                    this.value = val;
+                    this.left = null;
+                    this.right = null;
+                };
+
+                chlidNode ( num, val ) {
+                    if (num)
+                }
+            };
+        };
+
+
+        // 方法 2：
         function nodeTree ( num ) {
             // 严谨性校验
             if ( typeof(num) !== "number" || num < 1) return;
@@ -46,6 +81,12 @@
             };
             console.log(arr);
 
+            // for ( let i = 0; i < arr.length; i++ ) {
+            //     const nowNum = i;
+            //     arr[i].conNode( arr[nowNum + 1], arr[nowNum + 2] );
+            // };
+
+            return arr[0];
         };
     </script>
 </body>
