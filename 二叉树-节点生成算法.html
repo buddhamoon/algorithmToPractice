@@ -37,11 +37,14 @@
                 this.right = null;
             }
 
-            conNode ( valone, valtwo ) {
-                if ( !valone && !!this.left ) return;
-                this.left = valone;
-                if ( !valtwo && !!this.right ) return;
-                this.right = valtwo;
+            conNode ( valOne, valTwo ) {
+                if ( !valOne ) return;
+                if ( !this.left )  { 
+                    this.left = valOne;
+                } 
+                if ( !this.right ) { 
+                    this.right = valTwo;
+                }
             }
         };
 
@@ -88,23 +91,44 @@
         const oneNodeVal = nodeTree_one (8);
         console.info( oneNodeVal );
 
+        // 个人体会 ： 实际上递归并没有想象中的那么好掌握。
+        // 初学递归时，常常会认为递归很简单 ，不就是调用自身来完成功能么 ？ 实际上递归的真正难点在于两处，一处是准确的找到功能出口 ，即在最恰当的时候结束递归操作。
+        // 另一处 ，则是对公式的抽象 ，实际上之所以可以对一些元素进行递归操作，本质上是因为这些原因存在关联性，相同性的操作逻辑 ，而这种逻辑的抽象，代表着类似于数学公式的抽象 
+        // 然而 ，完成一个简单的实例或许并不难 ，但是谁能够保障自己能够完美的快速抽出所有计算逻辑背后的公式呢 ？
+
 
         // 方法 2：
-        function nodeTree ( num ) {
+        // 方法思路 ：该方法主要不急于二叉树层数的考虑 ，而是急于点位数量的挂载 ，比如只创建 10 个节点 ，按照某种规则，将这 10 个节点依次挂载到二叉树上则宣告完成。
+        // 该方法的难点在于 ，如何不重复挂载已生成的节点 ，可以有两个方向，一个方向是抽象出一套公式 ，就是能够完成无重复的挂载 ，还有另外一套思路，则是利用二叉树搜索，
+        // 挂载子节点前先搜索 ，二叉树上没有在挂，有的话依次推移到下一个节点。
+        // 两种方式 ，前者显然性能更好 ，因为直接按照某种规则挂载上所有的节点 ，后者虽然实现相同的功能，但明显不断的查询反馈是一种对性能的消耗。
+
+        // 二叉树的深度优先搜索
+        function deepSeach ( node, value ) {
+            if ( !node || !value ) return;
+            if ( node.value == value ) { 
+                return true 
+            } else { 
+                let left = deepSeach ( node.left, value );
+                let right = deepSeach ( node.right, value );
+                return left || right ? true : false;
+            };      
+        };
+
+        function nodeTree_two ( num ) {
             // 严谨性校验
-            if ( typeof(num) !== "number" || num < 1) return;
+            if ( typeof(num) !== "number" ) return;
             // 创建指定数量的节点数组，供连接使用。
             const arr = [];
             for ( let i = 1; i < num + 1; i ++) {
                 arr.push ( new AddNode (i) );
             };
-            console.log(arr);
-
-            // for ( let i = 0; i < arr.length; i++ ) {
-            //     const nowNum = i;
-            //     arr[i].conNode( arr[nowNum + 1], arr[nowNum + 2] );
-            // };
-
+            
+            for ( let i = 0; i < arr.length; i++ ) {
+                let nowNum = i + 1;
+                while ( deepSeach (arr[0] , nowNum) && deepSeach (arr[0] , nowNum + 1) ) { nowNum ++ };
+                arr[i].conNode( arr[nowNum] , arr[nowNum + 1] );
+            };
             return arr[0];
         };
     </script>
