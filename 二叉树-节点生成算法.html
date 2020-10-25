@@ -123,14 +123,20 @@
             for ( let i = 1; i < num + 1; i ++) {
                 arr.push ( new AddNode (i) );
             };
-            
+            // 利用循环将 num 的节点树全部挂载到二叉树的左右树上去
             for ( let i = 0; i < arr.length; i++ ) {
+                // 每一次循环都针对 1 个元素进行遍历查看，直刀查看到后面两个连续的节点没有出现在当前的二叉树上时，统一传入，挂载到左右。
+                // 当识别到下面的某个节点左右已经挂载 ，则跳到下一个节点 ，找到两个连续的没有存在于节点树上的节点挂到左右上去。
                 let nowNum = i + 1;
                 while ( deepSeach (arr[0] , nowNum) && deepSeach (arr[0] , nowNum + 1) ) { nowNum ++ };
                 arr[i].conNode( arr[nowNum] , arr[nowNum + 1] );
             };
             return arr[0];
         };
+
+        // 实际上写到这里 ，脑海中意识到有很多种方法可以生成二叉树 ，比如 ：给出指定数目的节点，向左树挂时声明为 left + number 的 ，右挂时 生成  right + number，
+        // 这样声明 10 个节点时 ，相当于左右树上各挂 10 个 ，那么子树是否要区分 ，这又会是不同的写法 ，这难道就是传说中的数学之美……
+        
     </script>
 </body>
 </html>
