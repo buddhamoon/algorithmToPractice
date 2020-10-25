@@ -54,6 +54,7 @@
         }
 
         // 方法 1：
+        // 方法思路 ：建立指定的二叉树层级数量，然后使用生存随机节点（主要以节点名称区分）来挂载节点。
         function nodeTree_one ( num ) {
             if ( typeof(num) !== "number" || num < 1) return;
             class NodeAdd {
@@ -63,11 +64,29 @@
                     this.right = null;
                 };
 
-                chlidNode ( num, val ) {
-                    if (num)
+                chlidNode ( val, num, max ) {
+                    if ( num > max ) return;
+                    // num ++;
+                    if ( !val.left ) { 
+                        val.left = new NodeAdd(guid())
+                    } else { this.chlidNode (val.left, num, max) };
+                    if ( !val.right ) { 
+                        val.right = new NodeAdd(guid());
+                    } else { this.chlidNode (val.right, num, max ) }
+                    return val;
                 }
             };
+            let childLeft, childRight;
+            const rootNode = new NodeAdd('root');
+            for ( let i = 0; i < num; i ++ ) {
+                rootNode.chlidNode( rootNode, i, num );
+            };
+            return rootNode;
         };
+
+        // 生存一个 8 层的二叉树。
+        const oneNodeVal = nodeTree_one (8);
+        console.info( oneNodeVal );
 
 
         // 方法 2：
