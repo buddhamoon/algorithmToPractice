@@ -41,7 +41,7 @@
         };
 
         function defineReadActive ( data, key, value ) {
-            // 递归观察 (这会导致性能问题 ，vue 3.0 对此进行了优化)
+            // 递归观察 (这会导致性能问题，对象的增删无法监听的问题 ，vue 3.0 对此进行了优化)
             theObserver ( value );
             Object.defineProperty( data, key, {
                 get () {
