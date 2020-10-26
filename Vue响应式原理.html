@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue:响应式原理实现</title>
+</head>
+<body>
+
+    <!--
+
+        响应式的概念：
+
+            1、vue 是模板语法层与数据定义层分开的（常说的vm ，视图层与数据功能层分离）。
+            2、渲染程序读取模板语法，转换为渲染对象，再将数据层上的数据功能挂载上去，二者结合之下统一输出渲染。
+            3、那么，这样就涉及一个问题 ，当我修改一个数据层对象属性的内容时，如何触发渲染引擎进行响应渲染 。
+            4、如果我们只修改了指定值 ，但没有监听到这个修改事件，也不知道修改内容，如何触发响应式的渲染联动呢 ？
+
+        vue 的渲染联动功能实现：
+
+            实现目标 ：监听到数据对象属性的变化 ，针对变化情况触发渲染。
+            常规方式 ：利用对象 Object 原型中的 defineProperty 方法 ，该方法主要用来配置修改针对对象属性的一些默认配置（不可枚举的一些自带属性）。
+            Object.defineProperty() 方法除了可以设置某个对象中的属性是否可修改、可枚举、可配置外，可以针对该对象设置 get 、set 方法。
+
+            关于 get 与 set 方法的拓展 ：
+                实际上，我们在每次读取对象的属性，与对对象属性赋值时 ，都会使用到对象原型链上的 get 与 set 方法 ，只是通常情况下，我们不会单独修改这两个方法
+                而是使用 Object 上的默认原型方法 ，这两个方法完成的基本功能就是 ，get：获取返回对象的熟悉值 ，set：赋予修改对象属性值。
+                换句话说 ，当我们在这两个函数中设置一些功能时，就能够保证这些功能在取值前、赋值前运行 ，以此来实现 vue 的那个观察者监听的概念。
+                通俗的讲：当给属性赋值时，在对象的 set 方法中监听赋予的新旧值 ，从而判断是否触发响应式渲染。
+                当修改的新值与旧值相同时，可以不进行重新渲染，以此提高效率。
+
+
+    -->
+
+    <div id="app"></div>
+
+    <script>
+
+        const data = {
+            name : 'yueyue'
+        };
+
+        function defineReadActive ( data, key, value ) {
+            // 递归观察 (这会导致性能问题 ，vue 3.0 对此进行了优化)
+            theObserver ( value );
+            Object.defineProperty( data, key, {
+                get () {
+                    console.log( '读取操作，读取当前值：' + value )
+                    return value;
+                },
+                set ( newValue ) {
+                    console.log('修改数据：将 ' + value + '修改为：' + newValue);
+                    if ( value === newValue ) return;
+                    value = newValue; 
+                    renderPage (value);
+                }
+            });
+        };
+
+        // 观察者对象 ，将贯彻着赋予每一个对象属性
+        function theObserver ( data ) {
+            if ( typeof data !== "object" ) return;
+            for ( let key in data ) {
+                defineReadActive ( data, key, data[key] );
+            };
+        };
+        // 这里使用观察者时需要注意一个问题 ，即如果观察的对象中存在对象套对象的情况 ，则需要进行递归观察。
+
+        theObserver ( data );
+
+        // 页面渲染函数 ，当然 vue 的肯定没有这么简单，但从 console 控制台可以模拟响应式更新
+        function renderPage ( data ) {
+            const app = document.querySelectorAll('#app');
+            app[0].innerText = data;
+        }
+        renderPage ( data.name )
+   
+    </script>
+</body>
+</html>
