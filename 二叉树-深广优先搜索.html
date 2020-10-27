@@ -13,9 +13,10 @@
 
         const twoTree = nodeTree_two (50);
         console.info('生成的二叉树：', twoTree);
-
-        function deepSeach_now ( root, targetVal ) {
-            if ( !root ) return falsel;
+        // 深度优先搜索
+        // 深度搜索往往基于前序遍历
+        function deepFirstSeach ( root, targetVal ) {
+            if ( !root ) return false;
             if ( root.value == targetVal ) return true;
             const left = deepSeach ( root.left, targetVal );
             const right = deepSeach ( root.right, targetVal );
@@ -23,7 +24,28 @@
             return left || right;
         };
 
-        console.log('搜索显示：', deepSeach_now(42));
+        console.log('搜索显示：', deepFirstSeach(42));
+
+        // 广度优先搜索
+        // 推荐传入节点数组 ，但如果首节点不传入数组，内部会进行转换为数组。
+        function breadthFirstSeach ( root, targetVal ) {
+            if ( !root ) return false;
+            if ( !Array.isArray(root) ) root = [ root ];
+            if ( root.length === 0 ) return false;
+            const arr = [];
+            for ( let i = 0; i < root.length; i++ ) {
+                if ( root[i] && root[i].value === targetVal ) {
+                    return true;
+                } else {
+                    if ( root[i].left ) arr.push(root[i].left);
+                    if ( root[i].right ) arr.push(root[i].right);
+                }
+            };
+            return breadthFirstSeach ( arr, targetVal );
+        };
+
+        console.log('广度优先搜索（参数32）：', breadthFirstSeach(twoTree,32))
+        console.log('广度优先搜索（参数65）：', breadthFirstSeach(twoTree,65))
 
     </script>
 </body>
