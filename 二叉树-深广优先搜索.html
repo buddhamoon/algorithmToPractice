@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二叉树：深度 / 广度优先搜索</title>
+    <script src="./public/js/construct-binary-tree.js"></script>
+</head>
+<body>
+    
+
+    <script>
+
+        const twoTree = nodeTree_two (50);
+        console.info('生成的二叉树：', twoTree);
+
+        function deepSeach_now ( root, targetVal ) {
+            if ( !root ) return falsel;
+            if ( root.value == targetVal ) return true;
+            const left = deepSeach ( root.left, targetVal );
+            const right = deepSeach ( root.right, targetVal );
+            // 一种简写形式 ，一方为 true 返回 true 都是 false 返回 false
+            return left || right;
+        };
+
+        console.log('搜索显示：', deepSeach_now(42));
+
+    </script>
+</body>
+</html>
