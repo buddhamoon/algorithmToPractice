@@ -34,20 +34,50 @@
 
         2、基于左右子树交换后判定为相等的情况。
 
+            这时候可以沿用在过程中比较的方式来迭代处理 ，但如果使用指定的（前序）遍历 ，就会变的困难 ，需要花较大的功夫来处理子树序列。
+
     -->
-
-
-
-
 
     <script>
         const twoTree_1 = nodeTree_two(30);
         const twoTree_2 = nodeTree_two(30);
         const twoTree_3 = nodeTree_two(36);
 
-        function compareTree ( rootOne, rootTwo ) {
-
+        // 方法一：递归遍历过程中判断
+        function compareTree_one ( rootOne, rootTwo ) {
+            if ( rootOne == rootTwo ) return true;
+            if ( !rootOne && !!rootTwo || !!rootOne && !rootTwo ) return false;
+            if ( rootOne.value != rootTwo.value ) return false;
+            return compareTree_one ( rootOne.left, rootTwo.left ) ,
+            compareTree_one ( rootOne.right, rootTwo.right );
         };
+
+        console.log('一号方法，比较实例 1：', compareTree_one ( twoTree_1, twoTree_2 ));
+        console.log('一号方法，比较实例 2：', compareTree_one ( twoTree_1, twoTree_3 ));
+
+        // 方法二：比对前序遍历结果判定
+        function compareTree_two ( rootOne, rootTwo ) {
+            let arr01 = [], arr02 = [], state = true;
+            function twoTreeBeforePush ( root, arr ) {
+                if ( !root ) return;
+                arr.push ( root.value );
+                twoTreeBeforePush ( root.left, arr );
+                twoTreeBeforePush ( root.right, arr );
+            };
+            twoTreeBeforePush ( rootOne, arr01 );
+            twoTreeBeforePush ( rootTwo, arr02 );
+
+            if ( arr01.length != arr02.length ) return false;
+
+            for ( let i = 0; i < arr01.length; i ++ ) {
+                if ( arr01[i] != arr02[i] ) state = false;
+            };
+
+            return state;
+        }
+
+        console.log('二号方法，比较实例 1：', compareTree_two ( twoTree_1, twoTree_2 ));
+        console.log('二号方法，比较实例 2：', compareTree_two ( twoTree_1, twoTree_3 ));
 
     </script>
 </body>
