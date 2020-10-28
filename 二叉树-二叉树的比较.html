@@ -39,6 +39,7 @@
     -->
 
     <script>
+        // 通过函数功能生成 3 个用来比较的二叉树。
         const twoTree_1 = nodeTree_two(30);
         const twoTree_2 = nodeTree_two(30);
         const twoTree_3 = nodeTree_two(36);
@@ -78,6 +79,20 @@
 
         console.log('二号方法，比较实例 1：', compareTree_two ( twoTree_1, twoTree_2 ));
         console.log('二号方法，比较实例 2：', compareTree_two ( twoTree_1, twoTree_3 ));
+
+
+        // 方法三：基于左右树顺序可以调换情况下的判断
+        function compareTree_three ( rootOne, rootTwo ) {
+            if ( rootOne == rootTwo ) return true;
+            if ( !rootOne && !!rootTwo || !!rootOne && !rootTwo ) return false;
+            if ( rootOne.value != rootTwo.value ) return false;
+            return compareTree_three ( rootOne.left, rootTwo.left ) && compareTree_three ( rootOne.right, rootTwo.right )
+            || compareTree_three ( rootOne.left, rootTwo.right ) && compareTree_three ( rootOne.right, rootTwo.left )
+        };
+
+        console.log('三号方法，比较实例 1：', compareTree_three ( twoTree_1, twoTree_2 ));
+        console.log('三号方法，比较实例 2：', compareTree_three ( twoTree_1, twoTree_3 ));
+
 
     </script>
 </body>
