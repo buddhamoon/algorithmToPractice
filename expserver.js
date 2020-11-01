@@ -21,6 +21,11 @@ app.use(express.static('./node_modules/jquery/dist'));
 // 路由的请求链式调用
 app.route('/').get((req, res) => {
     fs.readFile('./index.html',function (err, data) {
+        res.cookie('mysay','19202913');
+
+        // res.clearCookie('mysay');
+        res.cookie('name', 'tobi', { domain: '.example.com', path: '/admin', secure: true });
+        res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
         res.send(data.toString());
     });
         
