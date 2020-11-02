@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>功能：本地cookie操作</title>
+</head>
+<body>
+    <div></div>
+    <!--
+
+        发现官方没有提供针对本地操作 cookie 的具体方法
+        通常情况下 ，cookie 以字符串的形式写入 ，人工遵循这样的格式。
+
+        key=value;key=value;key=value;
+
+        document.cookie 不能再本地浏览器时进行操作 ，需要在服务器层运行时才能够操作。
+
+
+    -->
+
+    <script>
+
+        // 本地赋值 cookie 
+        function localSetCookie ( key , value ) {
+            if ( !key || value ) return;
+            document.cookie = key + '=' + value;
+        };
+
+        // 本地获取指定key 的 cookie 值。
+        function localGetCookie ( key ) {
+            if ( !key ) return;
+            const nowArr = document.cookie.split(';');
+            for ( let i = 0; i < nowArr.length; i++ ) {
+                const data = nowArr[i].split('=');
+                if ( data[0] === key ) return data[1];
+            };
+        };
+
+
+    </script>
+</body>
+</html>
