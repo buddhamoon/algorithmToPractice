@@ -16,6 +16,21 @@
 
         document.cookie 不能再本地浏览器时进行操作 ，需要在服务器层运行时才能够操作。
 
+        web storage（cookie 的替代方案）：
+
+        sessionStorage (window.sessionStorage):
+        保障该键值对对象只应用在当前窗口。
+        window.sessionStorage.getItem('name');
+        window.sessionStorage.setItem('name','value');
+
+        localStorage (window.localStorage):
+        保障同一浏览器下同一个网站源，能够共用该对象数据。
+        window.localStorage.setItem('key','value')
+        window.localStorage.getItem('key')
+
+        IndexedDB （基于浏览器的一款索引事物型数据库）
+
+
 
     -->
 
@@ -35,6 +50,27 @@
                 const data = nowArr[i].split('=');
                 if ( data[0] === key ) return data[1];
             };
+        };
+
+
+        // IndexedDB 操作
+
+        const testData = [
+            { name : 'zhang' , age : 18, tel : '19029919293'},
+            { name : 'liu' , age : 48, tel : '16029422293'},
+            { name : 'wang' , age : 36, tel : '13329919293'},
+        ];
+
+        const inDbData = window.indexedDB.open( 'testDbData' );
+        inDbData.onupgradeneeded = function ( event ) {
+            const db = event.target.result;
+            const objectStore = db.createObjectStore("anewform", {keyPath: "id"});
+            testData.forEach( item => {
+                for ( let i in item ) {
+                objectStore.add( item[i] ); 
+            };
+            })
+           
         };
 
 
