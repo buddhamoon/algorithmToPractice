@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水仙花问题</title>
+</head>
+<body>
+
+    <!--
+
+    水仙花数特征：
+    1、这个数字用 3 位 。
+    2、这个数字的三位，百、十、个位数字各自立方后相加，还是等于原数字。
+
+    -->
+
+
+    
+    <script>
+
+        function cube ( value ) {
+            const numVal = Number(value);
+            return numVal * numVal * numVal;
+        };
+
+        function cubeSum ( ...args ) {
+            // if ( typeof(args[0]) !=="number" ) return;
+            let nowVal = 0;
+            try {
+                args.forEach(element => {
+                    nowVal += cube ( element );
+                });
+            } catch (err) {
+                console.error( err );
+            }
+            return nowVal;
+        };
+
+        for ( let i = 100; i <= 999; i++ ) {
+            const ge = Math.floor( i % 10 );
+            const shi = Math.floor( i / 10 % 10 );
+            const bai = Math.floor( i / 100 );
+            if ( cubeSum( ge, shi, bai ) == i ) console.log( i );
+        };
+
+        /*
+
+        JavaScript 解决水仙花问题相对于 java 来说 ，需要注意两个细节 ：
+        1、java 中 int 数据类型会直接截断小数部分 ，而 JavaScript 需要使用 Math.floor() 否则除余运算时 ，会因为产生浮点数而不能得到结果。
+        2、JavaScript 的严谨性语句中，如果使用了 if ( !!value ) 判断，会将 0 值判为假值 ，导致运算确实基于 0 的立方判断。
+
+        */
+
+    </script>
+</body>
+</html>
