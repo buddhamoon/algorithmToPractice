@@ -18,6 +18,8 @@
         <div class="div-ele">元素 1</div>
         <div class="div-ele">元素 2</div>
         <div class="div-ele">元素 3</div>
+        <div class="div-ele">元素 4</div>
+        <div class="div-ele">元素 5</div>
     </div>
 
     <!--
@@ -31,6 +33,31 @@
         function clickOne () { console.info('点击事件一') };
         function clickTwo () { console.info('点击事件二') };
         function clickThisOne () { console.info( this ) };
+        const thisObj = {
+            name : 'this-object',
+            title : 'this测试对象',
+            moted : () => { console.info(this) },
+            motedOne : function () { console.info(this) },
+            motedTwo : function (...args) {
+                console.info(this);
+                console.info(args);
+            }
+        };
+        class MotThis {
+            constructor () {
+                this.name = 'showTime',
+                this.age = '1902'
+            }
+            moted = () => {
+                console.info( this );
+            }
+        }
+        const nowMot = new MotThis();
+
+        function clickThisTwo () { 
+            
+            console.info( this ) 
+        };
         
         const divEle = document.querySelectorAll('.div-ele');
 
@@ -41,9 +68,26 @@
         // 使用 Dom 2 级的事件绑定可以绑定多个同类型监听事件 ，但正因为这个特性，要考虑避免重复绑定的情况发生。
         divEle[1].addEventListener( 'click', clickOne );
         divEle[1].addEventListener( 'click', clickTwo );
+
         // 常规绑定情况下 this 点击事件会返回被点击的元素本身，因为该事件函数在该元素对象上被调用，函数 this 会默认指向上层运行环境对象。
         divEle[1].addEventListener( 'click', clickThisOne );
         
+        divEle[2].addEventListener( 'click', thisObj.moted );
+        divEle[2].addEventListener( 'click', thisObj.motedOne );
+        divEle[2].addEventListener( 'click', thisObj.motedTwo.bind(thisObj) );
+        divEle[2].addEventListener( 'click', nowMot.moted );
+
+        // 人为改变 函数执行时的 this 指向 ，或者说改变其上下文环境。
+        // 及其传参形式
+        thisObj.motedTwo();
+        thisObj.motedTwo.call(thisObj);
+        thisObj.motedTwo.call(thisObj,"1","2","3",[1]);
+        thisObj.motedTwo.apply(thisObj);
+        thisObj.motedTwo.apply(thisObj, [1,2,3,"showTime"]);
+        thisObj.motedTwo.bind(thisObj)();
+        const bindFun = thisObj.motedTwo.bind(thisObj,"1","2",'5');
+        bindFun();
+
 
 
     </script>
