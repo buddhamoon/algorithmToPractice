@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>this:绑定问题</title>
+    <style>
+        div {
+            width: 150px;
+            height: 100px;
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+<body>
+    
+    <div>
+        <div class="div-ele">元素 1</div>
+        <div class="div-ele">元素 2</div>
+        <div class="div-ele">元素 3</div>
+    </div>
+
+    <!--
+
+
+
+    -->
+
+    <script>
+
+        function clickOne () { console.info('点击事件一') };
+        function clickTwo () { console.info('点击事件二') };
+        function clickThisOne () { console.info( this ) };
+        
+        const divEle = document.querySelectorAll('.div-ele');
+
+        // 在 Dom 1 级的绑定事件时不能绑定同类型的多个事件 ，取消事件时可以 = null 来释放事件。
+        divEle[0].onclick = clickOne;
+        divEle[0].onclick = clickTwo;
+
+        // 使用 Dom 2 级的事件绑定可以绑定多个同类型监听事件 ，但正因为这个特性，要考虑避免重复绑定的情况发生。
+        divEle[1].addEventListener( 'click', clickOne );
+        divEle[1].addEventListener( 'click', clickTwo );
+        // 常规绑定情况下 this 点击事件会返回被点击的元素本身，因为该事件函数在该元素对象上被调用，函数 this 会默认指向上层运行环境对象。
+        divEle[1].addEventListener( 'click', clickThisOne );
+        
+
+
+    </script>
+</body>
+</html>
