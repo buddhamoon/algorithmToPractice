@@ -39,6 +39,7 @@
 
         // 解题思路一
         // 这是多次尝试下写出的第一种通过测试的解题思路，但是时间复杂度较高 ，性能上表现并不佳。
+        // 性能测试时间浮动在 6000ms ，内存 46MB
         var twoSum = function(nums, target) {
             const length = nums.length;
             for ( let i = 0; i < length; i++ ) {
@@ -56,6 +57,31 @@
             };
         };
         console.info( twoSum([3,3], 6) );
+
+
+        // 解题思路二
+        // 利用了另外一种思路，不再暴力遍历 ，找到与目标值的差值后，使用indexOf查找。
+        // 性能测试时间浮动在 3000ms ，内存 46MB
+        var twoSum_01 = function(nums, target) {
+            for ( let i = 0, len = nums.length; i < len; i ++ ) {
+                // 运算时间从 6000 降落到 3000 的关键性语句
+                if ( nums[i] > 0 && nums[i] > target ) continue;
+                const nowNum = target - nums[i];
+                if ( nowNum === nums[i] ) nums[i] = null;
+                const nowState = nums.indexOf( nowNum );
+                if ( !nums[i] ) nums[i] = nowNum;
+                if ( nowState < 0 ) continue;
+                return [ i, nowState ];
+            };
+        };
+        console.info( twoSum_01( [3,2,4], 6) );
+
+        /*
+            思路二中主要有两个核心思想：
+            1、使用对比值与目标值的差值来获得查找数 ，使用 indexOf 来找到目标数。
+            2、使用 if + continue 来提升性能 ，减少不必要的循环。
+            3、&& 逻辑操作符的核心 ，一定要注意匹配顺序 ，利用左边一旦成立，则右边不再运算的特性来提升性能。
+        */
     </script>
 </body>
 </html>
