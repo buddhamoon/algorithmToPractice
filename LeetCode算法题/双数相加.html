@@ -36,54 +36,83 @@
 
         console.log(addTwoNumbers([2,4,3],[5,6,4]));
 
-        var addTwoNumbers_01 = function(l1, l2) {
-            function recursionArr ( arr, root ) {
-                if (!root) return;
-                arr.push ( root.val );
-                recursionArr ( arr, root.next );
+        
+        var addTwoNumbers = function(l1, l2) {
+    // 递归获取节点val数组
+    function recursionArr ( arr, root ) {
+        if (!root) return;
+        arr.push ( root.val );
+        recursionArr ( arr, root.next );
+    };
+    const l1arr = [], l2arr = [];
+    recursionArr( l1arr, l1 );
+    recursionArr( l2arr, l2 );
+    // 翻转数组顺序
+    function reverse ( arr ) {
+        const newArr = [];
+        for ( let i = arr.length - 1 , len = 0; i >= len; i -- ) {
+            newArr.push( Number( arr[i] ) );
+        };
+        return newArr;
+    }
+    // 拼接字符串后转换为数字
+    function strSum ( arr ) {
+        let strNum = '';
+        arr.forEach( item => {
+            strNum += item.toString();
+        });
+        return Number(strNum);
+    };
+    // 截断数字输出为数组
+    function split ( value ) {
+        const splitArr = [];
+        for ( let i = 0, len = value.length; i < len; i++ ) {
+            splitArr.push(value[i]);
+        }
+        return splitArr;
+    };
+    function bigNumSum ( arr01, arr02 ) {
+        if ( (arr01.length || arr02.length) > 16 ) {
+            let nowBig, nowSam;
+            if ( arr01.length > 16 ) { 
+                nowBig = arr01;
+                nowSam = arr02;
+            } else { 
+                nowBig = arr02;
+                nowSam = arr01;
             };
-            const l1arr = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], 
-            l2arr = [5,6,4];
-            // recursionArr( l1arr, l1 );
-            // recursionArr( l2arr, l2 );
-            function reverse ( arr ) {
-                const newArr = [];
-                for ( let i = arr.length - 1 , len = 0; i >= len; i -- ) {
-                    newArr.push( Number( arr[i] ) );
-                };
-                return newArr;
+            const samLen = nowSam.length;
+            const bigLen = nowBig.length;
+            const samNum = strSum( nowSam );
+            const afterSp = nowBig.splice(bigLen - samLen);
+            const afterSum = String(strSum(afterSp) + samNum);
+            for ( let i = 0, len = afterSum.length; i < len; i++ ) {
+                nowBig.push(afterSum[i]);
+            };
+            return nowBig;
+
+        } else {
+            const nowVal = strSum(arr01) + strSum(arr02);
+            return split(String(nowVal));
+        }
             }
-            function strSum ( arr ) {
-                let strNum = '';
-                arr.forEach( item => {
-                    strNum += item.toString();
-                });
-                return Number(strNum);
-            };
-            function split ( value ) {
-                const splitArr = [];
-                for ( let i = 0, len = value.length; i < len; i++ ) {
-                    splitArr.push(value[i]);
-                }
-                return splitArr;
-            };
             const nowl1 = reverse(l1arr); 
             const nowl2 = reverse(l2arr);
-            const nowSum = strSum(nowl1) + strSum(nowl2);
-            const lastVal = split(String(nowSum));
-            const lastArr = reverse( lastVal );
-            // const lastRoot = new ListNode( lastArr[0] );
-            console.log(nowl1,nowl2,nowSum,lastVal,lastArr)
-            // function recursionLastArr ( root, len ) {
-            //     if ( lastArr[len] === undefined ) return;
-            //     root.next = new ListNode( lastArr[len] );
-            //     len ++;
-            //     recursionLastArr( root.next, len);
-            // }
-            // recursionLastArr( lastRoot, 1 );
+            const nowSum = bigNumSum( nowl1, nowl2 );
+            const lastArr = reverse( nowSum );
+            const lastRoot = new ListNode( lastArr[0] );
+        
+            function recursionLastArr ( root, len ) {
+                if ( lastArr[len] === undefined ) return;
+                root.next = new ListNode( lastArr[len] );
+                len ++;
+                recursionLastArr( root.next, len);
+            }
+
+            recursionLastArr( lastRoot, 1 );
             return lastRoot;
         };
-        
+                
 
         console.log(addTwoNumbers_01([2,4,3],[5,6,4]));
     </script>
