@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>两数相加</title>
+</head>
+<body>
+    
+
+    <script>
+        var addTwoNumbers = function(l1, l2) {
+            function reverse ( arr ) {
+                const newArr = [];
+                for ( let i = arr.length - 1 , len = 0; i >= len; i -- ) {
+                    newArr.push( Number(arr[i]) );
+                };
+                return newArr;
+            }
+            function strSum ( arr ) {
+                let strNum = '';
+                arr.forEach( item => {
+                    strNum += item.toString();
+                });
+                
+                return Number(strNum);
+            };
+            const nowl1 = reverse(l1); 
+            const nowl2 = reverse(l2);
+            const nowSum = strSum(nowl1) + strSum(nowl2);
+            const lastVal = nowSum.toString().split('');
+            const lastArr = reverse( lastVal );
+            console.log(nowl1,nowl2,nowSum,lastVal,lastArr)
+            return lastArr;
+        };
+
+        console.log(addTwoNumbers([2,4,3],[5,6,4]));
+
+        var addTwoNumbers_01 = function(l1, l2) {
+            function recursionArr ( arr, root ) {
+                if (!root) return;
+                arr.push ( root.val );
+                recursionArr ( arr, root.next );
+            };
+            const l1arr = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], 
+            l2arr = [5,6,4];
+            // recursionArr( l1arr, l1 );
+            // recursionArr( l2arr, l2 );
+            function reverse ( arr ) {
+                const newArr = [];
+                for ( let i = arr.length - 1 , len = 0; i >= len; i -- ) {
+                    newArr.push( Number( arr[i] ) );
+                };
+                return newArr;
+            }
+            function strSum ( arr ) {
+                let strNum = '';
+                arr.forEach( item => {
+                    strNum += item.toString();
+                });
+                return Number(strNum);
+            };
+            function split ( value ) {
+                const splitArr = [];
+                for ( let i = 0, len = value.length; i < len; i++ ) {
+                    splitArr.push(value[i]);
+                }
+                return splitArr;
+            };
+            const nowl1 = reverse(l1arr); 
+            const nowl2 = reverse(l2arr);
+            const nowSum = strSum(nowl1) + strSum(nowl2);
+            const lastVal = split(String(nowSum));
+            const lastArr = reverse( lastVal );
+            // const lastRoot = new ListNode( lastArr[0] );
+            console.log(nowl1,nowl2,nowSum,lastVal,lastArr)
+            // function recursionLastArr ( root, len ) {
+            //     if ( lastArr[len] === undefined ) return;
+            //     root.next = new ListNode( lastArr[len] );
+            //     len ++;
+            //     recursionLastArr( root.next, len);
+            // }
+            // recursionLastArr( lastRoot, 1 );
+            return lastRoot;
+        };
+        
+
+        console.log(addTwoNumbers_01([2,4,3],[5,6,4]));
+    </script>
+</body>
+</html>
