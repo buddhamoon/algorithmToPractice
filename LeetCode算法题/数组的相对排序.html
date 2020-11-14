@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组的相对排序</title>
+</head>
+<body>
+    
+    <!--
+
+        给你两个数组，arr1 和 arr2，
+
+        arr2 中的元素各不相同
+        arr2 中的每个元素都出现在 arr1 中
+        对 arr1 中的元素进行排序，使 arr1 中项的相对顺序和 arr2 中的相对顺序相同。未在 arr2 中出现过的元素需要按照升序放在 arr1 的末尾。
+
+        示例：
+
+        输入：arr1 = [2,3,1,3,2,4,6,7,9,2,19], arr2 = [2,1,4,3,9,6]
+        输出：[2,2,2,1,4,3,3,9,6,7,19]
+         
+
+        提示：
+
+        arr1.length, arr2.length <= 1000
+        0 <= arr1[i], arr2[i] <= 1000
+        arr2 中的元素 arr2[i] 各不相同
+        arr2 中的每个元素 arr2[i] 都出现在 arr1 中
+
+        来源：力扣（LeetCode）
+        链接：https://leetcode-cn.com/problems/relative-sort-array
+        著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+    -->
+
+    <script>
+
+        // 解题方法一：
+        // 执行用时：80 ms, 在所有 JavaScript 提交中击败了 94.97% 的用户
+        // 内存消耗：38.9 MB, 在所有 JavaScript 提交中击败了 25.07% 的用户
+
+        /*
+            解题思路：
+            1、声明几个可以操作的空数组 ，其中一个克隆参考数组 arr2 ，保持 arr2完整性。
+            2、第一遍循环将 arr1 中(存在 / 不存在)于参考数组中的元素分离开，便于后续操作。
+            3、第二遍循环将分离数组 1 比对后插入到克隆的 arr2数组中 ，元素依次插入到参考元素之前的位置。
+            4、第二遍循环后 ，由于 arr2的克隆数组中原本存在一套 arr2 元素，
+            5、第三遍通过遍历、参考 arr2 ，将arr2克隆数组中多余的项目删除。
+            6、排序分离数组2 ，然后将分离数组2展开 push 到arr2 克隆数组中。
+        */
+        
+        var relativeSortArray = function(arr1, arr2) {
+            let nowArr1 = [], nowArr2 = [], afterArr = [];
+            afterArr = [...arr2];
+            for (let i = 0, len = arr1.length; i < len; i++ ) {
+                if ( arr2.indexOf(arr1[i]) < 0 ) {
+                    nowArr2.push( arr1[i] );
+                } else { nowArr1.push( arr1[i] ) };
+            };
+            for (let i = 0, len = nowArr1.length; i < len; i++ ) {  
+                const cook = afterArr.indexOf(nowArr1[i]);
+                afterArr.splice( cook, 0, nowArr1[i]);
+            }
+            for (let i = 0, len = arr2.length; i < len; i++ ) {
+                const cook01 = afterArr.indexOf( arr2[i] );
+                afterArr.splice( cook01, 1 );
+            }
+            nowArr2.sort((a,b) => { return a - b })
+            afterArr.push( ...nowArr2);
+            return afterArr;
+        };
+
+    </script>
+</body>
+</html>
