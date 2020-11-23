@@ -32,13 +32,17 @@
 
         function longNumSum( valOne, valTwo ) {
             if ( !valOne || !valTwo ) return;
-            console.info( '参数传入：', valOne, valTwo );
             const nowOne = String(valOne).split('');
             const nowTwo = String(valTwo).split('');
-            console.info( '参数传入：', nowOne, nowTwo );
             const len = nowOne.length <= nowTwo.length ? nowTwo.length : nowOne.length;
-            for ( let i = 0; i < len; i++ ) {
-                
+            for ( let i = len; i > 0; i-- ) {
+                if ( nowOne[i] && nowTwo[i] ) {
+                    let sumVal = Number(nowOne[i]) + Number(nowTwo[i]);
+                    sumVal < 9 ? nowOne[i] = String(sumVal) : (
+                        nowOne[i - 1] = String(Number( nowOne[i - 1] ) + 1),
+                        nowOne[i] = String( nowOne[i] - 10 )
+                    );
+                }
             };
         };
 
