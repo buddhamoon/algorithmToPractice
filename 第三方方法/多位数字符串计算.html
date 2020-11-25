@@ -30,7 +30,7 @@
 
     <script>
 
-        // 传参数时就应该传入字符串形式的数字，如果使用 number ，在保存到变量的那一刻就会导致精度丢失
+        
         function longNumSum( valOne, valTwo ) {
             if ( !valOne || !valTwo ) return;
             // 将数字字符串拆解成字符串数组，便于后续的求和操作
@@ -50,7 +50,7 @@
             };
         };
 
-
+        // 传参数时就应该传入字符串形式的数字，如果使用 number ，在保存到变量的那一刻就会导致精度丢失   
         const numberOne = '1111111111111111111';
         const numberTwo = '1111111111111111111';
         console.info(longNumSum( numberOne, numberTwo));
