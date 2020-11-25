@@ -30,11 +30,15 @@
 
     <script>
 
+        // 传参数时就应该传入字符串形式的数字，如果使用 number ，在保存到变量的那一刻就会导致精度丢失
         function longNumSum( valOne, valTwo ) {
             if ( !valOne || !valTwo ) return;
+            // 将数字字符串拆解成字符串数组，便于后续的求和操作
             const nowOne = String(valOne).split('');
             const nowTwo = String(valTwo).split('');
+            // 对比出一个相对长的数字数组，作为主求和数
             const len = nowOne.length <= nowTwo.length ? nowTwo.length : nowOne.length;
+            // 求和循环
             for ( let i = len; i > 0; i-- ) {
                 if ( nowOne[i] && nowTwo[i] ) {
                     let sumVal = Number(nowOne[i]) + Number(nowTwo[i]);
