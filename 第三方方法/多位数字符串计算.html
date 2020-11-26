@@ -37,9 +37,10 @@
             const nowOne = String(valOne).split('');
             const nowTwo = String(valTwo).split('');
             // 对比出一个相对长的数字数组，作为主求和数
-            const len = nowOne.length <= nowTwo.length ? nowTwo.length : nowOne.length;
+            let mainArr, viceArr;
+            const mainArr = nowOne.length <= nowTwo.length ? nowTwo : nowOne;
             // 求和循环
-            for ( let i = len; i > 0; i-- ) {
+            for ( let i = mainArr.length; i > 0; i-- ) {
                 if ( nowOne[i] && nowTwo[i] ) {
                     let sumVal = Number(nowOne[i]) + Number(nowTwo[i]);
                     sumVal < 9 ? nowOne[i] = String(sumVal) : (
