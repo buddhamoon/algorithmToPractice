@@ -15,12 +15,14 @@
 
         function nowIterator (a) {
             if (!a.length) return;
-            let len = a.length;
-            const next =  () => {
+            let len = a.length, nowLen = 0;
+            const next = () => {
                 return {
-                    value : a[],
+                    value : a[nowLen],
+                    done : ++nowLen == len
                 }
-            }
+            };
+            return next();
         };
     </script>
 </body>
