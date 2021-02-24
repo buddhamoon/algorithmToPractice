@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拖动功能测试</title>
+    <style>
+        .warpper {
+            display: block;
+            position: relative;
+            width: 250px;
+            height: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .div-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            width: auto;
+            border: 1px ridge #ccc;
+            cursor: pointer;
+            margin: 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="app" class="warpper"></div>
+
+    <script>
+
+        class TestDiv {
+            constructor () {
+                this.title = '拖拽测试组件';
+                this.itemArr = [];
+            }
+
+            init ( num ) {
+                for (let i = 0; i < num; i++) {
+                    const item = {
+                        index: i,
+                        title: '容器元素 - ' + i
+                    }
+                    this.itemArr.push(item);
+                }
+            }
+
+            renderDiv () {
+                const app = document.querySelector('#app');
+                let strChild = '';
+                this.itemArr.forEach( item => {
+                    strChild += `<div class="div-item" data-index=${item.index} >${item.title}</div>`;
+                })
+                app.innerHTML = strChild;
+            }
+
+            bindEvent () {
+                const ele = document.querySelectorAll('.div-item');
+                ele.forEach( item => {
+                    item.addEventListener('dragstart', this.bindMouseDown);
+                    item.addEventListener('drag', this.bindMouseMove);
+                    item.addEventListener('dragend', this.bindMouseUp);
+                })
+            }
+
+            bindMouseDown (event) {
+                console.info('开始拖动', event);
+            }
+            bindMouseMove (event) {
+                console.info('开始移动', event);
+            }
+            bindMouseUp (event) {
+                console.info('开始放下', event);
+            }
+        }
+
+        const testObj = new TestDiv();
+        testObj.init(5);
+        testObj.renderDiv();
+        testObj.bindEvent();
+    </script>
+</body>
+</html>
