@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iterator</title>
+</head>
+<body>
+
+
+
+
+    <script>
+
+
+        function nowIterator (a) {
+            if (!a.length) return;
+            let len = a.length, nowLen = 0;
+            const next = () => {
+                return {
+                    value : a[nowLen],
+                    done : ++nowLen == len
+                }
+            };
+            return next();
+        };
+    </script>
+</body>
+</html>
