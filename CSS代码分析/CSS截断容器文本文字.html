@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用CSS截断文本文字</title>
+    <style>
+        .div-width-one {
+            width: 100px;
+            margin: 20px;
+            border: 1px solid salmon;
+        }
+        .text-split {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="div-width-one text-split">测试文本测试文本测试文本测试文本测试文本测试文本</div>
+    <div class="div-width-one">测试文本测试文本测试文本测试文本测试文本测试文本</div>
+    <p>测试文本测试文本测试文本测试文本测试文本</p>
+
+    <script>
+        /*
+            这是一个非常有用的功能，尤其是开发表格类功能时，防止数据溢出的问题，相对于 JavaScript 方案，可以节省更多的算力。
+            其中的关键属性为：
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+        */ 
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flex定位行列间隙</title>
+    <style>
+        body {
+            padding: 20px;
+        }
+        .warpper {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .warpper .child {
+            width: 350px;
+            height: 230px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="warpper">
+        <div class="child"></div>
+        <div class="child"></div>
+        <div class="child"></div>
+        <div class="child"></div>
+        <div class="child"></div>
+        <div class="child"></div>
+        <div class="child"></div>
+        <div class="child"></div>
+    </div>
+
+    <script>
+        /*
+            该方式的两点在于能够比较好的控制容器元素中每一个卡片元素的间距，而不是依靠元素间的 margin-right 来较为生硬的控制。
+            但在实际使用中，还是要考虑 warpper 元素与卡片的占比问题。
+        */
+    </script>
+</body>
+</html>
