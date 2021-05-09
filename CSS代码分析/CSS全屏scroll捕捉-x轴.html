@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS全屏幕scroll捕捉（X轴滚动）</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+          }
+          
+          .wrapper {
+            display: flex;
+            width: 500vw;
+            height: 100vh;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+          }
+          
+          .section {
+            scroll-snap-align: center;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #de5448;
+            color: #fff;
+            font-size: 3em;
+          }
+          
+          .bg-blue {
+            background: #4267b2;
+          }
+          
+          .bg-green {
+            background: #4CAF50;
+          }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="section">
+          Content 1
+        </div>
+        
+        <div class="section bg-blue">
+          Content 2
+        </div>
+        
+        <div class="section bg-green">
+          Content 3
+        </div>
+        
+        <div class="section">
+          Content 4
+        </div>
+        
+        <div class="section bg-blue">
+          Content 5
+        </div>
+      </div>
+
+      <script>
+          /*
+            该功能的核心CSS属性：
+            1、通过在容器元素上设置：
+                scroll-snap-type: y mandatory;
+            2、在其子元素上设置
+                scroll-snap-align: center;
+                可选属性：start center end
+            来进行滚动捕捉。
+
+            该属性的浏览器支持情况：
+            Chrome 90 已经支持。
+            IE 并不支持，原因在于 Mrciosoft 已经将自己的浏览器开发精力投入到了 Edge 。
+            Edge 90 已经支持
+          */
+      </script>
+</body>
+</html>
