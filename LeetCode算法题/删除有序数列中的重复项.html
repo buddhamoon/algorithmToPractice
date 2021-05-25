@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>删除有序数组中的重复项目</title>
+</head>
+<body>
+    
+    <script>
+        // ES-6 中提供的 Set 集合数据结构可以用来进行这道题的去重。
+        // 但是这道题中有一个特殊要求，是原地去重，也就是说，这个函数最终返回的，是第一次入参的nums的数组应用地址。
+
+        /**
+        * @param {number[]} nums
+        * @return {number}
+        */
+        var removeDuplicates_one = function(nums) {
+            const nowSet = new Set();
+            nums.forEach( item => {
+                nowSet.add(item);
+            })
+            nums.length = 0;
+            nums.push(...nowSet);  
+        };
+
+        // 利用 Set 非常简短的写法
+        var removeDuplicates_two = function(nums) {
+            const nowSet = new Set([...nums]);
+            nums.length = 0;
+            nums.push(...nowSet);  
+        };
+
+        // for 循环实现数组有序去重
+        var removeDuplicates = function(nums) {
+            for (let i = 0; i < nums.length; i++ ) {
+                if (nums[i] === nums[i + 1]) {
+                    nums.splice( i, 1 );
+                    i--;
+                } 
+            }
+        };
+    </script>
+</body>
+</html>
