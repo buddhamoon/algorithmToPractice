@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现在字符串中找到字符串方法</title>
+</head>
+<body>
+    <!--
+
+    -->
+
+    <script>
+        /**
+        * @param {string} haystack
+        * @param {string} needle
+        * @return {number}
+        */
+        // 最初的版本
+        var strStr01 = function(haystack, needle) {
+            if (!needle) return 0;
+            return haystack.indexOf(needle);
+        };
+        // 进行了三元运算符的优化
+        // 两次写法在实际提交运行时性能相差无几
+        var strStr02 = function(haystack, needle) {
+            return !needle ? 0 : haystack.indexOf(needle);
+        };
+
+        // 在使用includes方法后，执行时间有所降低，这说明在判断字符串是否存在于另一字符串中时includes的执行吸效率更高
+        var strStr = function(haystack, needle) {
+            if (!needle) return 0;
+            return haystack.includes(needle) ? haystack.indexOf(needle) : -1;
+        };
+
+
+    </script>
+</body>
+</html>
