@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>两数相加</title>
+</head>
+<body>
+    
+    <!--
+       
+        给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+        请你将两个数相加，并以相同形式返回一个表示和的链表。
+        你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+        小感：
+        这道题对于我而言，实际是一个比较困难的题，从做这道题之上，其实我就意识到了自己存在的很多底层问题。
+        这道题实际上需要用到几个知识点：
+        1、理解什么是链表。
+        2、遍历链表抽象为节点数组。
+        2、链表的逆置。
+        3、链表节点 value 相加进位。
+        4、链表的生成。
+
+    -->
+
+    <script>
+
+        // 创建链表节点
+        // 不要忘记了构造函数使用 new 关键字实例化调用。
+        function ListNode ( val, next ) {
+            this.val = val ? val : null;
+            this.next = next ? next : null;
+        };
+
+        // 一个链表的数据结构
+        const nodeList = {
+            val : 2,
+            next : {
+                val : 3,
+                next : {
+                    val : 5,
+                    next : {
+                        var : 6,
+                        next : null
+                    }
+                }
+            }
+        }
+        // 测试数据
+        const oneArr = [9,9,9,9,9,9,9];
+        const twoArr = [9,9,9,9];
+
+        function test (l1Arr,l2Arr) {
+            let mainArr, secArr;
+            if ( l1Arr.length > l2Arr.length) {
+                mainArr = l1Arr;
+                secArr = l2Arr;
+            } else {
+                mainArr = l2Arr;
+                secArr = l1Arr;
+            }
+            console.info( mainArr, secArr)
+            for (let i = 1; i <= mainArr.length; i++) {
+                const secLen = secArr.length - i;
+                const mainLen = mainArr.length - i;
+                console.info( mainLen, secLen)
+                const val = mainArr[mainLen] + (secArr[secLen] ? secArr[secLen] : 0);
+                if ( val > 9 ) {
+                    mainArr[mainLen] = val % 10;
+                    console.log('外层',mainLen)
+                    if (mainLen === 0) {
+                        console.log(mainLen)
+                        mainArr.unshift(1);
+                    } else {
+                        mainArr[mainLen - 1] ++;
+                    }
+                    
+                } else {
+                    mainArr[mainLen] = val
+                }
+            }
+            console.info(mainArr)
+        }
+        test (oneArr,twoArr)
+
+        /**
+        * Definition for singly-linked list.
+        * function ListNode(val, next) {
+        *     this.val = (val===undefined ? 0 : val)
+        *     this.next = (next===undefined ? null : next)
+        * }
+        */
+        /**
+        * @param {ListNode} l1
+        * @param {ListNode} l2
+        * @return {ListNode}
+        */
+        var addTwoNumbers = function(l1, l2) {
+            const l1Arr = [], l2Arr = [];
+            // 递归链表值为数组函数
+            function recursionNode ( nodeList, arr) {
+                if (!nodeList) return;
+                arr.push(nodeList['val']);
+                return recursionNode(nodeList.next,arr);
+            };
+            // 递归创建链表
+            function createNode ( node, len ) {
+                if (len >= mainArr.length) return;
+                node.next = new ListNode( mainArr[len] );
+                len ++;
+                createNode( node.next, len);
+            }
+            recursionNode( l1, l1Arr);
+            recursionNode( l2, l2Arr);
+            l1Arr.reverse();
+            l2Arr.reverse();
+            let mainArr, secArr;
+            if ( l1Arr.length > l2Arr.length) {
+                mainArr = l1Arr;
+                secArr = l2Arr;
+            } else {
+                mainArr = l2Arr;
+                secArr = l1Arr;
+            }
+            const maxLen = mainArr.length;
+            const minLen = secArr.length;
+            for (let i = 1; i <= maxLen; i++) {
+                const secLen = minLen - i;
+                const mainLen = maxLen - i;
+                const val = mainArr[mainLen] + (secArr[secLen] ? secArr[secLen] : 0);
+                if ( val > 9 ) {
+                    mainArr[mainLen] = val % 10;
+                    mainLen === 0 ? mainArr.unshift(1) : mainArr[mainLen - 1] ++;   
+                } else {
+                    mainArr[mainLen] = val
+                }
+            }
+            mainArr.reverse();
+            const afterNode = new ListNode( mainArr[0] );
+            createNode ( afterNode, 1 );
+            return afterNode;
+        };
+
+
+    </script>
+</body>
+</html>
