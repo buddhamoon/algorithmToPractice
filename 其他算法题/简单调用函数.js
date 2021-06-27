@@ -4,6 +4,7 @@
 * @params function query 递减调用次数
 * @params function testCallBack 最后执行的调用函数
 */
+
  let checkNum = 5;
  let cookieTime = 1000;
 
