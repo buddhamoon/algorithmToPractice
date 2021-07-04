@@ -10,14 +10,37 @@
     
     <!--
         链表的生成
-        
+
         场景说明：
-        在链表的数据结构中
+        在链表的数据结构中常常会遇到一些场景的方法需求。
+        1、生成列表节点。
+        2、通过数组值，来自动生成链表的结构
 
 
     -->
 
     <script>
+        // 生成指定的Node链表节点
+        // 最为常见的一种链表节点生成函数
+        function NodeList ( val, next ) {
+            this.val = val === undefined ? val : 0;
+            this.next = next === undefined ? next : null;
+        }
+
+        // 将一组链表，遍历成为一个数组值
+        const testArr = [];
+        function iterativeNode ( node, arr ) {
+            if (!node) return arr;
+            arr.push(node.val);
+            iterativeNode( node.next, arr);
+        }
+        // 调用：iterativeNode( node, testArr);
+
+        // 当我们给出一组数组，使用一个函数将该数组中的值生成为链表结构
+        const testArr_one = [1,2,3,4,5,6,7];
+        function createNode () {
+            
+        }
 
     </script>
 </body>
