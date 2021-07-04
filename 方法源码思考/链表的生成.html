@@ -38,9 +38,21 @@
 
         // 当我们给出一组数组，使用一个函数将该数组中的值生成为链表结构
         const testArr_one = [1,2,3,4,5,6,7];
-        function createNode () {
-            
+        function createNode ( node, arr ) {
+            if (arr.length === 0) return;
+            let nowNode;
+            if ( node ) {
+                node.next = new NodeList(arr[0]);
+            } else {
+                node = new NodeList(arr[0]);
+            }
+            arr.splice(0,1);
+            return createNode( node.next, arr);
         }
+        const newNode = createNode( null, testArr_one);
+        console.info(newNode)
+
+        // 引用了外部变量
 
     </script>
 </body>
