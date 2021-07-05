@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对象数据解构</title>
+</head>
+<body>
+    
+    <!--
+
+        数组的期待结果：
+        [1, 2, 5, 9, 8, 4, 7, 6]
+        [1, 2, 4, 5, 6, 7, 8, 9]
+
+        对象的期待结果：
+    -->
+
+    <script>
+        const testArr = [ 1, 2, 5, [ 9, undefined, 8 ], 4, 7, 6]
+        const testObj = {
+            name : 'level_1',
+            children : [
+                { name : 'layer_1' },
+                {
+                    name : 'layer_2',
+                    children : [
+                        { name : 'three_1' },
+                        { name : 'three_2' }
+                    ]
+                }
+            ]
+        }
+
+        const deconstructArray = ( arr ) => {
+            if (!arr || arr.length === 0) return;
+            const afterArr = [];
+            arr.forEach( item => {
+                if (typeof item === 'number' || typeof item === 'string') {
+                    afterArr.push(item);
+                };
+                if (typeof item === "object") {
+                    item.forEach( ele => {
+                        if (typeof ele === 'number' || typeof ele === 'string') {
+                            afterArr.push(ele);
+                        };
+                    })
+                }
+            });
+            return afterArr;
+        };
+        console.info(deconstructArray(testArr));
+        console.info(deconstructArray(testArr).sort());
+        console.info(testArr);
+
+        // 其实这道题的核心在考递归的应用。
+        // 因为如果这里不使用递归，那么在解决到第二层时，就不能再往下进行了，只有使用递归才能解决这种多层嵌套问题。
+        const deconstructArray_recursion = ( arr ) => {
+            if (!arr || arr.length === 0) return [];
+            const afterArr = [];
+            arr.forEach( item => {
+                if (typeof item === 'number' || typeof item === 'string') {
+                    afterArr.push(item);
+                };
+                if (typeof item === "object") {
+                    const ele = deconstructArray_recursion(item);
+                    afterArr.push(...ele);
+                }
+            });
+            return afterArr;
+        };
+        console.info(deconstructArray_recursion(testArr));
+        console.info(deconstructArray_recursion(testArr).sort());
+        console.info(testArr);
+
+        const deconstructObject_recursion = ( obj ) => {
+            let nowStr
+        };
+
+    </script>
+</body>
+</html>
