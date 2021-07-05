@@ -15,6 +15,7 @@
         在链表的数据结构中常常会遇到一些场景的方法需求。
         1、生成列表节点。
         2、通过数组值，来自动生成链表的结构
+            2.1 情况一 ；在生成链表时，有一个比较难处理的是第一个节点。
 
 
     -->
@@ -41,13 +42,13 @@
         function createNode ( node, arr ) {
             if (arr.length === 0) return;
             let nowNode;
-            if ( node ) {
-                node.next = new NodeList(arr[0]);
-            } else {
-                node = new NodeList(arr[0]);
-            }
+            if ( !node ) node = new NodeList(arr[0]);
+            node.next = arr[1] ? new NodeList(arr[1]) : null;
             arr.splice(0,1);
-            return createNode( node.next, arr);
+            console.info(arr)
+            
+            createNode( node.next, arr);
+            return node;
         }
         const newNode = createNode( null, testArr_one);
         console.info(newNode)
