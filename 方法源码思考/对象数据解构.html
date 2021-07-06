@@ -9,12 +9,27 @@
 <body>
     
     <!--
+        递归
+        核心思想：通过调用自身来解决问题的方法。
+        三要素：
+            1、基线条件、准确判断在什么条件下结束（跳出）递归。
+            2、抽象通用公式，依照通用功能迭代来解决问题。
+            3、
+
 
         数组的期待结果：
         [1, 2, 5, 9, 8, 4, 7, 6]
         [1, 2, 4, 5, 6, 7, 8, 9]
 
         对象的期待结果：
+            [
+                { name: "level_1/layer_1" },
+                { name: "level_1/layer_2/three_1" },
+                { name: "level_1/layer_2/three_2" },
+            ]
+
+            分析：
+            1、
     -->
 
     <script>
@@ -74,9 +89,24 @@
         console.info(deconstructArray_recursion(testArr).sort());
         console.info(testArr);
 
-        const deconstructObject_recursion = ( obj ) => {
-            let nowStr
+        // 难吗 ？ 看上去代码如此少于简洁
+        // 简单吗 ？ 今天确实挠头了几个小时……
+        // 参数的逐层传递，简单值、引用值在逐层传递时产生的不同效果。
+        const deconstructObject = [];
+        const deconstructObject_recursion = ( obj, params ) => {
+            if (!obj) return;
+            params += obj['name'];
+            if (obj['children']) {
+                obj['children'].forEach( item => {
+                    deconstructObject_recursion(item, params + '/');
+                })    
+            } else {
+                deconstructObject.push({ name: params});
+            }
         };
+
+        const a = deconstructObject_recursion(testObj, '');
+        console.info(deconstructObject);
 
     </script>
 </body>
