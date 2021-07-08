@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>返回幸运数字</title>
+</head>
+<body>
+    <!--
+
+        在整数数组中，如果一个整数的出现频次和它的数值大小相等，我们就称这个整数为「幸运数」。
+
+        给你一个整数数组 arr，请你从中找出并返回一个幸运数。
+
+        如果数组中存在多个幸运数，只需返回 最大 的那个。
+        如果数组中不含幸运数，则返回 -1 。
+
+    -->
+
+    <script>
+        /**
+        * @param {number[]} arr
+        * @return {number}
+        */
+        const testArr = [5,8,10,9,8,10,9,6,6,7,10,8,10,10,9,4,6,2,10,3,5,10,2,6,4,8,7,3,9,9,5,7,8,7,11,9,3,1,5,11,9,5,8,10,8,4,9,7,6,7,10,9,7,8,6,10,4];
+        var findLucky = function(arr) {
+            const a = [...new Set(arr)];
+            const luck = [];
+            a.forEach( item => {
+                let num = 0;
+                for( let i = 0; i < arr.length; i++ ){
+                    if (arr[i] === item ) num++;
+                }
+                if (item === num) luck.push(item);
+            });
+            // 这里要注意关于 sort 默认排序的问题
+            luck.sort((a,b) => { return a-b });
+            const len = luck.length;
+            return len ? luck[len - 1] : -1;
+        };
+
+    </script>
+</body>
+</html>
