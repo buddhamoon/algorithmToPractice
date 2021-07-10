@@ -63,7 +63,8 @@
 
         @-webkit-keyframes fade-in-top{
             0% { -webkit-transform:translateY(-50px);transform:translateY(-50px);opacity:0}
-            100% { -webkit-transform:translateY(0);transform:translateY(0);opacity:1}}
+            100% { -webkit-transform:translateY(0);transform:translateY(0);opacity:1}
+        }
         @keyframes fade-in-top{
             0%{-webkit-transform:translateY(-50px);transform:translateY(-50px);opacity:0}
             100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}
@@ -101,6 +102,25 @@
         </div>
     </div>
     
+    <!--
+
+        淡入：
+            对元素使用 animation 属性后，通常在渲染该元素时，就会触发对应的动画。
+            所以基于这个特性，淡入的效果较为容易，将动画效果直接绑定在元素上即可。
+
+        淡出：
+            淡出在使用 css - animation 实现时与淡出会有一定差异，因为 animation 的执行通常为下面两种情况：
+            1、已经有 animation 属性的元素进行初次渲染的时候，动画效果会被触发。
+            2、某元素被动态添加了 animation 动画，从而触发了该元素的重新渲染，动画效果也会出现。
+            但如果只是单纯的将某个元素使用淡出将 opacity 调整为 0 ，这种隐藏实际上不是真正意义上的隐藏，该元素还是会占据页面空间。
+            所以，如果一个元素在执行淡出动画效果后，又没有将该元素隐藏（或保存变化后的结果），动画在执行过后，元素还是会回复成正常的现实状态。
+
+            故而这里需要一个操作，就是在淡出动画结束后（或即将结束时），将元素隐藏。
+            如果淡出动画使用了600ms ，那么为了避免元素频闪，
+            1、要么可以直接在动画结果后无缝保存结果，
+            2、要么就是在 小于600ms 的时间将 元素的 display：none
+
+    -->
 
     <script>
         const button = document.querySelectorAll('button');
