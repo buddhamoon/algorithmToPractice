@@ -16,20 +16,67 @@
         const testStr = '3879943038493388403045';
 
         function strNumberCarry (str) {
-            if (!str) return;
-            const len = str.length;
+            let afterStr = '';
+            const strArr = String(digits).split('');
+            const len = strArr.length;
+            strArr[len] = Number(strArr[len]) + 1;
+        
             for ( let i = 0; i < len; i++ ) {
-                const nowNum = Number(str[len - i]) + 1;
-                if ( nowNum < 10 ) {
-                    str[len - i] = nowNum.toString();
-                    break;
+                const check = Number(strArr[len - i]);
+                if ( check < 10) break;
+                strArr[len - i] = check % 10;
+                if ( i === (len - 1) ) {  
+                    strArr.unshift(1);
                 } else {
-
-                }
+                    strArr[len - (i + 1)] = Number(strArr[len - (i + 1)]) + 1;
+                }    
             }
+            strArr.forEach( item => { afterStr += item });
+            return afterStr;
         }
 
-        function strNumberCarryRecursion () {}
+        // 数组加一进位，返回的结果还是 Number[]
+        var plusOne = function(digits) {
+            const len = digits.length;
+            const pointer = len - 1;
+            digits[pointer] = digits[pointer] + 1;
+
+            for ( let i = 0; i < len; i++ ) {
+                const check = digits[pointer - i];
+                if ( check < 10) break;
+                digits[pointer - i] = check % 10;
+                if ( (i + 1) >= len ) {  
+                    digits.unshift(1);
+                } else {
+                    digits[pointer - (i + 1)] = digits[pointer - (i + 1)] + 1;
+                }    
+            }
+            return digits;
+        };
+
+        /*
+            通用方法抽象：
+                判断当前数字 + 1后是否大于9，如果大于，则需要进位。
+        */
+
+        function strNumberCarryRecursion ( str, len, carry ) {
+            if (carry === 0) return;
+            const nowVal = Number(str[len]) + 1;
+            if (nowVal > 9) {
+                if (len === 0) {
+                    str[len] = (nowVal % 10).toString();
+                    return str.p
+                } else {
+                    str[len] = (nowVal % 10).toString();
+                    carry = 1;
+                }     
+            } else {
+                str[len] = nowVal.toString();
+                carry = 0;
+            }
+            len--;
+            return strNumberCarryRecursion ( str, len, carry )
+        };
     </script>
 </body>
 </html>
