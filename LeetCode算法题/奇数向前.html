@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>齐数向前</title>
+</head>
+<body>
+    
+
+    <script>
+        /**
+        * @param {number[]} nums
+        * @return {number[]}
+        */
+        // 执行用时：92 ms, 在所有 JavaScript 提交中击败了99.23%的用户内存消耗：47.1 MB, 在所有 JavaScript 提交中击败了17.16%的用户。
+        var exchange = function(nums) {
+            const before = [], after = [];
+            const len = nums.length;
+            for ( let i = 0; i < len; i++ ) {
+                const val = nums[i] % 2;
+                if ( val === 1 ) {
+                    before.push(nums[i]);
+                } else {
+                    after.push(nums[i]);
+                }
+            }
+            return [...before,...after];
+        };
+
+        // 执行用时：204 ms, 在所有 JavaScript 提交中击败了18.77%的用户,内存消耗：47.3 MB, 在所有 JavaScript 提交中击败了16.17%的用户。
+        // 方法 2 的执行用时翻倍，或许是udshift方法的问题，也有可能是频繁操作前后数组扩展性能并不好。
+        var exchange01 = function(nums) {
+            const arr = [];
+            const len = nums.length;
+            for ( let i = 0; i < len; i++ ) {
+                const val = nums[i] % 2;
+                if ( val === 1 ) {
+                    arr.unshift(nums[i]);
+                } else {
+                    arr.push(nums[i]);
+                }
+            }
+            return arr;
+        };
+    </script>
+</body>
+</html>
