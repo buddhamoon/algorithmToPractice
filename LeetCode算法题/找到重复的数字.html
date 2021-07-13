@@ -30,7 +30,24 @@
                 if(nums.includes(nowNum)) return nowNum;
             }
         };
-        
+
+        /**
+        * 执行用时：1136 ms, 在所有 JavaScript 提交中击败了18.48%的用户
+        * 内存消耗：44.3 MB, 在所有 JavaScript 提交中击败了57.37%的用户
+        */
+        // 二号算法的执行用时有的大幅度下降
+        var findRepeatNumber_02 = function(nums) {
+            const arr= [];
+            const len = nums.length;
+            for ( let i = 0; i < len; i ++) {
+                if (!arr.includes(nums[i])) {
+                    arr.push(nums[i]);
+                } else {
+                    return nums[i];
+                }
+            }
+        };
+
     </script>
 </body>
 </html>
