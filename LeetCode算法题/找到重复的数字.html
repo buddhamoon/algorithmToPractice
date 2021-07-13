@@ -62,6 +62,21 @@
             }
         };
 
+        /**
+        * 执行用时：3436 ms, 在所有 JavaScript 提交中击败了10.62%的用户
+        * 内存消耗：42.8 MB, 在所有 JavaScript 提交中击败了79.55%的用户
+        * 方法四在方法三的基础上做了一些变体，但实际效果耗时却翻倍了，看样子比对操作有较大的耗时。
+        */
+        var findRepeatNumber_04 = function(nums) {
+            const len = nums.length;
+            for ( let i = 0; i < len; i ++) {
+                for ( let s = i + 1; s < len; s++) {
+                    if (nums[i] === nums[s]) return nums[i];
+                    if (nums[i] === nums[len - (s - i)]) return nums[i];
+                }
+            }
+        };
+
     </script>
 </body>
 </html>
