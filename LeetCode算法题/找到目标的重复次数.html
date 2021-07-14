@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>找到目标在数组中的重复次数</title>
+</head>
+<body>
+    
+
+    <!--
+        统计一个数字在排序数组中出现的次数。
+    -->
+
+    <script>
+        /**
+        *@title 算法一
+        *@say 最为常见的方式，理论上是速度最快的，因为只需要一遍 for 循环就能够结束任务，如果使用其他方法，都难以保证一次可以搞定
+        */
+        var search_01 = function(nums, target) {
+            const more = { len: nums.length, num: 0 };
+            for ( let i = 0; i < more['len']; i++ ) {
+                if (nums[i] === target) more['num'] ++;
+            }
+            return more['num'];
+        };
+    </script>
+</body>
+</html>
