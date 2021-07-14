@@ -25,6 +25,26 @@
             }
             return more['num'];
         };
+
+        /**
+        *@title 算法二
+        *@say 性能并没有明显的变化
+        */
+        var search_02 = function(nums, target) {
+            let right = nums.length - 1, num = 0, left = 0;
+            if (right === 0 && nums[0] === target) return 1;
+            while (left <= right) {
+                if (nums[left] === target) {
+                    num ++
+                }
+                if (left !== right && nums[right] === target) {
+                    num ++
+                }
+                left ++;
+                right --;
+            }
+            return num;
+        };
     </script>
 </body>
 </html>
