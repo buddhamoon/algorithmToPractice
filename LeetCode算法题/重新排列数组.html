@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重新排列数组</title>
+</head>
+<body>
+    <!--
+        给你一个数组 nums ，数组中有 2n 个元素，按 [x1,x2,...,xn,y1,y2,...,yn] 的格式排列。
+        请你将数组按 [x1,y1,x2,y2,...,xn,yn] 格式重新排列，返回重排后的数组。
+    -->
+
+    <script>
+
+
+        /**
+        * @param {number[]} nums
+        * @param {number} n
+        * @return {number[]}
+        */
+        var shuffle = function(nums, n) {
+            const before = nums.slice(0,n);
+            const after = nums.slice(n,n*2);
+            const arr = [];
+            before.forEach((item,index) => {
+                arr.push(item);
+                arr.push(after[index]);
+            })
+            return arr;
+            
+        };
+
+        // 试图用一次声明变量的方式来提升性能，但实质上没有提升。
+        var shuffle_02 = function(nums, n) {
+            const obj = {
+                arr : [],
+                before : nums.slice(0,n),
+                after : nums.slice(n,n*2)
+            };
+            obj['before'].forEach((item,index) => {
+                obj['arr'].push(item);
+                obj['arr'].push(obj.after[index]);
+            })
+            return obj['arr'];
+        };
+    </script>
+</body>
+</html>
