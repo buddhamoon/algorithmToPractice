@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单 - 数组拆分</title>
+</head>
+<body>
+    <!--
+        给定长度为 2n 的整数数组 nums ，你的任务是将这些数分成 n 对, 例如 (a1, b1), (a2, b2), ..., (an, bn) ，使得从 1 到 n 的 min(ai, bi) 总和最大。
+        返回该 最大总和 。
+    -->
+
+    <script>
+        /**
+         * @param {number[]} nums
+         * @return {number}
+         */
+        var arrayPairSum = function(nums) {
+            const n = nums.length / 2;
+            let num = 0;
+            nums.sort((a,b) => { return a - b });
+            for ( let i = 0; i < n; i ++ ) {
+                num += min(nums[i*2],nums[i*2+1])
+            }
+            return num;
+        };
+
+        const min = (a,b) => { return a < b ? a : b };
+    </script>
+</body>
+</html>
