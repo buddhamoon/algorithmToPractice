@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1331. 数组序号转换</title>
+</head>
+<body>
+    
+    <!--
+        给你一个整数数组 arr ，请你将数组中的每个元素替换为它们排序后的序号。
+
+        序号代表了一个元素有多大。序号编号的规则如下：
+
+        - 序号从 1 开始编号。
+        - 一个元素越大，那么序号越大。如果两个元素相等，那么它们的序号相同。
+        - 每个数字的序号都应该尽可能地小。
+
+    -->
+
+    <script>
+        /**
+        * @param {number[]} arr
+        * @return {number[]}
+        * 执行用时：4936 ms, 在所有 JavaScript 提交中击败了49.02%的用户
+        * 内存消耗：57.3 MB, 在所有 JavaScript 提交中击败了59.80%的用户
+        */
+        var arrayRankTransform = function(arr) {
+            const beforeArr = [...new Set(arr)];
+            const afterArr = [];
+            beforeArr.sort((a,b) => { return a - b });
+            arr.forEach( item => {
+                afterArr.push(beforeArr.indexOf(item) + 1);
+            });
+            return afterArr;
+        };
+    </script>
+
+</body>
+</html>
