@@ -35,6 +35,25 @@
             });
             return afterArr;
         };
+
+
+        /**
+        * @param {number[]} arr
+        * @return {number[]}
+        * 通过220 ms	64.4 MB	JavaScript
+        */
+        var arrayRankTransform_hash = function(arr) {
+            const beforeArr = [...new Set(arr)];
+            const afterArr = [], lastObj = {};
+            beforeArr.sort((a,b) => { return a - b });
+            beforeArr.forEach((item,index) => {
+                lastObj[item] = index + 1;
+            });
+            arr.forEach( item => {
+                afterArr.push(lastObj[item]);
+            });
+            return afterArr;
+        };
     </script>
 
 </body>
