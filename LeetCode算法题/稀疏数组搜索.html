@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>稀疏数组搜索</title>
+</head>
+<body>
+    
+    <!--
+        稀疏数组搜索。有个排好序的字符串数组，其中散布着一些空字符串，编写一种方法，找出给定字符串的位置。
+        输入: words = ["at", "", "", "", "ball", "", "", "car", "", "","dad", "", ""], s = "ta"
+        输出：-1
+        说明: 不存在返回-1。
+    -->
+
+    <script>
+        /**
+        * @param {string[]} words
+        * @param {string} s
+        * @return {number}
+        */
+        var findString = function(words, s) {
+            return words.indexOf(s)
+        };
+
+
+        /**
+        * 理论上JavaScript的默认 indexOf 方法就可以满足需求，但也需要考虑其源码的实现，或者考虑算法复杂度。
+        */
+        var findString_01 = function(words, s) {
+            let len = words.length;
+            let val = -1;
+            for ( let i = 0; i < words.length; i++) {
+                if(!words[i] || words[i] !== s) continue;
+                val = i;
+                break;
+            }
+            return val;
+        };
+    </script>
+</body>
+</html>
