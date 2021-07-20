@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>递归扁平化多维数组</title>
+</head>
+<body>
+    
+
+    <script>
+        const test = [ 1, 2, [5], [[35,43], 90], 100 ,22 ];
+
+        const arrDelayering = ( arr, lastArr ) => {
+            if (!arr || JSON.stringify(arr) === '[]') return;
+            arr.forEach( item => {
+                if (typeof item === 'object') {
+                   lastArr = arrDelayering(item,lastArr);
+                } else {
+                    lastArr.push(item);
+                }
+            })
+            return lastArr;
+        }
+
+        const lastArr = arrDelayering( test, []);
+    </script>
+</body>
+</html>
