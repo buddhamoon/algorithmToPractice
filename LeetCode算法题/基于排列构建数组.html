@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于排列构建数组</title>
+</head>
+<body>
+    
+    <!--
+        给你一个 从 0 开始的排列 nums（下标也从 0 开始）。请你构建一个 同样长度 的数组 ans ，其中，对于每个 i（0 <= i < nums.length），都满足 ans[i] = nums[nums[i]] 。返回构建好的数组 ans 。
+
+        从 0 开始的排列 nums 是一个由 0 到 nums.length - 1（0 和 nums.length - 1 也包含在内）的不同整数组成的数组。 
+
+        示例 1：
+        输入：nums = [0,2,1,5,3,4]
+        输出：[0,1,2,4,5,3]
+        解释：数组 ans 构建如下：
+        ans = [nums[nums[0]], nums[nums[1]], nums[nums[2]], nums[nums[3]], nums[nums[4]], nums[nums[5]]]
+            = [nums[0], nums[2], nums[1], nums[5], nums[3], nums[4]]
+            = [0,1,2,4,5,3]
+
+        示例 2：
+        输入：nums = [5,0,1,2,3,4]
+        输出：[4,5,0,1,2,3]
+        解释：数组 ans 构建如下：
+        ans = [nums[nums[0]], nums[nums[1]], nums[nums[2]], nums[nums[3]], nums[nums[4]], nums[nums[5]]]
+            = [nums[5], nums[0], nums[1], nums[2], nums[3], nums[4]]
+            = [4,5,0,1,2,3]
+
+    -->
+
+    <script>
+        /**
+        * @param {number[]} nums
+        * @return {number[]}
+        * 执行用时：100 ms, 在所有 JavaScript 提交中击败了65.31%的用户
+        * 内存消耗：41.9 MB, 在所有 JavaScript 提交中击败了42.85%的用户
+        * hash 寻址，向来是处理这类问题的利器
+        */
+        var buildArray = function(nums) {
+            const hashObj = {};
+            const lastArr = [];
+            nums.forEach( (item,index) => {
+                hashObj[index] = item;
+            });
+            nums.forEach( item => {
+                lastArr.push(hashObj[item]);
+            });
+            return lastArr;
+        };
+
+        var buildArray_for = function(nums) {
+            const hashObj = {};
+            const lastArr = [];
+            for (let i = 0; i < nums.length; i++) {
+                hashObj[i] = nums[i];
+            }
+            for (let i = 0; i < nums.length; i++) {
+                lastArr.push(hashObj[nums[i]]);
+            }
+            return lastArr;
+        };
+    </script>
+</body>
+</html>
