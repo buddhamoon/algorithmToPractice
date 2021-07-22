@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有效的山脉数组</title>
+</head>
+<body>
+    
+
+    <!--
+        给定一个整数数组 arr，如果它是有效的山脉数组就返回 true，否则返回 false。
+
+        让我们回顾一下，如果 A 满足下述条件，那么它是一个山脉数组：
+
+        arr.length >= 3
+        在 0 < i < arr.length - 1 条件下，存在 i 使得：
+        arr[0] < arr[1] < ... arr[i-1] < arr[i]
+        arr[i] > arr[i+1] > ... > arr[arr.length - 1]
+    -->
+
+    <script>
+        const test = [1,7,9,5,4,1,2];
+        const test01 = [3,6,5,6,7,6,5,3,0];
+        /**
+        * @param {number[]} arr
+        * @return {boolean}
+        * 执行用时：84 ms, 在所有 JavaScript 提交中击败了89.18%的用户
+        * 内存消耗：42.1 MB, 在所有 JavaScript 提交中击败了9.28%的用户
+        */
+        var validMountainArray = function(arr) {
+            const nowArr = [...arr];
+            nowArr.sort((a,b) => { return a - b });
+            const val = arr.indexOf(nowArr[nowArr.length - 1]);
+            if ( arr[val] === arr[0] || arr[val] === arr[arr.length - 1] ) return false;
+            for ( let i = val; i < arr.length - 1; i++ ) {
+                if (arr[i] <= arr[i + 1]) return false;
+            }
+
+            for ( let i = val; i > 0; i-- ) {
+                if (arr[i] <= arr[i - 1]) return false;
+            }
+            return true;
+        };
+
+        validMountainArray(test01);
+    </script>
+</body>
+</html>
