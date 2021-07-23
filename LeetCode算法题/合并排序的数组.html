@@ -42,6 +42,13 @@
             }
             A.sort((a,b) => { return a - b });
         };
+
+        var merge_01 = function(A, m, B, n) {
+            for ( let i = (n - 1); i >= 0; i-- ) {
+                A[m + i] = B[i];
+            }
+            A.sort((a,b) => { return a - b });
+        };
     </script>
 </body>
 </html>
