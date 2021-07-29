@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组形式的整数加法</title>
+</head>
+<body>
+    <!--
+        对于非负整数 X 而言，X 的数组形式是每位数字按从左到右的顺序形成的数组。例如，如果 X = 1231，那么其数组形式为 [1,2,3,1]。
+
+        给定非负整数 X 的数组形式 A，返回整数 X+K 的数组形式。
+
+        示例 1：
+        输入：A = [1,2,0,0], K = 34
+        输出：[1,2,3,4]
+        解释：1200 + 34 = 1234
+
+        示例 2：
+        输入：A = [2,7,4], K = 181
+        输出：[4,5,5]
+        解释：274 + 181 = 455
+
+        示例 3：
+        输入：A = [2,1,5], K = 806
+        输出：[1,0,2,1]
+        解释：215 + 806 = 1021
+
+        示例 4：
+        输入：A = [9,9,9,9,9,9,9,9,9,9], K = 1
+        输出：[1,0,0,0,0,0,0,0,0,0,0]
+        解释：9999999999 + 1 = 10000000000
+         
+
+        提示：
+        1 <= A.length <= 10000
+        0 <= A[i] <= 9
+        0 <= K <= 10000
+        如果 A.length > 1，那么 A[0] != 0
+
+    -->
+    <script>
+        /**
+        * @param {number[]} num
+        * @param {number} k
+        * @return {number[]}
+        * 执行用时：108 ms, 在所有 JavaScript 提交中击败了97.20%的用户
+        * 内存消耗：41.9 MB, 在所有 JavaScript 提交中击败了97.20%的用户
+        * 讲道理，这波性能有点好，主要是这个算法设计的思路很节省性能。
+        */
+        const test = [9,9,9,9,9], k = 1;
+        var addToArrayForm = function(num, k) {
+            const kStr = k.toString();
+            let kLen = kStr.length - 1;
+            const numLen = num.length - 1;
+            if (kLen > numLen) {
+                for (let i = 0; i < (kLen - numLen); i++){
+                    num.unshift(0);
+                }
+            }
+            console.info(num)
+            for ( let i = num.length - 1; i >= 0; i-- ) {
+                if (kLen > -1) {
+                    num[i] = num[i] + Number(kStr[kLen]);
+                    kLen--
+                }
+                // 某种极端情况下，这个break可能会有好的效果，但目前来看意义不大，因为多重判断会损耗性能
+                // if (kLen < 0 && num[i] < 10 && num[i-1] < 9) break;
+                if (num[i] > 9){
+                    num[i] = num[i] % 10;
+                    if((i - 1) >= 0) {
+                        num[ i - 1 ]++;
+                    } else {
+                        num.unshift(1);
+                    }
+                }      
+            }
+            return num;
+        };
+        console.info(addToArrayForm(test,k))
+    </script>
+</body>
+</html>
