@@ -7,6 +7,16 @@
     <title>拖动功能测试</title>
     <style>
         .warpper {
+            display: flex;
+            position: relative;
+            
+            height: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .docker {
             display: block;
             position: relative;
             width: 250px;
@@ -27,6 +37,7 @@
             margin: 6px;
             font-size: 14px;
         }
+        
     </style>
 </head>
 <body>
@@ -57,7 +68,8 @@
                 this.itemArr.forEach( item => {
                     strChild += `<div class="div-item" data-index=${item.index} >${item.title}</div>`;
                 })
-                app.innerHTML = strChild;
+                const str =`<div class="docker">${strChild}</div><div class="docker"></div>`;
+                app.innerHTML = str;
             }
 
             bindEvent () {
