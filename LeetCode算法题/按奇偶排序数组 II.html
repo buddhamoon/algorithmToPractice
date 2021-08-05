@@ -8,7 +8,7 @@
 </head>
 <body>
     <!--
-        
+
         给定一个非负整数数组 A， A 中一半整数是奇数，一半整数是偶数。
         对数组进行排序，以便当 A[i] 为奇数时，i 也是奇数；当 A[i] 为偶数时， i 也是偶数。
         你可以返回任何满足上述条件的数组作为答案。
@@ -29,6 +29,8 @@
         /**
         * @param {number[]} nums
         * @return {number[]}
+        * 执行用时：84 ms, 在所有 JavaScript 提交中击败了99.76%的用户
+        * 内存消耗：44.3 MB, 在所有 JavaScript 提交中击败了45.43%的用户
         */
         var sortArrayByParityII = function(nums) {
             const odd = [], even = [];
@@ -44,6 +46,26 @@
                 arr.push(even[i]);
                 arr.push(odd[i]);
             }
+            return arr;
+        };
+
+        /**
+        * @param {number[]} nums
+        * @return {number[]}
+        * 使用了另外一种方法，但该方法在提交性能测试上，并没有第一种方法更好。
+        */
+        var sortArrayByParityII = function(nums) {
+            const arr = [];
+            let even = 0, odd = 1;
+            nums.forEach( item => {
+                if ( item % 2 ) {
+                    arr[odd] = item;
+                    odd = odd + 2;
+                } else {
+                    arr[even] = item;
+                    even = even + 2;
+                }
+            })
             return arr;
         };
     </script>
