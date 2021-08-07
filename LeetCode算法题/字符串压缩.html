@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字符串压缩</title>
+</head>
+<body>
+    <!--
+
+        字符串压缩。利用字符重复出现的次数，编写一种方法，实现基本的字符串压缩功能。比如，字符串aabcccccaaa会变为a2b1c5a3。若“压缩”后的字符串没有变短，则返回原先的字符串。你可以假设字符串中只包含大小写英文字母（a至z）。
+
+        示例1:
+        输入："aabcccccaaa"
+        输出："a2b1c5a3"
+        示例2:
+
+        输入："abbccd"
+        输出："abbccd"
+        解释："abbccd"压缩后为"a1b2c2d1"，比原字符串长度更长。
+
+        提示：
+        字符串长度在[0, 50000]范围内。
+
+    -->
+
+    <script>
+        /**
+        * @param {string} S
+        * @return {string}
+        */
+        const testStr = "aabcccccaaa";
+        const testStr01 = "bbbac";
+        var compressString = function(S) {
+            const str = S.compress();
+            return S.length > str.length ? str : S;
+
+            // 虽然一行就可以解决，但是这个语句中会调用两次函数
+            // return S.length > S.compress().length ? S.compress() : S;
+        };
+
+        String.prototype.compress = function () {
+            let num = 1, str = this[0], afterStr='';
+            if (this.length === 1) return str + num;
+            for ( let i = 1; i <= this.length; i++ ){
+                if ( this[i] === str ) {
+                    num ++;
+                    if (i === this.length) afterStr += str + num;
+                } else {
+                    afterStr += str + num;
+                    str = this[i];
+                    num = 1;
+                }
+            }
+            return afterStr;
+        }
+        console.info(compressString(testStr));
+        console.info(compressString(testStr01));
+    </script>
+</body>
+</html>
