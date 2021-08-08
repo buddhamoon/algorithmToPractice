@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>异步函数调用</title>
+</head>
+<body>
+    
+
+    <script>
+
+        async function testAsyncFun () {
+            const passWord = 1920;
+            await console.info(1);
+            await console.info(8);
+            await setTimeout(() => {
+                console.info('who')
+                passWord = 2091;
+            },1000);
+            await console.info(2);
+            return passWord;
+        }
+
+        // console.info(testAsyncFun());
+        testAsyncFun().then( content => {
+            console.info('then内容', content);
+        })
+    </script>
+</body>
+</html>
