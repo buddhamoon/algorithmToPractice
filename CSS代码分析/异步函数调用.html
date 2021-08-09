@@ -10,6 +10,24 @@
     
 
     <script>
+        // Promise 函数创建后立刻执行
+        const now = new Promise( function(resolve, reject){
+            console.info('异步执行')
+        } )
+
+        const now01 = function (num) {
+            return new Promise( (resolve, reject) => {
+                const nowFun = setTimeout((num) => {
+                    if (!num) {
+                        resolve('成功');
+                    }
+                    num--
+                    nowFun(num);
+                }, 1000);
+
+            } )
+            
+        }
 
         async function testAsyncFun () {
             const passWord = 1920;

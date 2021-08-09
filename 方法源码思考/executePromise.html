@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>executePromise 函数</title>
+</head>
+<body>
+    
+    <script>
+
+        const timeout = (ms) => new Promise((resolve,reject) => {
+            setTimeout(() => {
+                resolve();
+            }, ms);
+        });
+
+        const ajax1 = () => timeout(2000).then(() => {
+            console.info(1);
+            return 1;
+        });
+
+        const ajax2 = () => timeout(1000).then(() => {
+            console.info(1);
+            return 1;
+        });
+
+        const ajax3 = () => timeout(2000).then(() => {
+            console.info(1);
+            return 1;
+        });
+
+        const executePromise = (ajaxArray) => {
+            return new Promise()
+        }
+
+        executePromise([ajax1,ajax2,ajax3]).then( data => {
+            console.info('executePromise执行');
+            console.info(data);
+        });
+    </script>
+</body>
+</html>
