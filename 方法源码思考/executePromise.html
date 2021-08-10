@@ -22,18 +22,26 @@
         });
 
         const ajax2 = () => timeout(1000).then(() => {
-            console.info(1);
-            return 1;
+            console.info(2);
+            return 2;
         });
 
         const ajax3 = () => timeout(2000).then(() => {
-            console.info(1);
-            return 1;
+            console.info(3);
+            return 3;
         });
 
         const executePromise = (ajaxArray) => {
-            return new Promise()
+            ajax1.then(() => { ajax2 })
         }
+
+        const testArr = [ajax1,ajax2,ajax3];
+        async function test(){
+            for ( let i = 0; i < testArr.length; i++ ){
+                await testArr[i]();
+            }
+        }
+        test();
 
         executePromise([ajax1,ajax2,ajax3]).then( data => {
             console.info('executePromise执行');
