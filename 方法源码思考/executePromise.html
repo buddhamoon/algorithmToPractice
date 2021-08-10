@@ -31,17 +31,30 @@
             return 3;
         });
 
+        // Promise 方案
         const executePromise = (ajaxArray) => {
-            ajax1.then(() => { ajax2 })
+            const arr = [];
+            const recursion = (num,len) => {
+                if(num === len) return new Promise((resolve,reject)=>{ resolve(arr) });
+                return new Promise((resolve,reject) => {
+                    const val = ajaxArray[num]();
+                    resolve(val);
+                }).then(data => {
+                    arr.push(data);
+                    num++;
+                    return recursion(num,len);
+                })
+            }
+            return recursion(0,ajaxArray.length);
         }
 
-        const testArr = [ajax1,ajax2,ajax3];
-        async function test(){
-            for ( let i = 0; i < testArr.length; i++ ){
-                await testArr[i]();
-            }
-        }
-        test();
+        // async 方案：完成预期
+        // async function executePromise(ajaxArray){
+        //     for ( let i = 0; i < ajaxArray.length; i++ ){
+        //         await ajaxArray[i]().then( data => { ajaxArray[i] = data });
+        //     }
+        //     return ajaxArray;
+        // }
 
         executePromise([ajax1,ajax2,ajax3]).then( data => {
             console.info('executePromise执行');
