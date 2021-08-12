@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亲密字符串</title>
+</head>
+<body>
+    <!--
+
+    -->
+
+    <script>
+        // 执行用时：64 ms, 在所有 JavaScript 提交中击败了98.78%的用户
+        // 内存消耗：39.7 MB, 在所有 JavaScript 提交中击败了60.97%的用户
+
+        /**
+         * @param {string} s
+         * @param {string} goal
+         * @return {boolean}
+         */
+        var buddyStrings = function(s, goal) {
+            if (s.length !== goal.length) return false;
+            if ( s === goal ) {
+                if ( new Set(s).size < s.length ){
+                    return true;
+                } else { return false };
+            }
+            const len = s.length;
+            const arr = [];
+            for ( let i = 0; i < len; i++ ){
+                if ( s[i] !== goal[i] ){
+                    arr.push([s[i],goal[i]])
+                }
+                if(arr.length > 2) return false;
+            }
+            if(arr.length === 1) return false;
+            return (arr[0][1] + arr[0][0]) === (arr[1][0] + arr[1][1]);
+        };
+    </script>
+</body>
+</html>
