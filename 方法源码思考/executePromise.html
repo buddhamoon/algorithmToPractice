@@ -31,8 +31,8 @@
             return 3;
         });
 
+        // Promise 方案
         const executePromise = (ajaxArray) => {
-        
             const promiseFun = (int = 0, time) => {
                 if (int === time) return;
                 return new Promise(function(resolve,reject){
@@ -44,18 +44,16 @@
                 })
             }
             promiseFun(0,ajaxArray.length);
-        }
+       };
 
-        /**
-        * 使用 async await 可以排序异步操作
-        const testArr = [ajax1,ajax2,ajax3];
-        async function test(){
-            for ( let i = 0; i < testArr.length; i++ ){
-                await testArr[i]();
-            }
-        }
-        test();
-        */
+
+        // async 方案：完成预期
+        // async function executePromise(ajaxArray){
+        //     for ( let i = 0; i < ajaxArray.length; i++ ){
+        //         await ajaxArray[i]().then( data => { ajaxArray[i] = data });
+        //     }
+        //     return ajaxArray;
+        // }
 
         executePromise([ajax1,ajax2,ajax3]).then( data => {
             console.info('executePromise执行');

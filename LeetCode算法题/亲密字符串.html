@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亲密字符串</title>
+</head>
+<body>
+    <!--
+
+        给定两个由小写字母构成的字符串 A 和 B ，只要我们可以通过交换 A 中的两个字母得到与 B 相等的结果，就返回 true ；否则返回 false 。
+        交换字母的定义是取两个下标 i 和 j （下标从 0 开始），只要 i!=j 就交换 A[i] 和 A[j] 处的字符。例如，在 "abcd" 中交换下标 0 和下标 2 的元素可以生成 "cbad" 。
+
+        示例 1：
+        输入： A = "ab", B = "ba"
+        输出： true
+        解释： 你可以交换 A[0] = 'a' 和 A[1] = 'b' 生成 "ba"，此时 A 和 B 相等。
+
+        示例 2：
+        输入： A = "ab", B = "ab"
+        输出： false
+        解释： 你只能交换 A[0] = 'a' 和 A[1] = 'b' 生成 "ba"，此时 A 和 B 不相等。
+
+        示例 3:
+        输入： A = "aa", B = "aa"
+        输出： true
+        解释： 你可以交换 A[0] = 'a' 和 A[1] = 'a' 生成 "aa"，此时 A 和 B 相等。
+
+        示例 4：
+        输入： A = "aaaaaaabc", B = "aaaaaaacb"
+        输出： true
+
+        示例 5：
+        输入： A = "", B = "aa"
+        输出： false
+
+    -->
+
+    <script>
+        // 执行用时：64 ms, 在所有 JavaScript 提交中击败了98.78%的用户
+        // 内存消耗：39.7 MB, 在所有 JavaScript 提交中击败了60.97%的用户
+
+        /**
+         * @param {string} s
+         * @param {string} goal
+         * @return {boolean}
+         */
+        var buddyStrings = function(s, goal) {
+            if (s.length !== goal.length) return false;
+            if ( s === goal ) {
+                if ( new Set(s).size < s.length ){
+                    return true;
+                } else { return false };
+            }
+            const len = s.length;
+            const arr = [];
+            for ( let i = 0; i < len; i++ ){
+                if ( s[i] !== goal[i] ){
+                    arr.push([s[i],goal[i]])
+                }
+                if(arr.length > 2) return false;
+            }
+            if(arr.length === 1) return false;
+            return (arr[0][1] + arr[0][0]) === (arr[1][0] + arr[1][1]);
+        };
+    </script>
+</body>
+</html>
