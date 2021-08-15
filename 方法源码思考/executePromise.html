@@ -32,9 +32,22 @@
         });
 
         const executePromise = (ajaxArray) => {
-            ajax1.then(() => { ajax2 })
+        
+            const promiseFun = (int = 0, time) => {
+                if (int === time) return;
+                return new Promise(function(resolve,reject){
+                    resolve();
+                }).then(() => {
+                    ajaxArray[int] = ajaxArray[int]();
+                    int++;
+                    promiseFun(int,time);   
+                })
+            }
+            promiseFun(0,ajaxArray.length);
         }
 
+        /**
+        * 使用 async await 可以排序异步操作
         const testArr = [ajax1,ajax2,ajax3];
         async function test(){
             for ( let i = 0; i < testArr.length; i++ ){
@@ -42,6 +55,7 @@
             }
         }
         test();
+        */
 
         executePromise([ajax1,ajax2,ajax3]).then( data => {
             console.info('executePromise执行');
