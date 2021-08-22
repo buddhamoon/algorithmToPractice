@@ -69,6 +69,22 @@
         console.log(trimMean(testArr));
         console.log(trimMean(testArr01));
         console.log(trimMean(testArr02));
+
+        /**
+        * @param {number[]} arr
+        * @return {number}
+        * 这个题从某种角度来说，有点表意上的问题，当然，也许是上面的说法，是我想太多
+        */
+        var trimMean = function(arr) {
+            const nowNum = arr.length * 0.05;
+            arr.sort((a,b) => { return a - b });
+            for ( let i = 0; i < nowNum; i++ ){
+                arr.splice( arr.length - 1, 1 );
+                arr.splice( 0, 1 );
+            }
+            const sum = arr.reduce((a,b) => {return a + b});
+            return sum / arr.length;
+        };
     </script>
 </body>
 </html>
