@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最小操作次数使数组元素相等</title>
+</head>
+<body>
+    <!--
+
+        给定一个长度为 n 的 非空 整数数组，每次操作将会使 n - 1 个元素增加 1。找出让数组所有元素相等的最小操作次数。
+
+        示例：
+
+        输入：
+        [1,2,3]
+        输出：
+        3
+        解释：
+        只需要3次操作（注意每次操作会增加两个元素的值）：
+        [1,2,3]  =>  [2,3,3]  =>  [3,4,3]  =>  [4,4,4]
+
+    -->
+
+    <script>
+        /**
+        * @param {number[]} nums
+        * @return {number}
+        * 可以解决，但是在一些测试用例时超时
+        */
+
+        var minMoves = function(nums) {
+            const len = nums.length - 1;
+            let num = 0;
+            let arr = new Set(nums);
+            while (arr.size !== 1){
+                nums.sort((a,b) => { return a - b });
+                for ( let i = 0; i < len; i++ ) {
+                    nums[i]++;
+                }
+                num++;
+                arr = new Set(nums);
+            }
+            return num;
+        };
+        
+        var minMoves_01 = function(nums) {
+            const len = nums.length - 1;
+            let num = 0;
+            const max = Math.max(...nums);
+            if (len === 1){
+                return Math.abs(nums[0] - nums[1]);
+            }
+            let arr = new Set(nums);
+            while (arr.size !== 1){
+                nums.sort((a,b) => { return a - b });
+                for ( let i = 0; i < len; i++ ) {
+                    nums[i]++;
+                }
+                num++;
+                arr = new Set(nums);
+            }
+            return num;
+        };
+        console.info(minMoves_01([1,1000000000]));
+    </script>
+</body>
+</html>
