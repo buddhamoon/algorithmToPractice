@@ -55,6 +55,48 @@
 
         // 引用了外部变量
 
+        function ListNode(val, next) {
+            this.val = (val===undefined ? 0 : val)
+            this.next = (next===undefined ? null : next)
+          }
+  
+          const test = {
+              one: { val:1, next: null },
+              two: { val:1, next: { val:1, next: { val:2, next: null } } }
+          }
+  
+          var deleteDuplicates = function(head) {
+              if (!head) return head;
+              const nowArr = recursionNode( head, [] );
+              const afterArr = [...new Set(nowArr)];
+              return createNode( afterArr, 0, new ListNode(afterArr[0]) );
+          };
+  
+          /**
+          * @title 遍历链表为数组
+          * @param { object } node 链表对象递归承袭链表对象
+          * @param { array } arr 用于返回链表遍历后的数组结果
+          */
+          var recursionNode = function ( node, arr ) {
+              if ( !node ) return arr;
+              arr.push(node['val']);
+              return recursionNode( node['next'], arr );
+          };
+          
+          /**
+          * @title 使用数组创建一个链表
+          * @param { array } arr 用于创建链表的数组
+          * @param { number } 递增数，用语判断跳出
+          * @param { object } 链表对象递归承袭链表对象
+          */
+          var createNode = function ( arr, num, node ) {
+              if ( num >= arr.length - 1 || !node ) return node;
+              num++;
+              node['next'] = new ListNode(arr[num]);
+              createNode( arr, num, node['next']);
+              return node
+          }
+
     </script>
 </body>
 </html>
