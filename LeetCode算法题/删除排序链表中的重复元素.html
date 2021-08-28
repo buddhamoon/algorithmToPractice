@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>删除排序链表中的重复元素</title>
+</head>
+<body>
+    <!--
+        存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除所有重复的元素，使每个元素 只出现一次 。
+        返回同样按升序排列的结果链表。
+
+        输入：head = [1,1,2]
+        输出：[1,2]
+    -->
+
+    <script>
+        /**
+        * Definition for singly-linked list.
+        * function ListNode(val, next) {
+        *     this.val = (val===undefined ? 0 : val)
+        *     this.next = (next===undefined ? null : next)
+        * }
+        */
+        /**
+        * @param {ListNode} head
+        * @return {ListNode}
+        * 执行用时：84 ms, 在所有 JavaScript 提交中击败了68.40%的用户
+        * 内存消耗：40.4 MB, 在所有 JavaScript 提交中击败了5.11%的用户
+        */
+
+        function ListNode(val, next) {
+          this.val = (val===undefined ? 0 : val)
+          this.next = (next===undefined ? null : next)
+        }
+
+        const test = {
+            one: { val:1, next: null },
+            two: { val:1, next: { val:1, next: { val:2, next: null } } }
+        }
+
+        var deleteDuplicates = function(head) {
+            if (!head) return head;
+            const nowArr = recursionNode( head, [] );
+            const afterArr = [...new Set(nowArr)];
+            return createNode( afterArr, 0, new ListNode(afterArr[0]) );
+        };
+
+        var recursionNode = function ( node, arr ) {
+            if ( !node ) return arr;
+            arr.push(node['val']);
+            return recursionNode( node['next'], arr );
+        };
+
+        var createNode = function ( arr, num, node ) {
+            if ( num >= arr.length - 1 || !node ) return node;
+            num++;
+            node['next'] = new ListNode(arr[num]);
+            createNode( arr, num, node['next']);
+            return node
+        }
+
+        console.info(deleteDuplicates(test['one']));
+        console.info(deleteDuplicates(test['two']));
+    </script>
+</body>
+</html>
