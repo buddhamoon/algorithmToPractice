@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>罗马数字转整数</title>
+</head>
+
+<body>
+    <!--
+
+        罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+
+        字符          数值
+        I             1
+        V             5
+        X             10
+        L             50
+        C             100
+        D             500
+        M             1000
+        例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+
+        通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+
+        I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+        X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 
+        C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+        给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
+
+    -->
+
+    <script>
+        /**
+         * @param {string} s
+         * @return {number}
+         * 执行用时：124 ms, 在所有 JavaScript 提交中击败了96.52% 的用户
+         * 内存消耗：44.6 MB, 在所有 JavaScript 提交中击败了22.98%的用户
+         */
+        const hash = {
+            I: 1,
+            V: 5,
+            X: 10,
+            L: 50,
+            C: 100,
+            D: 500,
+            M: 1000
+        };
+        const test_01 = "IV";
+        const test_02 = "III";
+        const test_03 = "MCMXCIV";
+        var romanToInt = function (s) {
+            let num = 0;
+            for (let i = 0; i < s.length; i++) {
+                const value = specialRules(s[i], s[i + 1]);
+                console.info(value)
+                num += value[0];
+                i += value[1];
+            }
+            return num;
+        };
+
+        var specialRules = function (before, after) {
+            if (before === 'I' && after === 'V') {
+                return [4, 1];
+            }
+            if (before === 'I' && after === 'X') {
+                return [9, 1];
+            }
+            if (before === 'X' && after === 'L') {
+                return [40, 1];
+            }
+            if (before === 'X' && after === 'C') {
+                return [90, 1];
+            }
+            if (before === 'C' && after === 'D') {
+                return [400, 1];
+            }
+            if (before === 'C' && after === 'M') {
+                return [900, 1];
+            }
+            return [hash[before], 0];
+        }
+        console.info(romanToInt(test_01));
+        console.info(romanToInt(test_02));
+        console.info(romanToInt(test_03));
+
+        /**
+        将外部变量拉入函数内部执行，并进行传参引用，性能并没有非常明显的变化。
+        理论上应该是执行数据更快，但是内存消耗可能会略微增大。
+        */
+    </script>
+</body>
+
+</html>
