@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最长公共前缀</title>
+</head>
+<body>
+    <!--
+
+    -->
+
+    <script>
+        /**
+        * @param {string[]} strs
+        * @return {string}
+        * 执行用时：68 ms, 在所有 JavaScript 提交中击败了94.88%的用户
+        * 内存消耗：39.4 MB, 在所有 JavaScript 提交中击败了44.51%的用户
+        */
+        const test_01 = ["flower","flower","flower","flower"];
+        const test_02 = ["flower","flow","flight"];
+        const test_03 = ["dog","racecar","car"];
+        var longestCommonPrefix = function(strs) {
+            if (strs.some(item => { return !item }) ) return '';
+            if (strs.length === 1 ) return strs[0];
+            let check = true, str = '', x = 0;
+            while(!!check){
+                let value = strs[0][x];
+                check = strs.every( item => { return item[x] === value } );
+                if(check) {
+                    if (!strs[0][x]) break;
+                    str += strs[0][x];
+                    x++;
+                    console.info('内部',check,str,x);
+                } 
+                
+            }
+            return str;
+        };
+        console.info(longestCommonPrefix(test_01));
+        console.info(longestCommonPrefix(test_02));
+        console.info(longestCommonPrefix(test_03));
+
+        /**
+        if (strs.some(item => { return !item }) ) return '';
+        if (strs.length === 1 ) return strs[0];
+        这两个条件是可以祛除的，但是在大量的测试用例测试下，这两个条件有利于解决极个别案例
+        */
+    </script>
+</body>
+</html>
