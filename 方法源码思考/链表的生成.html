@@ -89,6 +89,7 @@
           * @param { number } 递增数，用语判断跳出
           * @param { object } 链表对象递归承袭链表对象
           */
+          // 调用方式 createNode( arr, 0, new ListNode(arr[0]) );
           var createNode = function ( arr, num, node ) {
               if ( num >= arr.length - 1 || !node ) return node;
               num++;
