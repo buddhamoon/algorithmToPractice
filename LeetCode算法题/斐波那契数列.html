@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>斐波那契数列</title>
+</head>
+<body>
+    
+    <!--
+
+        写一个函数，输入 n ，求斐波那契（Fibonacci）数列的第 n 项（即 F(N)）。斐波那契数列的定义如下：
+
+        F(0) = 0,   F(1) = 1
+        F(N) = F(N - 1) + F(N - 2), 其中 N > 1.
+        斐波那契数列由 0 和 1 开始，之后的斐波那契数就是由之前的两数相加而得出。
+
+        答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+        示例 1：
+        输入：n = 2
+        输出：1
+
+        示例 2：
+        输入：n = 5
+        输出：5
+         
+
+        提示：
+        0 <= n <= 100
+
+    -->
+
+    <script>
+        /**
+        * @param {number} n
+        * @return {number}
+        * 执行用时：60 ms, 在所有 JavaScript 提交中击败了95.85% 的用户.
+        * 内存消耗：37.6 MB, 在所有 JavaScript 提交中击败了84.20%的用户.
+        */
+        var fib = function(n) {
+            if ( n === 0 ) return 0;
+            if ( n === 1 ) return 1;
+            let before = 0, after = 1; 
+            for ( let i = 1; i < n; i++ ){
+                const value = before + after;
+                before = after;
+                // after = value;
+                // 在这道题中，计算被要求取模运算，或许是为了避免获取到过大的数字值。
+                after = value % 1000000007;
+            }
+            return after;
+        };
+        console.info(fib(10),fib(13),fib(17));
+    </script>
+</body>
+</html>
