@@ -37,6 +37,36 @@
                 nums[i] = value;
             }
         };
+
+        /**
+         * @param {number[]} nums
+         * @return {number}
+         * 执行用时：80 ms, 在所有 JavaScript 提交中击败了65.56%的用户
+         * 内存消耗：43.3 MB, 在所有 JavaScript 提交中击败了9.17%的用户
+         */
+        var singleNumber_hashMap = function(nums) {
+            const hashMap = {}
+            for ( let i = 0; i < nums.length; i++ ){
+                if ( nums[i] in hashMap ){
+                    hashMap[nums[i]]++;
+                } else {
+                    hashMap[nums[i]] = 1;
+                }
+            }
+            for ( let i in hashMap ){
+                if (hashMap[i] === 1) return i;
+            }
+        };
+
+        // 实际上，上面的两个算法都不能算是这一题的精髓解法
+
+        /**
+         * @param {number[]} nums
+         * @return {number}
+         */
+        var singleNumber = function(nums) {
+            return nums.reduce(( a, b ) => a ^ b );
+        };
     </script>
 </body>
 </html>
