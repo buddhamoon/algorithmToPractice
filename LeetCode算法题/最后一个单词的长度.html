@@ -45,6 +45,24 @@
                 if ( strArr[i] ) return strArr[i].length;
             }
         };
+
+        /**
+        * @param {string} s
+        * @return {number}
+        */
+        var lengthOfLastWord = function(s) {
+            let num = 0;
+            for ( let i = s.length - 1; i >= 0; i-- ){
+                if ( num === 0 && s[i] === ' ' ) continue;
+                if ( s[i] !== ' ' ) {
+                    num++; 
+                    continue;
+                }
+                if ( s[i] === ' ' ) return num;
+            }
+            return num;
+        };
+        
     </script>
 </body>
 </html>
