@@ -56,6 +56,17 @@
         console.info(reverseWords(test_01));
         /**
         这里值得注意一个区别，使用“空字符串” or “字符串空格” ，split 切分字符串数组，在后面的判断处理上，会有所差异。
+        如果将其中
+        if ( item !== ' ' ) {
+            str += item + ' ';
+        }
+        变为：
+        if ( item ) {
+            str += item + ' ';
+        }
+        性能则得到了提升。
+        执行用时：68 ms, 在所有 JavaScript 提交中击败了84.46%的用户
+        内存消耗：39 MB, 在所有 JavaScript 提交中击败了90.16%的用户
         */
     </script>
 </body>
