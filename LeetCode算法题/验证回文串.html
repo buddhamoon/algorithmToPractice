@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>验证回文串</title>
+</head>
+<body>
+
+    <!--
+
+        给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
+        说明：本题中，我们将空字符串定义为有效的回文串。
+
+        示例 1:
+        输入: "A man, a plan, a canal: Panama"
+        输出: true
+        解释："amanaplanacanalpanama" 是回文串
+
+        示例 2:
+        输入: "race a car"
+        输出: false
+        解释："raceacar" 不是回文串
+         
+        提示：
+        1 <= s.length <= 2 * 105
+        字符串 s 由 ASCII 字符组成
+
+    -->
+
+    <script>
+
+        String.prototype.reverse = function ( ) {
+            let now = '';
+            for( let i = (this.length - 1); i >= 0; i-- ){
+                now += this[i];
+            }
+            return now;
+        }
+
+        /**
+        * @param {string} s
+        * @return {boolean}
+        * 执行用时：92 ms, 在所有 JavaScript 提交中击败了46.93%的用户
+        * 内存消耗：45.9 MB, 在所有 JavaScript 提交中击败了7.49%的用户
+        */
+        
+        const test_01 = "A man, a plan, a canal: Panama";
+        const test_02 = "";
+        const test_03 = "aa";
+        const test_04 = " ";
+        const test_05 = "a b";
+        var isPalindrome = function(s) {
+            let str = '';
+            for ( let i = 0; i < s.length; i++ ){
+                const c = s[i].toLowerCase();
+                if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z')) {
+                    str += c;
+                }
+            }
+            console.info({ str })
+            if (str.length === 1 || !str) return true;
+            let before, after;
+            if ( str.length % 2 ) {
+                const len = Math.floor( str.length / 2 ) + 1;
+                before = str.slice(0,len-1);
+                after = str.slice(len).reverse();
+            } else {
+                const len = Math.floor( str.length / 2 );
+                before = str.slice(0,len);
+                after = str.slice(len).reverse();
+            }
+            console.info({before,after});
+            return before === after;
+        };
+        console.info(isPalindrome(test_01));
+        console.info(isPalindrome(test_02));
+        console.info(isPalindrome(test_03));
+        console.info(isPalindrome(test_04));
+        console.info(isPalindrome(test_05));
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对象冻结</title>
+</head>
+<body>
+    
+    <!--
+        为了提高对象的安全性与稳定性，可以选择将指定对象使用 Object.freeze( object ) 进行冻结。
+        这种冻结属于浅层冻结，只会冻结该对象的顶层属性。
+    -->
+
+    <script>
+        const testObj = {
+            name : '',
+            title : '测试对象',
+            children : [
+            ]
+        }
+        Object.freeze(testObj);
+    </script>
+</body>
+</html>

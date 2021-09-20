@@ -46,6 +46,14 @@
             }
         };
 
+        // 后者性能会略逊于前者
+        var lengthOfLastWord = function(s) {
+            const strArr = s.split('');
+            for ( let i = strArr.length - 1; i >= 0; i-- ){
+                if ( strArr[i] !== ' ' ) return strArr[i].length;
+            }
+        };
+
         /**
         * @param {string} s
         * @return {number}
@@ -62,6 +70,8 @@
             }
             return num;
         };
+
+        
         
     </script>
 </body>
