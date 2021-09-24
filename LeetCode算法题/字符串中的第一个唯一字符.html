@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字符串中的第一个唯一字符</title>
+</head>
+<body>
+    <!--
+
+        给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
+
+        示例：
+        s = "leetcode"
+        返回 0
+
+        s = "loveleetcode"
+        返回 2
+         
+        提示：你可以假定该字符串只包含小写字母。
+
+    -->
+
+    <script>
+        /**
+        * @param {string} s
+        * @return {number}
+        */
+        const test_01 = 'leetcode'
+        var firstUniqChar = function(s) {
+            const arr = s.split('');
+            for ( let i = 0; i < arr.length; i++ ){
+                const value = arr[i];
+                arr[i] = '@';
+                if ( !arr.includes(value) ) return i;
+                arr[i] = value;
+            }
+            return -1;
+        };
+        console.info(firstUniqChar(test_01));
+
+        var firstUniqChar_01 = function(s) {
+            const arr = s.split('');
+            for ( let i = 0; i < arr.length; i++ ){
+                const value = arr[i];
+                arr[i] = '@';
+                if ( !arr.includes(value) ) return i;
+                arr[i] = value;
+            }
+            return -1;
+        };
+    </script>
+</body>
+</html>
