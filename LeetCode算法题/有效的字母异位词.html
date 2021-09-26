@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有效的字母异位词</title>
+</head>
+<body>
+
+    <!--
+
+        给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+        注意：若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。
+
+        示例 1:
+        输入: s = "anagram", t = "nagaram"
+        输出: true
+
+        示例 2:
+        输入: s = "rat", t = "car"
+        输出: false
+         
+        提示:
+        1 <= s.length, t.length <= 5 * 104
+        s 和 t 仅包含小写字母
+ 
+    -->
+
+    <script>
+        /**
+        * @param {string} s
+        * @param {string} t
+        * @return {boolean}
+        * 执行用时：88 ms, 在所有 JavaScript 提交中击败了71.89%的用户。
+        * 内存消耗：38.5 MB, 在所有 JavaScript 提交中击败了96.90%的用户。
+        */
+        var isAnagram = function(s, t) {
+            if ( s.length !== t.length ) return false;
+            const before = s.strToObj(), after = t.strToObj();
+            for ( let i in before ) {
+                if ( before[i] !== after[i] ) return false;
+            }
+            return true;
+        };
+
+        String.prototype.strToObj = function () {
+            const obj = {};
+            for ( let i = 0; i < this.length; i++ ){
+                if ( this[i] in obj ){
+                    obj[this[i]] ++;
+                } else {
+                    obj[this[i]] = 1;
+                }
+            }
+            return obj;
+        }
+    </script>
+    
+</body>
+</html>
