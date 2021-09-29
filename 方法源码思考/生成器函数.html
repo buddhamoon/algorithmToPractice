@@ -29,6 +29,21 @@
         test.next(); // 2
         test.next(); // 3
         test.next(); // 5
+
+        function * Courd (...arg) {
+            yield "第一步";
+            yield "第二步";
+            yield "第三步";
+            return "最后一部";
+        }
+
+        function factory (...arg) {
+            return function * (...arg) {
+                for ( let i = 0; i < arg.length; i++ ){
+                    yield arg[i]
+                }
+            } (...arg);
+        }
     </script>
 </body>
 </html>
