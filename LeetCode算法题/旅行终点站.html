@@ -46,14 +46,26 @@
         /**
         * @param {string[][]} paths
         * @return {string}
+        * 执行用时：76 ms, 在所有 JavaScript 提交中击败了61.11%的用户
+        * 内存消耗：39.6 MB, 在所有 JavaScript 提交中击败了94.44%的用户
         */
         const test_01 = [["London","New York"],["New York","Lima"],["Lima","Sao Paulo"]],
         test_02 = [["B","C"],["D","B"],["C","A"]],
         test_03 = [["A","Z"]],
         test_04 = [["pYyNGfBYbm","wxAscRuzOl"],["kzwEQHfwce","pYyNGfBYbm"]];
         var destCity = function(paths) {
-            return paths[paths.length - 1][paths[paths.length - 1].length - 1];
+            for ( let i = 0; i < paths.length; i++) {
+                if ( paths.every( ele => { return ele.indexOf(paths[i][1]) !== 0 }) ) return paths[i][1];
+            }
         };
+
+        // 运行测试用例
+        console.info( '期望值：Sao Paulo', destCity(test_01) );
+        console.info( '期望值：A', destCity(test_02) );
+        console.info( '期望值：Z', destCity(test_03) );
+        console.info( '期望值：wxAscRuzOl', destCity(test_04) );
+
+        
     </script>
 </body>
 </html>
