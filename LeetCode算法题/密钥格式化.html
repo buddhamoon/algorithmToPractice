@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密钥格式化</title>
+</head>
+<body>
+    
+    <!--
+
+        有一个密钥字符串 S ，只包含字母，数字以及 '-'（破折号）。其中， N 个 '-' 将字符串分成了 N+1 组。
+        给你一个数字 K，请你重新格式化字符串，使每个分组恰好包含 K 个字符。特别地，第一个分组包含的字符个数必须小于等于 K，但至少要包含 1 个字符。两个分组之间需要用 '-'（破折号）隔开，并且将所有的小写字母转换为大写字母。
+        给定非空字符串 S 和数字 K，按照上面描述的规则进行格式化。
+
+        示例 1：
+        输入：S = "5F3Z-2e-9-w", K = 4
+        输出："5F3Z-2E9W"
+        解释：字符串 S 被分成了两个部分，每部分 4 个字符；
+             注意，两个额外的破折号需要删掉。
+
+        示例 2：
+        输入：S = "2-5g-3-J", K = 2
+        输出："2-5G-3J"
+        解释：字符串 S 被分成了 3 个部分，按照前面的规则描述，第一部分的字符可以少于给定的数量，其余部分皆为 2 个字符。
+         
+        提示:
+        S 的长度可能很长，请按需分配大小。K 为正整数。
+        S 只包含字母数字（a-z，A-Z，0-9）以及破折号'-'
+        S 非空
+
+    -->
+
+    <script>
+        /**
+         * @param {string} s
+         * @param {number} k
+         * @return {string}
+         */
+        var licenseKeyFormatting_error = function(s, k) {
+            const strArr = s.split('-');
+            const strSplit = strArr.filter( item => {
+                return !!item;
+            })
+            console.info(strSplit)
+            for ( let i = strSplit.length; i >= 0; i-- ){
+                if ( !!strSplit[i] && !!strSplit[i-1] && strSplit[i-1].length <= k ){
+                    if (( strSplit[i] + strSplit[i-1] ).length <= k ) {
+                        console.info('逻辑 1 执行', strSplit[i - 1] ,strSplit[i])
+                        strSplit[i] = strSplit[i - 1] + strSplit[i];
+                        strSplit.splice( i-1, 1);
+                        i++;
+                    };
+                }
+                if ( !!strSplit[i] && strSplit[i].length > k ){
+                    console.info('逻辑2执行',strSplit);
+                    const nowVal = strSplit[i].slice(0,strSplit[i].length - k);
+                    console.info(nowVal)
+                    strSplit[i] = strSplit[i].slice(strSplit[i].length - k);
+                    strSplit.splice( i, 0, nowVal);
+                    i++;
+                    console.info('逻辑2执行',strSplit);
+                }
+                if ( !!strSplit[i-1] && strSplit[i-1].length > k ) {
+                    if ( !!strSplit[i] && strSplit[i].length < k ){
+                        const len = k - strSplit[i].length;
+                        console.info(strSplit[i-1].slice( strSplit[i-1].length - len),strSplit[i])
+                        strSplit[i] = strSplit[i-1].slice( strSplit[i-1].length - len) + strSplit[i];
+                        strSplit[i-1] = strSplit[i-1].slice(0,strSplit[i-1].length - len);
+                        i++;
+                    }
+                }
+            }
+            return strSplit.join('-').toUpperCase();
+        };
+
+        /**
+         * @param {string} s
+         * @param {number} k
+         * @return {string}
+         * 执行用时：76 ms, 在所有 JavaScript 提交中击败了 86.67% 的用户
+         * 内存消耗：41.7 MB, 在所有 JavaScript 提交中击败了87.78%的用户
+         */
+        var licenseKeyFormatting = function(s, k) {
+            const strArr = s.split('-');
+            const afterStr = strArr.join('');
+            const strLen = afterStr.length;
+            const len = Math.ceil(strLen / k);
+            const arr = [];
+            for ( let i = 0; i < len; i++ ){
+                if ( i === len - 1 ) {
+                    arr.push( afterStr.slice( 0, strLen - (i*k)) )
+                    break;
+                }
+                arr.push( afterStr.slice( strLen - (i*k) - k, strLen - (i*k)) )
+            }
+            console.info(arr)
+            arr.reverse();
+            return arr.join('-').toUpperCase();
+        };
+
+        // 测试用例执行
+        console.info('测试 1 期望结果：5F3Z-2E9W', '输出：' + licenseKeyFormatting('5F3Z-2e-9-w',4));
+        console.info('测试 2 期望结果：2-5G-3J', '输出：' + licenseKeyFormatting('2-5g-3-J',2));
+        console.info('测试 3 期望结果：24A0-R74K', '输出：' + licenseKeyFormatting('2-4A0r7-4k',4));
+        console.info('测试 4 期望结果：24-A0R-74K', '输出：' + licenseKeyFormatting('2-4A0r7-4k',3));
+        console.info('测试 5 期望结果：AA-AA', '输出：' + licenseKeyFormatting('aaaa',2));
+        console.info('测试 6 期望结果：AA-AA', '输出：' + licenseKeyFormatting('--a-a-a-a--',2));
+        console.info('测试 7 期望结果："VDXVMWMKUXOS-BSONOGDKJFUSGSTQBENNQF-LLUWUIIUYTINPNIUGOXXKV-LTZKUADWLBUUSXGWXKXRIB-QXFDWMYEVUCZXIRPFAPDTQ"', '输出：' + licenseKeyFormatting('VDxVMWm-K-U-xosBSoNOGdKjFu-sgStQBE-NNqFLLUWuIIuyTInpNIuGoxxKvlTzkuadwlb-UUs-xgwxKxRIb-qX-FdWMYeVU-CzxIrpFapDTQ',22));
+
+    </script>
+</body>
+</html>
