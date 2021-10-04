@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>构造函数与原型继承</title>
+</head>
+<body>
+    
+    <script>
+
+        function Dog ( props ) {
+            this.name = props.name;
+            this.age = props.age;
+            this.level = props.level;
+        }
+
+        Dog.prototype.growUp = function () {
+            return this.age ++;
+        }
+        Dog.prototype.upGrade = function ( num ) {
+            if ( !num ) return this.level ++;
+            return this.level += num;
+        }
+
+        Dog.prototype.callSay = function ( say = '' ) {
+            return console.info( this.name + '说：' + say );
+        }
+
+        class Cat {
+            constructor ( props ) {
+                this.name = props.name;
+                this.age = props.age;
+                this.level = props.level;
+            }
+
+            getAge () {
+                return this.age;
+            }
+
+            getLevel () {
+                return this.level;
+            }
+
+            callSay ( say = '' ) {
+                return console.info( this.name + '说：' + say );
+            }
+
+            growUp () {
+                return this.age ++;
+            }
+
+            upGrade ( num ) {
+                if ( !num ) return this.level ++;
+                return this.level += num;
+            }
+        }
+
+        const test_01 = new Dog({
+            name : 'Hank',
+            age : 3,
+            level : 1
+        });
+
+        const test_02 = new Cat({
+            name : 'jack',
+            age : 2,
+            level : 1
+        });
+
+
+    </script>
+</body>
+</html>
