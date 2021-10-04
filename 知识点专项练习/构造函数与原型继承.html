@@ -57,6 +57,16 @@
             }
         }
 
+        class Tiger extends Cat {
+            constructor ( props ) {
+                super( props );
+            }
+
+            kingSay () {
+                console.info('万兽之王');
+            }
+        }
+
         const test_01 = new Dog({
             name : 'Hank',
             age : 3,
@@ -64,6 +74,12 @@
         });
 
         const test_02 = new Cat({
+            name : 'jack',
+            age : 2,
+            level : 1
+        });
+
+        const test_03 = new Tiger({
             name : 'jack',
             age : 2,
             level : 1
