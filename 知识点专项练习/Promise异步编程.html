@@ -34,12 +34,26 @@
         createPromise(1).then( content => { console.info('执行结果：' + content )}).catch( error => { console.error( error ) });
         createPromise().then( content => { console.info('执行结果：' + content )}).catch( error => { console.error( error ) });
 
-        // 测试用例
+        /**
+        * @title Ajax测试用例生成函数。
+        */
         function test_Fun ( content, speed ) {
             return new Promise( function (resolve, reject) {
                 setTimeout(() => { resolve(content) }, speed);
             }); 
         }
+
+        const ajax1 = () => test_Fun('1 号请求', 1000).then( content => { console.info('请求成功：' + content ) });
+        const ajax2 = () => test_Fun('2 号请求', 2000).then( content => { console.info('请求成功：' + content ) });
+        const ajax3 = () => test_Fun('3 号请求', 1000).then( content => { console.info('请求成功：' + content ) });
+
+        async function runingAsync () {
+            await ajax1();
+            await ajax2();
+            await ajax3();
+            return 'async 执行成功';
+        };
+        runingAsync();
     </script>
 </body>
 </html>
