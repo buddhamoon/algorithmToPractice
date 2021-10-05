@@ -47,13 +47,52 @@
         const ajax2 = () => test_Fun('2 号请求', 2000).then( content => { console.info('请求成功：' + content ) });
         const ajax3 = () => test_Fun('3 号请求', 1000).then( content => { console.info('请求成功：' + content ) });
 
+        /**
+        * 利用 async 函数进行流水化调用。
+        */
         async function runingAsync () {
             await ajax1();
             await ajax2();
             await ajax3();
             return 'async 执行成功';
         };
-        runingAsync();
+        // runingAsync();
+
+        /**
+        * 通过调用 Promise 原型上的 resolve 方法，就可以实现 then 的链式调用。
+        */
+        const runingPromise = Promise.resolve();
+        runingPromise.then( () => {
+            return ajax1();
+        }).then( () => {
+            return ajax2();
+        }).then( () => {
+            return ajax3();
+        });
+
+        /**
+        * 理解 Promise 内部的运行监听。
+        * 当 Promise 创建后会立刻执行，在执行过程中会是 pending 状态不断监听何时触发 resolve 或 reject 事件。
+        * 直到 resolve 或 reject 事件触发，形成固定态的 Promise 对象，可以调用 then 或 catch 方法来获取对应结果。
+        * 利用 then 进行链式调用。
+        */
+        const loadingPromise = () => {
+            return new Promise ( function (resolve, reject) {
+                const timeOut = () => {
+                    setTimeout(() => {
+                        console.info('2 号定时器执行');
+                        resolve('最终还是成功了');
+                    },5000);
+                }
+                setTimeout(() => {
+                    console.info('1 号定时器执行');
+                    timeOut();
+                },5000);
+
+            })
+        }
+        loadingPromise().then( content => { console.info(content) });
+        
     </script>
 </body>
 </html>
