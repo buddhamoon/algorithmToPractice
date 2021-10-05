@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise异步编程</title>
+</head>
+<body>
+    <!--
+
+    -->
+
+    <script>
+
+        const init = new Promise( function ( resolve, reject ) {
+            console.info( '初始化创建立刻执行。' )
+            resolve('success');
+        })
+        // Promise 一旦使用 new 声明则立刻执行，init 保存的是 Promise 执行后的 Promise 对象。
+        init.then( content => { return content }).then( content => { console.info(content) })
+        // 所以 init 在调用原型方法时，会打印 sucess
+
+        // 常见用法 1 ：使用高级函数包裹
+        function createPromise ( check ) {
+            return new Promise( function (resolve, reject) {
+                if ( check === 1 ){
+                    resolve('执行结果成功。');
+                } else {
+                    reject('执行失败！')
+                }
+            })
+        }
+        createPromise(1).then( content => { console.info('执行结果：' + content )}).catch( error => { console.error( error ) });
+        createPromise().then( content => { console.info('执行结果：' + content )}).catch( error => { console.error( error ) });
+
+        // 测试用例
+        function test_Fun ( content, speed ) {
+            return new Promise( function (resolve, reject) {
+                setTimeout(() => { resolve(content) }, speed);
+            }); 
+        }
+    </script>
+</body>
+</html>
