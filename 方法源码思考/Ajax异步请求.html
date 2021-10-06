@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax异步请求函数</title>
+    <style>
+        .getAjax {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 55px;
+            width: 160px;
+            margin: 16px;
+            border: solid 1px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+    <!--
+
+    -->
+
+    <div>
+        <button class="getAjax" id="getAjax_01"> 发起请求(JQuery模式) </button>
+        <button class="getAjax" id="getAjax_02"> 发起请求(原生XML请求) </button>
+        <button class="getAjax" id="getAjax_03"> 发起请求(fetch请求) </button>
+        <button class="getAjax" id="getAjax_04"> 发起请求() </button>
+    </div>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script>
+        const refData = {
+            testUrl : "https://www.fastmock.site/mock/6c9defa237f1ce82f4704b03427d3221/testInterFaceGet/getFormData.json"
+        }
+        async function bindClick ( id, callBack ) {
+            const buttonElement = document.querySelector( id );
+            buttonElement.removeEventListener('click', callBack);
+            return buttonElement.addEventListener('click', callBack);
+        };
+        // JQuery 请求模式
+        bindClick('#getAjax_01', function (event) {
+            console.info(event);
+            const { testUrl } = refData;
+            $.post( testUrl ).then( content => {
+                console.info( { content } );
+            });
+        });
+
+        // 原生 XMLHttp 请求模式
+        bindClick('#getAjax_02', function (event) {
+            console.info(event);
+        });
+
+        // fetch 方法请求
+        bindClick('#getAjax_03', function (event) {
+            console.info(event);
+            const { testUrl } = refData;
+            const { fetch } = window;
+            // 默认 fetch 方法不会传递 cookie 
+            fetch( testUrl, {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json'
+                }
+            } ).then( response => {
+            
+               /**
+               * 这里为什么不在当前 then 方法下直接解读 response ？如 const content = response.json() ?
+               * 因为这里的 response 并不是请求到的数据本身 而是一个 fetch 请求结果的一个范式对象，里面包含请求结果状态，等等。
+               * 在使用 response.json() 后，得到也不是目标数据，而是一个 promise 对象，这时候需要再对该对象调用一次 then 才能获取目标数据。
+               */
+                return response.json();
+
+            }).then( data => {
+
+                // 对 response promise 对象进行 then 调用，才能获得目标数据。
+                console.info( {data} );
+                
+            }).catch( error => {
+                console.info( { error } );
+            })
+        });
+
+        bindClick('#getAjax_04', function (event) {
+            console.info(event);
+        });
+        
+    </script>
+</body>
+</html>
