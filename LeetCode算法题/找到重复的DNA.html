@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>找到重复的DNA</title>
+</head>
+<body>
+    <!--
+        187. 重复的DNA序列
+
+        所有 DNA 都由一系列缩写为 'A'，'C'，'G' 和 'T' 的核苷酸组成，例如："ACGAATTCCG"。在研究 DNA 时，识别 DNA 中的重复序列有时会对研究非常有帮助。
+        编写一个函数来找出所有目标子串，目标子串的长度为 10，且在 DNA 字符串 s 中出现次数超过一次。
+
+        示例 1：
+        输入：s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
+        输出：["AAAAACCCCC","CCCCCAAAAA"]
+
+        示例 2：
+        输入：s = "AAAAAAAAAAAAA"
+        输出：["AAAAAAAAAA"]
+        
+        提示：
+        0 <= s.length <= 105
+        s[i] 为 'A'、'C'、'G' 或 'T'
+    -->
+
+    <!-- 
+        解题分析:
+        所判定具有重复序列的DNA会有几种情况 ？
+        1、连续的 10 个相同的字母。
+        2、连续的 5 个相同字母，后面另外有 5 个其他的相同的字母。
+
+        注意：
+        结果数组需要对结果去重。
+    -->
+
+    <script>
+        /**
+        * @param {string} s
+        * @return {string[]}
+        */
+
+        const test_01 = 'AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT',
+        test_02 = 'AAAAAAAAAAAAA',
+        test_03 = "GAGAGAGAGAGA",
+        test_04 = 'AAAAAAAAAA';
+
+        // 鉴于奇怪的测试用例揭示了其奇怪的规则，所以第一种解法显然失败了。
+        var findRepeatedDnaSequences = function(s) {
+            let arr = [], str = '', strArr = '';
+
+            for ( let i = 0; i < s.length; i++ ){
+                console.info('1', { str, strArr } )
+                // 空栈时则当前元素入栈
+                if ( !str ) { 
+                    str += s[i];
+                    continue;
+                };
+
+                // 相同元素入栈
+                if ( str.includes(s[i]) && str.length < 10 ) { 
+                    
+
+                    if ( strArr.length === 5 && str.length === 5 ){
+                        console.info('4', { str, strArr } )
+                        if ( !!arr.includes(strArr + str) ){
+                            strArr = str;
+                            str = '';
+                            continue;
+                        }
+                        arr.push( strArr + str );
+                        console.info('5', { arr } )
+                        str = '';
+                        strArr = '';
+                    }
+                    str += s[i];
+                    // 同元素 10 位形成结果
+                    if (str.length === 10) {
+                        arr.push(str);
+                        str = '';
+                    }
+                    continue;
+                };
+
+                
+                if ( !str.includes(s[i]) && str.length === 5 ) {
+                    strArr += str;
+                    console.info('3', { str, strArr } )
+                    if ( strArr.length === 10 ){
+                        console.info('2', { str, strArr } )
+                        arr.push( strArr );
+                        strArr = '';
+                    }
+                    str = '';
+                    str += s[i];
+                    continue;
+                };
+
+                if ( !str.includes(s[i]) && str.length < 5 ){
+                    str = '';
+                    str += s[i];
+                    continue;
+                };
+               
+            }
+            return [...new Set(arr)];
+        };
+
+        // 测试用例执行
+        console.info('结果 1：',findRepeatedDnaSequences(test_01));
+        console.info('结果 2：',findRepeatedDnaSequences(test_02));
+    </script>
+</body>
+</html>
