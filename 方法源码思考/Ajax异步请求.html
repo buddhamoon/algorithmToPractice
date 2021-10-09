@@ -53,6 +53,10 @@
         // 原生 XMLHttp 请求模式
         bindClick('#getAjax_02', function (event) {
             console.info(event);
+            const { testUrl } = refData;
+            getAjax( testUrl,{}, content => {
+                console.info( content )
+            } );
         });
 
         // fetch 方法请求
@@ -69,10 +73,8 @@
                 headers: {
                     'Accept': 'application/x-www-form-urlencoded',
                     'Content-Type': 'application/json'
-                },
-                body: {
-                    // 服务器接口要求传参以 body 对象方式书写
                 }
+                // body: { // 服务器接口要求传参以 body 对象方式书写 }
             } ).then( response => {
             
                /**
@@ -96,6 +98,25 @@
             console.info(event);
         });
         
+
+        function getAjax( url, params = '', callBack ) {
+            const xhr = new ( self.XMLHttpRequest || ActiveXObject );
+            xhr.onreadystatechange = function () {
+                // const div = document.createElement('div');
+                // div.innerHTML = this.responseText;
+                // console.info( this.responseText )
+                // document.body.appendChild(div);
+                if ( this.readyState === 4 && this.status === 200){
+                    console.info( this );
+                    const content = JSON.parse( this.response );
+                    return callBack(content);
+                }
+            }
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+            xhr.send(JSON.stringify(params));
+        }
+
     </script>
 </body>
 </html>
