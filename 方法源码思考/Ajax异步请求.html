@@ -56,6 +56,7 @@
         });
 
         // fetch 方法请求
+        // https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch 对 fetch 方法描述的非常详细
         bindClick('#getAjax_03', function (event) {
             console.info(event);
             const { testUrl } = refData;
@@ -63,6 +64,8 @@
             // 默认 fetch 方法不会传递 cookie 
             fetch( testUrl, {
                 method: 'post',
+                // fetch 请求是默认不带 cookie 的，如果要带需要配置 credentials 属性。
+                // credentials: 'include', // 同源凭据：'same-origin' 不提供凭据'omit'
                 headers: {
                     'Accept': 'application/x-www-form-urlencoded',
                     'Content-Type': 'application/json'
