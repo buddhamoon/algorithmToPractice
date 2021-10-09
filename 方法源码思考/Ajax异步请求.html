@@ -112,6 +112,15 @@
                     return callBack(content);
                 }
             }
+            /**
+            注意：
+            onreadystatechange ：每次请求的状态变化都会触发。
+            onload ：只有当请求结束状态为 4 时，才会触发。
+            事件的区别。
+            */
+            xhr.onload = function () {
+                console.info( 'onload', this)
+            }
             xhr.open('POST', url, true);
             xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
             xhr.send(JSON.stringify(params));
