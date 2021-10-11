@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>整数转英文</title>
+</head>
+<body>
+    <!--
+
+        将非负整数 num 转换为其对应的英文表示。
+
+        示例 1：
+        输入：num = 123
+        输出："One Hundred Twenty Three"
+
+        示例 2：
+        输入：num = 12345
+        输出："Twelve Thousand Three Hundred Forty Five"
+
+        示例 3：
+        输入：num = 1234567
+        输出："One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+
+        示例 4：
+        输入：num = 1234567891
+        输出："One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
+         
+
+        提示：
+        0 <= num <= 231 - 1
+
+    -->
+
+    <script>
+        /**
+        * @param {number} num
+        * @return {string}
+        */
+        var numberToWords = function(num) {
+            const num2str_small = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            const num2str_medium = [ "","", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+            const num2str_large = [ "Billion", "Million", "Thousand", ""];
+            function num2Str (x) {
+                let ans = '';
+                if (x >= 100) {
+                    ans += num2str_small[Math.floor(x / 100)] + " Hundred ";
+                    x %= 100;
+                }
+                if (x >= 20) {
+                    ans += num2str_medium[Math.floor(x / 10)] + " ";
+                    x %= 10;
+                }
+                if (x !== 0) ans += num2str_small[x] + " ";
+                return ans;
+            };
+            if (num === 0) return num2str_small[0];
+            let sb = [];
+            for (let i = 1e9, j = 0; i >= 1; i /= 1000, j++) {
+                if (num < i) continue;
+                const value = num2Str(Math.floor(num / i)) + num2str_large[j] + " ";
+                sb.push(value);
+                num %= i;
+            }
+            
+            return sb.join('').replace(/^\s\s*/, '').replace(/\s\s*$/, '');;
+        };
+    </script>
+</body>
+</html>
