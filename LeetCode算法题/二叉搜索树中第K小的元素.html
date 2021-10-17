@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二叉搜索树中第K小的元素</title>
+</head>
+<body>
+    
+    <!--
+        给定一个二叉搜索树的根节点 root ，和一个整数 k ，请你设计一个算法查找其中第 k 个最小元素（从 1 开始计数）。
+    -->
+
+    <script>
+        /**
+        * Definition for a binary tree node.
+        * function TreeNode(val, left, right) {
+        *     this.val = (val===undefined ? 0 : val)
+        *     this.left = (left===undefined ? null : left)
+        *     this.right = (right===undefined ? null : right)
+        * }
+        */
+        /**
+        * @param {TreeNode} root
+        * @param {number} k
+        * @return {number}
+        */
+
+        var kthSmallest_before = function(root, k) {_
+            const arr = [];
+            binaryTreeRecursion( root, arr);
+            const afterArr = [...new Set(arr.filter( item => {return !!item}))];
+            afterArr.sort((a,b) => {return a- b});
+            return afterArr[k-1];
+        };
+
+        var binaryTreeRecursion = function ( node, nowArr ) {
+            if (!node) return;
+            nowArr.push( node['val'] );
+            binaryTreeRecursion( node['left'], nowArr);
+            binaryTreeRecursion( node['right'], nowArr);
+        }
+
+        /**
+        * @param {TreeNode} root
+        * @param {number} k
+        * @return {number}
+        * 最终，该函数经过了测试用例，但是坦白说，在开始的时候，我并没有发现前后两个函数到底有什么本质的不同，为什么前者没有通过，后者却通过了。
+        */
+        var kthSmallest = function(root, k) {
+            const arr = [];
+            var binaryTreeRecursion = function ( node ) {
+                if (!node) return;
+                arr.push( node['val'] );
+                binaryTreeRecursion( node['left']);
+                binaryTreeRecursion( node['right']);
+            }
+            binaryTreeRecursion( root );
+            arr.sort((a,b) => {return a - b});
+            return arr[k - 1];
+        };
+    </script>
+</body>
+</html>
