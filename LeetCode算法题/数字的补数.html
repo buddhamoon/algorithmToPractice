@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字的补数</title>
+</head>
+<body>
+    <!--
+
+        对整数的二进制表示取反（0 变 1 ，1 变 0）后，再转换为十进制表示，可以得到这个整数的补数。
+
+        例如，整数 5 的二进制表示是 "101" ，取反后得到 "010" ，再转回十进制表示得到补数 2 。
+        给你一个整数 num ，输出它的补数。
+
+        示例 1：
+        输入：num = 5
+        输出：2
+        解释：5 的二进制表示为 101（没有前导零位），其补数为 010。所以你需要输出 2 。
+
+        示例 2：
+        输入：num = 1
+        输出：0
+        解释：1 的二进制表示为 1（没有前导零位），其补数为 0。所以你需要输出 0 。
+
+        提示：
+        1 <= num < 231
+
+    -->
+
+    <script>
+        /**
+        * @param {number} num
+        * @return {number}
+        */
+        var findComplement = function(num) {
+            const before = num.toString(2).split('');
+            for ( let i = 0; i < before.length; i++ ){
+                if( before[i] === '1' ){
+                    before[i] = '0';
+                } else {
+                    before[i] = '1';
+                }
+            }
+            return parseInt(before.join(''),2);
+        };
+        /**
+            .toString() 方法兼容了可以将指定数值转换为 2进制、8进制、十六进制的方法。
+
+            parseInt() 函数则可以将目标转换为 10 进制，原本以为转换的目标必须是 Number 类型，所以在调用时使用了 parseInt(Number(二进制字符串),2);
+            但实际情况是，一旦转换为 Number 就要遵循到 17 位会失真的问题，后来发现，这个所谓的 Number 主要指的是，字符串中要都是数字。
+            所以这里直接传入 parseInt(二进制字符串,2) 就可以完成转换。
+
+            实际上，这些问题的背后都涉及一些基础方法写法的问题，比如说，你知道如何使用一个方法来做进制转换，那么你是否能够实现一个原生的进制转换的方法呢 ？
+        */
+    </script>
+</body>
+</html>
