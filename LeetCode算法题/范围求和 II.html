@@ -83,6 +83,26 @@
             })
             return Math.min(...horizontally) * Math.min(...vertically);
         };
+
+        /**
+         * @param {number} m
+         * @param {number} n
+         * @param {number[][]} ops
+         * @return {number}
+         * 这似乎是一个更加激进的方法，虽然总体上性能没有优于第二个方法太多，但执行用时确实更容易稳定在60ms水准。
+         * 执行用时：60 ms, 在所有 JavaScript 提交中击败了99.14%的用户
+         * 内存消耗：39.3 MB, 在所有 JavaScript 提交中击败了89.65%的用户
+         */
+        var maxCount = function(m, n, ops) {
+            if (ops.length === 0) return m * n;
+            let horizontally = ops[0][0];
+            let vertically = ops[0][1];
+            ops.forEach( item => {
+                if ( item[0] < horizontally ) horizontally = item[0];
+                if ( item[1] < vertically ) vertically = item[1];
+            })
+            return horizontally * vertically;
+        };
     </script>
 </body>
 </html>
