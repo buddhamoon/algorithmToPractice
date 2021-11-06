@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>丢失的数字</title>
+</head>
+<body>
+    <!--
+        给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。
+
+        示例 1：
+        输入：nums = [3,0,1]
+        输出：2
+        解释：n = 3，因为有 3 个数字，所以所有的数字都在范围 [0,3] 内。2 是丢失的数字，因为它没有出现在 nums 中。
+
+        示例 2：
+        输入：nums = [0,1]
+        输出：2
+        解释：n = 2，因为有 2 个数字，所以所有的数字都在范围 [0,2] 内。2 是丢失的数字，因为它没有出现在 nums 中。
+
+        示例 3：
+        输入：nums = [9,6,4,2,3,5,7,0,1]
+        输出：8
+        解释：n = 9，因为有 9 个数字，所以所有的数字都在范围 [0,9] 内。8 是丢失的数字，因为它没有出现在 nums 中。
+
+        示例 4：
+        输入：nums = [0]
+        输出：1
+        解释：n = 1，因为有 1 个数字，所以所有的数字都在范围 [0,1] 内。1 是丢失的数字，因为它没有出现在 nums 中。
+         
+        提示：
+        n == nums.length
+        1 <= n <= 104
+        0 <= nums[i] <= n
+        nums 中的所有数字都 独一无二
+
+    -->
+
+    <script>
+        /**
+        * @param {number[]} nums
+        * @return {number}
+        * 这显然不是性能最好的方法
+        * 执行用时：384 ms, 在所有 JavaScript 提交中击败了7.25%的用户
+        * 内存消耗：40 MB, 在所有 JavaScript 提交中击败了86.12%的用户
+        */
+        var missingNumber_01 = function(nums) {
+            const len = nums.length;
+            for ( let i = 0; i <= len; i++ ){
+                if (!nums.includes(i)) return i;
+            }
+        };
+
+        /**
+         * @param {number[]} nums
+         * @return {number}
+         * 这种方式在面对有可能出现较大尺寸的数组测试用例时，执行用时会有明显的提升
+         * 执行用时：228 ms, 在所有 JavaScript 提交中击败了17.62%的用户
+         * 内存消耗：40 MB, 在所有 JavaScript 提交中击败了82.61%的用户
+         */
+        var missingNumber_02 = function(nums) {
+            const len = nums.length;
+            const after = len / 2
+            for ( let i = 0; i <= after; i++ ){
+                if (!nums.includes(i)) return i;
+                if (!nums.includes(len - i)) return len - i;
+            }
+        };
+
+        /**
+         * @param {number[]} nums
+         * @return {number}
+         * 这或许就是数学的魅力，一道题利用求和求差的方式，算法性能被推到极致。
+         * 执行用时：64 ms, 在所有 JavaScript 提交中击败了98.78%的用户
+         * 内存消耗：40.3 MB, 在所有 JavaScript 提交中击败了36.61%的用户
+         */
+        var missingNumber = function(nums) {
+            const numSum = nums.sum();
+            const numAddSum = addSum(nums.length);
+            return numAddSum - numSum; 
+            
+        };
+
+        Array.prototype.sum = function () {
+            return this.reduce((a,b) => { return a + b });
+        }
+
+        function addSum ( num ) {
+            let number = 0
+            for ( let i = 0; i <= num; i++ ){
+                number += i;
+            }
+            return number;
+        }
+    </script>
+</body>
+</html>
