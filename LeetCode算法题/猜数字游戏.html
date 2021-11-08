@@ -56,8 +56,8 @@
         * @param {string} guess
         * @return {string}
         * 该方法只能说勉强通过，不能算是高效的算法。
-        * 执行用时：100 ms, 在所有 JavaScript 提交中击败了22.69%的用户
-        * 内存消耗：39.6 MB, 在所有 JavaScript 提交中击败了71.43%的用户
+        * 执行用时：100 ms, 在所有 JavaScript 提交中击败了22.69%的用户。
+        * 内存消耗：39.6 MB, 在所有 JavaScript 提交中击败了71.43%的用户。
         */
         var getHint = function(secret, guess) {
             const len = guess.length;
@@ -79,6 +79,46 @@
                         cacheTwo[i] = null;
                         cache[index] = null;
                     }
+                }
+            }
+            return a + 'A' + b + 'B';
+        };
+
+        /**
+         * @param {string} secret
+         * @param {string} guess
+         * @return {string}
+         * 相对优化性能的算法
+         * 执行用时：84 ms, 在所有 JavaScript 提交中击败了49.58%的用户
+         * 内存消耗：40.1 MB, 在所有 JavaScript 提交中击败了57.14%的用户
+         */
+        var getHint = function(secret, guess) {
+            const len = guess.length;
+            const cache = secret.split('');
+            const cacheTwo = guess.split('');
+            let a = 0, b = 0;
+            for ( let i = 0; i < len; i++ ) {
+                if ( !cacheTwo[i] ) continue;
+                if ( cacheTwo[i] === cache[i] ) {
+                    a++;
+                    cache[i] = null;
+                    cacheTwo[i] = null;
+                } else {
+                    recursion ( cache, cacheTwo, i);
+                }
+            }
+            function recursion ( beforeArr, afterArr, curr) {
+                const index = beforeArr.indexOf(afterArr[curr]);
+                if ( index === -1 ) return;
+                if ( afterArr[index] && beforeArr[index] === afterArr[index] ){
+                    a++;
+                    beforeArr[index] = null;
+                    afterArr[index] = null;
+                    return recursion ( beforeArr, afterArr, curr);
+                } else {
+                    b++;
+                    beforeArr[index] = null;
+                    afterArr[curr] = null;
                 }
             }
             return a + 'A' + b + 'B';
