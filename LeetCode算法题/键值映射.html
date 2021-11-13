@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>键值映射</title>
+</head>
+<body>
+    <!--
+        实现一个 MapSum 类，支持两个方法，insert 和 sum：
+        MapSum() 初始化 MapSum 对象
+        void insert(String key, int val) 插入 key-val 键值对，字符串表示键 key ，整数表示值 val 。如果键 key 已经存在，那么原来的键值对将被替代成新的键值对。
+        int sum(string prefix) 返回所有以该前缀 prefix 开头的键 key 的值的总和。
+         
+        示例：
+        输入：
+        ["MapSum", "insert", "sum", "insert", "sum"]
+        [[], ["apple", 3], ["ap"], ["app", 2], ["ap"]]
+        输出：
+        [null, null, 3, null, 5]
+
+        解释：
+        MapSum mapSum = new MapSum();
+        mapSum.insert("apple", 3);  
+        mapSum.sum("ap");           // return 3 (apple = 3)
+        mapSum.insert("app", 2);    
+        mapSum.sum("ap");           // return 5 (apple + app = 3 + 2 = 5)    
+
+        提示：
+        1 <= key.length, prefix.length <= 50
+        key 和 prefix 仅由小写英文字母组成
+        1 <= val <= 1000
+        最多调用 50 次 insert 和 sum
+
+    -->
+
+    <script>
+
+        // 执行用时：64 ms, 在所有 JavaScript 提交中击败了98.04%的用户
+        // 内存消耗：38.9 MB, 在所有 JavaScript 提交中击败了84.31%的用户
+        /**
+         * 几点注意事项
+         * 1、了解 Map 对象的特性，了解类原型方法的使用方法。
+         * 2、在写具体方法时，要根据需求，考虑有那些可能会出现的问题。    
+        */
+
+        var MapSum = function() {
+            this.mapSum = {};
+        };
+
+        /** 
+        * @param {string} key 
+        * @param {number} val
+        * @return {void}
+        */
+        MapSum.prototype.insert = function(key, val) {
+            if ( !key ) return;
+            if ( !val && val !== 0 && !(key in this.mapSum)) return this.mapSum[key] = null;
+            return this.mapSum[key] = val;  
+        };
+
+        /** 
+        * @param {string} prefix
+        * @return {number}
+        */
+        MapSum.prototype.sum = function(prefix) {
+            let sumNumber = 0;
+            for ( let i in this.mapSum ){
+                if ( i.slice( 0, prefix.length ) === prefix ){
+                    sumNumber += this.mapSum[i];
+                }
+            }
+            return sumNumber;
+        };
+
+        /**
+        * Your MapSum object will be instantiated and called as such:
+        * var obj = new MapSum()
+        * obj.insert(key,val)
+        * var param_2 = obj.sum(prefix)
+        */
+    </script>
+</body>
+</html>
