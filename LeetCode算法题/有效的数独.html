@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有效的数独</title>
+</head>
+<body>
+    <!--
+
+        请你判断一个 9 x 9 的数独是否有效。只需要 根据以下规则 ，验证已经填入的数字是否有效即可。
+
+        数字 1-9 在每一行只能出现一次。
+        数字 1-9 在每一列只能出现一次。
+        数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
+         
+        注意：
+        一个有效的数独（部分已被填充）不一定是可解的。
+        只需要根据以上规则，验证已经填入的数字是否有效即可。
+        空白格用 '.' 表示。
+         
+
+        示例 1：
+        输入：board = 
+        [["5","3",".",".","7",".",".",".","."]
+        ,["6",".",".","1","9","5",".",".","."]
+        ,[".","9","8",".",".",".",".","6","."]
+        ,["8",".",".",".","6",".",".",".","3"]
+        ,["4",".",".","8",".","3",".",".","1"]
+        ,["7",".",".",".","2",".",".",".","6"]
+        ,[".","6",".",".",".",".","2","8","."]
+        ,[".",".",".","4","1","9",".",".","5"]
+        ,[".",".",".",".","8",".",".","7","9"]]
+        输出：true
+
+        示例 2：
+        输入：board = 
+        [["8","3",".",".","7",".",".",".","."]
+        ,["6",".",".","1","9","5",".",".","."]
+        ,[".","9","8",".",".",".",".","6","."]
+        ,["8",".",".",".","6",".",".",".","3"]
+        ,["4",".",".","8",".","3",".",".","1"]
+        ,["7",".",".",".","2",".",".",".","6"]
+        ,[".","6",".",".",".",".","2","8","."]
+        ,[".",".",".","4","1","9",".",".","5"]
+        ,[".",".",".",".","8",".",".","7","9"]]
+        输出：false
+        解释：除了第一行的第一个数字从 5 改为 8 以外，空格内其他数字均与 示例1 相同。 但由于位于左上角的 3x3 宫内有两个 8 存在, 因此这个数独是无效的。
+         
+        提示：
+        board.length == 9
+        board[i].length == 9
+        board[i][j] 是一位数字（1-9）或者 '.'
+
+    -->
+
+    <script>
+        /**
+         * @param {character[][]} board
+         * @return {boolean}
+         * 执行用时：92 ms, 在所有 JavaScript 提交中击败了62.56%的用户
+         * 内存消耗：44.5 MB, 在所有 JavaScript 提交中击败了7.73%的用户
+         * 不能称之为高效的算法，但是在解决问题的过程中，针对将复杂问题拆解为简单问题的感悟更深了。
+         * 面对复杂问题，一个非常重要的核心是，要有足够的耐心将复杂问题拆分成足以解决的简单问题，然后逐一解决简单问题
+         * 组合简单问题的解决方案，以解决复杂问题。
+         */
+        var isValidSudoku = function(board) {
+            // 小矩阵解析
+            const matrix = matrixAnalysis(board);
+            for ( let i = 0; i < 9; i ++ ) {
+                // 行数独校验
+                if ( !board[i].repeatCheck() ) return false;
+                // 列数独校验
+                const arr = [];
+                for ( let x = 0; x < 9; x++ ){
+                    // 处理列比对
+                    arr.push(board[x][i]);
+                }
+                if ( !arr.repeatCheck() ) return false;
+                // 小矩阵数独校验
+                if ( !matrix[i].repeatCheck() ) return false;
+            };
+            return true;
+        };
+
+        /**
+        * @title 判断数组中知否有重复元素
+        */
+        Array.prototype.repeatCheck = function () {
+            const arr = [];
+            this.forEach( item => { 
+                if (item !== '.') arr.push(item);
+            })
+            return arr.length === [...new Set(arr)].length;
+        }
+
+        /**
+        * @title 矩阵拆分解析函数
+        */
+        function matrixAnalysis (matrix) {
+            const len = matrix.length;
+            const qtNum = Math.sqrt(len);
+            let afterArr = [];
+            let nowArr = [];
+            for ( let i = 0; i < qtNum; i++ ) {
+                nowArr = [];
+                for ( let x = 0; x < qtNum; x++ ) {
+                    nowArr.push([]);
+                }
+                for ( let x = 0; x < qtNum; x++ ) {
+                    const valueArr = splitArrElement(matrix[(i*qtNum)+x]);
+                    valueArr.forEach( (item,index) => { nowArr[index].push(...item)});
+                }
+                afterArr.push(...nowArr);
+            }
+            return afterArr;
+        }
+
+        /**
+        * 需求拆分 1 ：将某个数组元素，等分成为 N 份，每份都以数组表示。
+        * @title 平方根等分数组函数
+        */
+        function splitArrElement ( arr ) {
+            const qtNum = Math.sqrt(arr.length);
+            const afterArr = [];
+            for ( let i = 0; i < qtNum; i++ ){
+                afterArr.push([]);
+                for ( let a = 0; a < qtNum; a++ ){
+                    afterArr[i].push( arr[ (i * qtNum) + a] );
+                }
+            }
+            return afterArr;
+        }
+    </script>
+</body>
+</html>
