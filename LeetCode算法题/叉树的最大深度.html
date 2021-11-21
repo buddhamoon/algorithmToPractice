@@ -28,7 +28,65 @@
         我的一些想法：
         1、树的N叉深度遍历，源于树的二叉树深度遍历。
         2、常见的对于对象的递归深拷贝，所应用的也是这类思想，因为需要完全拷贝所有层次中的对象嵌套。
-        
+
     -->
+
+    <script>
+        /**
+        * // Definition for a Node.
+        * function Node(val,children) {
+        *    this.val = val;
+        *    this.children = children;
+        * };
+        */
+
+        /**
+        * @param {Node|null} root
+        * @return {number}
+        * 执行用时：96 ms, 在所有 JavaScript 提交中击败了25.71%的用户
+        * 内存消耗：44.2 MB, 在所有 JavaScript 提交中击败了18.42%的用户
+        * 利用递归，在每一层去捕获计数，性能可能并不高
+        */
+        var maxDepth = function(root) { 
+            if (!root) return 0;
+            let count = 0;
+            function recursionThree ( node , num = 0 ) {
+                if (!node) return;
+                num++;
+                if ( count + 1 === num ) count = num;
+                node['children'].forEach( item => {
+                    recursionThree( item, num );
+                });
+                return;
+            }
+            recursionThree(root, count);
+            return count;
+        };
+
+
+        /**
+        * @param {Node|null} root
+        * @return {number}
+        * 执行用时：92 ms, 在所有 JavaScript 提交中击败了33.60%的用户
+        * 内存消耗：43.5 MB, 在所有 JavaScript 提交中击败了19.44%的用户
+        * 另外一种递归的写法，执行用时并不是很稳定，但是内存消耗少了。
+        * 但是显然的好处是降低了函数调用的耦合性。
+        */
+        var maxDepth = function(root) { 
+            if (!root) return 0;
+            const count = recursionThree(root);
+            return count;
+        };
+
+        function recursionThree ( node ,layer = 0, num = 0 ) {
+            if (!node) return;
+            num++;
+            if ( layer + 1 === num ) layer = num;
+            node['children'].forEach( item => {
+                layer = recursionThree( item, layer, num );
+            });
+            return layer;
+        }
+    </script>
 </body>
 </html>
