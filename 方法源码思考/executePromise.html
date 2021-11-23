@@ -10,6 +10,10 @@
     
     <script>
 
+        /**
+         * 这篇文档中所提到的异步概念，主要是试图让异步函数可以按照理想的状态去有序执行。
+        */
+
         const timeout = (ms) => new Promise((resolve,reject) => {
             setTimeout(() => {
                 resolve();
@@ -46,6 +50,15 @@
             promiseFun(0,ajaxArray.length);
        };
 
+       // Promise 中一种更加简便的方式
+       Promise.resolve().then( content => {
+        return ajax1();
+       }).then( content => {
+        return ajax2();
+       }).then( content => {
+        return ajax3();
+        }).catch( error => {});
+
 
         // async 方案：完成预期
         // async function executePromise(ajaxArray){
@@ -55,10 +68,10 @@
         //     return ajaxArray;
         // }
 
-        executePromise([ajax1,ajax2,ajax3]).then( data => {
-            console.info('executePromise执行');
-            console.info(data);
-        });
+        // executePromise([ajax1,ajax2,ajax3]).then( data => {
+        //     console.info('executePromise执行');
+        //     console.info(data);
+        // });
     </script>
 </body>
 </html>
