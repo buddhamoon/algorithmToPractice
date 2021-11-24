@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>从英文中重建数字</title>
+</head>
+<body>
+    <!--
+
+        给你一个字符串 s ，其中包含字母顺序打乱的用英文单词表示的若干数字（0-9）。按 升序 返回原始的数字。
+
+        示例 1：
+        输入：s = "owoztneoer"
+        输出："012"
+
+        示例 2：
+        输入：s = "fviefuro"
+        输出："45"
+         
+        提示：
+        1 <= s.length <= 105
+        s[i] 为 ["e","g","f","i","h","o","n","s","r","u","t","w","v","x","z"] 这些字符之一
+        s 保证是一个符合题目要求的字符串
+
+    -->
+
+    <script>
+        const hashMap = {
+            0 : 'zero', 1 : 'one', 2 : 'two', 3 : 'three', 4 : 'four', 5 : 'five',
+            6 : 'six' , 7 : 'seven', 8 : 'eight', 9 : 'nine'
+        };
+        const refMap = [ 0, 8, 6, 3, 2, 7, 5, 9, 4, 1 ];
+
+        /**
+         * @param {string} s
+         * @return {string}
+         * 利用模拟的思路写的算法，在处理极端测试用例时会超时
+         */
+        var originalDigits = function(s) {
+            const arr = [];
+            const sptArr = s.split("");
+            // 可以通过绝大多数测试用例，但是在极端测试用例下会超时
+            while( sptArr.length > 0 ){
+                for ( let i in hashMap ){
+                    if ( sptArr.strEveryCheck(hashMap[i]) ) {
+                        arr.push(i);
+                        sptArr.delElement(hashMap[i]);
+                    }
+                }
+            }
+            // 尝试过修改一下写法来减少可能出现的不必要循环，但是这种写法导致在一些测试用例时，对最终结果的判断错误
+            // 原因在于某些数字的英文字母特征，实际上分布在其他的数字英文组合中。
+            // for ( let i in hashMap ){
+            //     while( sptArr.strEveryCheck(hashMap[i]) ){
+            //         arr.push(i);
+            //         sptArr.delElement(hashMap[i]);
+            //     }
+            // }
+            // 为了使这个循环能够构建出正确的结果，需要对检测值的顺序进行排序，将具有唯一特征的英文在前面，具有普遍性如 one 的英文，排在后面。
+            // 如：const refMap = [ 0, 8, 6, 3, 2, 7, 5, 9, 4, 1 ];
+            // 但在实际测试中，在极端测试用例时还是会超时
+            return arr.sort((a,b) => {return a - b}).join('');
+        };
+
+        Array.prototype.strEveryCheck = function (str) {
+            for ( let i = 0; i < str.length; i++ ){
+                if (!this.includes(str[i])) return false;
+            }
+            return true;
+        }
+
+        Array.prototype.delElement = function (str) {
+            for ( let i = 0; i < str.length; i++ ){
+                const index = this.indexOf(str[i]);
+                if ( index > -1 ) this.splice( index, 1 );
+            }
+            return this;
+        }
+
+        // 鉴于利用传统方式会超时的情况，说明这道题需要利用一些奇诡的思路去解答
+        /**
+         * 看一下官方解法，将 s 字符串所有的元素遍历入 hashMap 进行出现次数记录。
+         * 然后依照特征逐一排查。
+         * 比如 0 出现了几次 ，取决于 z 出现了几次。
+         * 逐一减去那些具备唯一性的。
+         * 对于有重复的，与考虑那些唯一性，或者前面已经确定的序列来求差值计算
+        */
+        var originalDigits = function(s) {
+            const c = new Map();
+            for (const ch of s) {
+                c.set(ch, (c.get(ch) || 0) + 1);
+            }
+
+            const cnt = new Array(10).fill(0);
+            cnt[0] = c.get('z') || 0;
+            cnt[2] = c.get('w') || 0;
+            cnt[4] = c.get('u') || 0;
+            cnt[6] = c.get('x') || 0;
+            cnt[8] = c.get('g') || 0;
+
+            cnt[3] = (c.get('h') || 0) - cnt[8];
+            cnt[5] = (c.get('f') || 0) - cnt[4];
+            cnt[7] = (c.get('s') || 0) - cnt[6];
+
+            cnt[1] = (c.get('o') || 0) - cnt[0] - cnt[2] - cnt[4];
+
+            cnt[9] = (c.get('i') || 0) - cnt[5] - cnt[6] - cnt[8];
+
+            const ans = [];
+            for (let i = 0; i < 10; ++i) {
+                for (let j = 0; j < cnt[i]; ++j) {
+                    ans.push(String.fromCharCode(i + '0'.charCodeAt()));
+                }
+            }
+            return ans.join('');
+        };
+
+    </script>
+</body>
+</html>
