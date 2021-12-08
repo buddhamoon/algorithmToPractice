@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三个无重叠子数组的最大和</title>
+</head>
+<body>
+    <!--
+
+        给你一个整数数组 nums 和一个整数 k ，找出三个长度为 k 、互不重叠、且 3 * k 项的和最大的子数组，并返回这三个子数组。
+        以下标的数组形式返回结果，数组中的每一项分别指示每个子数组的起始位置（下标从 0 开始）。如果有多个结果，返回字典序最小的一个。
+
+        示例 1：
+        输入：nums = [1,2,1,2,6,7,5,1], k = 2
+        输出：[0,3,5]
+        解释：子数组 [1, 2], [2, 6], [7, 5] 对应的起始下标为 [0, 3, 5]。
+        也可以取 [2, 1], 但是结果 [1, 3, 5] 在字典序上更大。
+
+        示例 2：
+        输入：nums = [1,2,1,2,1,2,1,2,1], k = 2
+        输出：[0,2,4]
+         
+
+        提示：
+        1 <= nums.length <= 2 * 104
+        1 <= nums[i] < 216
+        1 <= k <= floor(nums.length / 3)
+
+    -->
+    <script>
+        // 初看此题时，感觉好像并不难，逐而写出下列算法
+        /**
+        * @param {number[]} nums
+        * @param {number} k
+        * @return {number[]}
+        */
+        var maxSumOfThreeSubarrays = function(nums, k) {
+            const arr = [];
+            let after = 0;
+            for ( let i = 0; i < 3; i ++ ) {
+                const value = nums.searchArr( after, k );
+                if (!!value || value === 0) arr.push(value);
+                after += 3;
+            };
+            return arr;
+        };
+
+        /**
+        * @title 数组目标搜索函数
+        * @description 从指定起始位识别指定长度的不重复元素数组
+        * @param { number } startNam 检索起始位
+        * @param { number } arrSize 需要检索的子数组长度
+        * @return { object } 
+        */
+        Array.prototype.searchArr = function ( startNam, arrSize ) {
+            const arr = []; 
+            const len = this.length;
+            for ( let i = startNam; i < len; i++ ){
+                if ( arr.indexOf(this[i]) === -1 ){
+                    // 元素不存在则添加该元素
+                    arr.push(this[i]);
+                    // 数组到达指定长度后返回子数组查询结果
+                    if (arr.length === arrSize) {
+                        return startNam;
+                    }
+                } else {
+                    arr.length = 0;
+                    startNam = i;
+                }
+            }
+        }
+
+        // 但题目中提到了两个关键信息，一方面要保证找出的子数组，但前提是，这些数组，必须要是这个数组中，数组和最大的前三个子数组
+        // 所以这个题目的核心是，要先找出最大无重复数字和数组，再罗列这三个数组，返回题目的起始位。
+    </script>
+</body>
+</html>
