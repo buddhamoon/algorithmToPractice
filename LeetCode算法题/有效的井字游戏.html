@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有效的井字游戏</title>
+</head>
+<body>
+    <!--
+
+        给你一个字符串数组 board 表示井字游戏的棋盘。当且仅当在井字游戏过程中，棋盘有可能达到 board 所显示的状态时，才返回 true 。
+        井字游戏的棋盘是一个 3 x 3 数组，由字符 ' '，'X' 和 'O' 组成。字符 ' ' 代表一个空位。
+
+        以下是井字游戏的规则：
+        玩家轮流将字符放入空位（' '）中。
+        玩家 1 总是放字符 'X' ，而玩家 2 总是放字符 'O' 。
+        'X' 和 'O' 只允许放置在空位中，不允许对已放有字符的位置进行填充。
+        当有 3 个相同（且非空）的字符填充任何行、列或对角线时，游戏结束。
+        当所有位置非空时，也算为游戏结束。
+        如果游戏结束，玩家不允许再放置字符。
+         
+        示例 1：
+        输入：board = ["O  ","   ","   "]
+        输出：false
+        解释：玩家 1 总是放字符 "X" 。
+
+        示例 2：
+        输入：board = ["XOX"," X ","   "]
+        输出：false
+        解释：玩家应该轮流放字符。
+
+        示例 3：
+        输入：board = ["XXX","   ","OOO"]
+        输出：false
+
+        Example 4:
+        输入：board = ["XOX","O O","XOX"]
+        输出：true
+         
+        提示：
+        board.length == 3
+        board[i].length == 3
+        board[i][j] 为 'X'、'O' 或 ' '
+
+    -->
+
+    <script>
+        
+/**
+ * @param {string[]} board
+ * @return {boolean}
+ */
+var validTicTacToe = function(board) {
+    const str = board.join('');
+    const xNum = str.countChart('X');
+    const yNum = str.countChart('O');
+    // 处理极端空值情况
+    if (xNum === 0) {
+        if ( yNum === 0 ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // 逻辑出现数判定
+    if ( xNum < yNum ) return false;
+    // 处理棋子不对称问题
+    if (xNum > (yNum + 1)) return false;
+    // 处理棋子极限数字
+    if ( xNum > 5 || yNum > 4 ) return false;
+    // 成功案例判定
+    const result = board.ticTacToeSuccess();
+    if ( result['X'] && result['O']) return false;
+    if ( result['X'] && (xNum !== (yNum+1)) ) return false;
+    if ( result['O'] && (xNum !== yNum) ) return false;
+
+    // 最终通过判定 
+    return true
+};
+
+/**
+ * @title 字符出现次数统计
+ */
+String.prototype.countChart = function (str) {
+    const len = this.length;
+    let num = 0;
+    for ( let i = 0; i < len; i++ ) {
+        if (this[i] === str) num++;
+    }
+    return num;
+};
+
+/**
+ * @title 判断井字棋游戏是否存在成功结果
+ */
+Array.prototype.ticTacToeSuccess = function () {
+    const success = {
+        'X': false,
+        'O': false
+    };
+    // 横向成功案例判断
+    for ( let i = 0; i < 3; i++ ){
+        if ( this[i] === 'XXX') {
+            success['X'] = true;
+        }
+        if ( this[i] === 'OOO') {
+            success['O'] = true;
+        }
+    }
+    if ( success['X'] || success['O']) return success;
+
+    // 竖向拼接结果判断
+    let verticalArr = ['','','']
+    for ( let i = 0; i < 3; i++ ){
+        for ( let x = 0; i < 3; i++ ){
+            verticalArr[x] += this[i][x];
+        }
+    }
+    for ( let i = 0; i < 3; i++ ){
+        if ( verticalArr[i] === 'XXX') {
+            success['X'] = true;
+        }
+        if ( verticalArr[i] === 'OOO') {
+            success['O'] = true;
+        }
+    }
+    if ( success['X'] || success['O']) return success;
+
+    // 交叉结果成功判断
+    if ( this[1][1] !== ' '){
+        const strArr = [];
+        strArr.push(this[0][0] + this[1][1] + this[2][2]);
+        strArr.push(this[0][2] + this[1][1] + this[2][0]);
+        for ( let i = 0; i < 2; i++ ){
+            if ( strArr[i] === 'XXX') {
+                success['X'] = true;
+            }
+            if ( strArr[i] === 'OOO') {
+                success['O'] = true;
+            }
+        }
+        if ( success['X'] || success['O']) return success;
+    }
+
+    // 最终返回
+    return success;
+}
+    </script>
+</body>
+</html>
