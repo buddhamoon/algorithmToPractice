@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线选举</title>
+</head>
+<body>
+    <!--
+
+        给你两个整数数组 persons 和 times 。在选举中，第 i 张票是在时刻为 times[i] 时投给候选人 persons[i] 的。
+        对于发生在时刻 t 的每个查询，需要找出在 t 时刻在选举中领先的候选人的编号。
+        在 t 时刻投出的选票也将被计入我们的查询之中。在平局的情况下，最近获得投票的候选人将会获胜。
+        实现 TopVotedCandidate 类：
+        TopVotedCandidate(int[] persons, int[] times) 使用 persons 和 times 数组初始化对象。
+        int q(int t) 根据前面描述的规则，返回在时刻 t 在选举中领先的候选人的编号。
+         
+        示例：
+        输入：
+        ["TopVotedCandidate", "q", "q", "q", "q", "q", "q"]
+        [[[0, 1, 1, 0, 0, 1, 0], [0, 5, 10, 15, 20, 25, 30]], [3], [12], [25], [15], [24], [8]]
+        输出：
+        [null, 0, 1, 1, 0, 0, 1]
+
+        解释：
+        TopVotedCandidate topVotedCandidate = new TopVotedCandidate([0, 1, 1, 0, 0, 1, 0], [0, 5, 10, 15, 20, 25, 30]);
+        topVotedCandidate.q(3); // 返回 0 ，在时刻 3 ，票数分布为 [0] ，编号为 0 的候选人领先。
+        topVotedCandidate.q(12); // 返回 1 ，在时刻 12 ，票数分布为 [0,1,1] ，编号为 1 的候选人领先。
+        topVotedCandidate.q(25); // 返回 1 ，在时刻 25 ，票数分布为 [0,1,1,0,0,1] ，编号为 1 的候选人领先。（在平局的情况下，1 是最近获得投票的候选人）。
+        topVotedCandidate.q(15); // 返回 0
+        topVotedCandidate.q(24); // 返回 0
+        topVotedCandidate.q(8); // 返回 1
+         
+        提示：
+        1 <= persons.length <= 5000
+        times.length == persons.length
+        0 <= persons[i] < persons.length
+        0 <= times[i] <= 109
+        times 是一个严格递增的有序数组
+        times[0] <= t <= 109
+        每个测试用例最多调用 104 次 q
+
+    -->
+
+    <script>
+        /**
+         * @param {number[]} persons
+         * @param {number[]} times
+         */
+        var TopVotedCandidate = function(persons, times) {
+            this.persons = persons;
+            this.times = times;
+        };
+
+        /** 
+         * @param {number} t
+         * @return {number}
+         */
+        TopVotedCandidate.prototype.q = function(t) {
+            const hashMap = {};
+            let index = 0
+            while ( this.times[index] <= t ){
+                if ( this.persons[index] in hashMap ){
+                    hashMap[this.persons[index]]++;
+                } else {
+                    hashMap[this.persons[index]] = 1;
+                }
+                index++;
+            }
+            // 获取最大的选票数
+            const arr = [];
+            for ( let i in hashMap){
+                arr.push(hashMap[i]);
+            }
+            const maxVal = Math.max(...arr);
+
+            // 识别最高票数是否相同，并触发溯源算法
+            const maxMap = [];
+            for( let i in hashMap ){
+                if (hashMap[i] === maxVal) maxMap.push(Number(i));
+            }
+            if (maxMap.length > 1) {
+                for ( let i = this.times.length; i >= 0; i-- ){
+                    if ( this.times[i] <= t ){
+                        if (maxMap.includes(this.persons[i])) return this.persons[i];
+                    }
+                }
+            };
+            return arr.indexOf(maxVal);
+        };
+
+        /**
+         * @title 追踪谁最先获得了最高票数
+         * @desc 这里在题目上出现了一个歧义，当平票时，是看谁先达到了最高票数 ？还是谁最后达到了最高票数 ？这涉及到不同的算法。
+         * 在实际测试中，原以为要进行溯源，看看谁的最先达到最高票数，但在实际测试中，结合最终期望结果，发现题目描述的是谁最后达到期望票数。
+        */
+        TopVotedCandidate.prototype.traceNumber = function ( t, maxNumber, maxMap = [] ) {
+            const traceMap = {};
+            let index = 0;
+            while ( this.times[index] <= t ){
+                if ( this.persons[index] in traceMap ){
+                    traceMap[this.persons[index]]++;
+                    // if (maxMap.includes(this.persons[index])) continue;
+                    for ( let x = 0; x < maxMap.length; x++ ){
+                        if (traceMap[maxMap[x]] === maxNumber ) return maxMap[x];
+                    }
+                } else {
+                    traceMap[this.persons[index]] = 1;
+                    // if (maxMap.includes(Number(this.persons[index]))) continue;
+                    for ( let x = 0; x < maxMap.length; x++ ){
+                        if (traceMap[maxMap[x]] === maxNumber ) return maxMap[x];
+                    }
+                }
+                index++;
+            }
+        }
+    </script>
+</body>
+</html>
