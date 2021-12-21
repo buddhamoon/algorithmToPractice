@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一年中的第几天</title>
+</head>
+<body>
+    <!--
+        给你一个字符串 date ，按 YYYY-MM-DD 格式表示一个 现行公元纪年法 日期。请你计算并返回该日期是当年的第几天。
+        通常情况下，我们认为 1 月 1 日是每年的第 1 天，1 月 2 日是每年的第 2 天，依此类推。每个月的天数与现行公元纪年法（格里高利历）一致。
+
+        示例 1：
+        输入：date = "2019-01-09"
+        输出：9
+        示例 2：
+        输入：date = "2019-02-10"
+        输出：41
+        示例 3：
+        输入：date = "2003-03-01"
+        输出：60
+        示例 4：
+        输入：date = "2004-03-01"
+        输出：61
+         
+
+        提示：
+        date.length == 10
+        date[4] == date[7] == '-'，其他的 date[i] 都是数字
+        date 表示的范围从 1900 年 1 月 1 日至 2019 年 12 月 31 日
+
+        拓展思考：
+
+            关于时间的程序设计有一些非常关键的需求，这些需求可以被归纳为几个经典场景，一般可以实现这些场景，就能够轻松应对 Date 时间设计大多数业务问题：
+
+            1、万年历。
+            - 日历是一个典型的功能，该需求不但可以作为独立的万年历应用来为用户提供日期查阅，还可以拓展出诸如日期 / 时间选择组件，基于日历的备忘录等功能。
+            2、精确时间目标计算
+            - 这实际上是时间计划任务的一个重要分支，要求系统能够准确的判断某个时间指标，比如说，一个人的生日，会员的开通与到期时间，某个日期时间节点的提醒触发
+            3、定时任务
+            - 以时间为条件，来进行事件的管理与触发，比如指定某个时间来触发指定事件来完成目标任务，又或者以一定时间周期，去不断触发某个事件任务。
+
+    -->
+
+    <script>
+        /**
+         * @param {string} date
+         * @return {number}
+         * 执行用时：160 ms, 在所有 JavaScript 提交中击败了97.42%的用户
+         * 内存消耗：46.6 MB, 在所有 JavaScript 提交中击败了98.71%的用户
+         * 得益于 JavaScript 的 Date 对象，实际上已经提供了很多方便的 api
+         */
+        var dayOfYear = function(date) {
+            const timeStr = date.split('-');
+            const targetTime = new Date(date).getTime();
+            const refTime = new Date(timeStr[0] + '-01-01').getTime();
+            const afterTime = (targetTime - refTime) / 86400000;
+            return afterTime + 1;
+        };
+    </script>
+</body>
+</html>
