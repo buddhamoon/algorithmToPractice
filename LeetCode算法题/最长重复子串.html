@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最长重复子串</title>
+</head>
+<body>
+    <!--
+
+        给你一个字符串 s ，考虑其所有 重复子串 ：即，s 的连续子串，在 s 中出现 2 次或更多次。这些出现之间可能存在重叠。
+        返回 任意一个 可能具有最长长度的重复子串。如果 s 不含重复子串，那么答案为 "" 。
+
+        示例 1：
+        输入：s = "banana"
+        输出："ana"
+
+        示例 2：
+        输入：s = "abcd"
+        输出：""
+         
+        提示：
+        2 <= s.length <= 3 * 104
+        s 由小写英文字母组成
+
+    -->
+
+    <script>
+
+        /**
+         * @title 测试用例数组
+        */
+        const testList = [
+            { param : "banana", expect : "ana" },
+            { param : "aa", expect : "a" },
+            { param : "nnpxouomcofdjuujloanjimymadkuepightrfodmauhrsy", expect : "ma" },
+            { param : "xcvroexzjgwlguxbjjsyoglvatwnvgykoltdsicchgfkgawlneavrczwyjzmitspxdqpaziawswaelezzsiwdznqmvgwoieppkitcqjmzhnhgmjbvghqfbxtxgtgjhhhhnudfugrvtnlfqefqcwkzrdfqplvprtgqzqjiunnhrstpeszetrfxxbqrofyhrcueyovsxtryyxozknigraptdxbntgxylylleeawvhdscqsyiegghbdijqhhfnxyqmqxeeukaeaymdopvjsibaluxyvcmhsgyugjzapnzokpmkgdvqpsaesnqupbradjbawbjujashlrnisochvsfnvuzwuudwveagygcyrtuwnkxnrmtxyuhtplktdhpjwvvlqkyfxvjojlkfqvurydxbcpuwnltcliwkplvdvhkqlxvovzjdijtxckekgzgbdmmayxtctaunetpxplkollvkqoigpkfjsjtvnsbvlakueaqojklqlfagjzvirzxpkqvfecwmvcvfglkiamikcgdwqijdaqftghjgmzbngcvbjeowsgoajaspdpmbuidxvhspaaiohekasabvocuhvhajdphmeiybldcqthkqmprgmphnaagcuyynmrbskuhurggwqypypnzvrzfscvamwrlbhphrkzkdmbqrqhbwqvbpkinefnnsyhqpqecviaovwxcxpbsqnbguqulqkbvrwmsomizkjoymbkywebtoqmcugquwyldnfykzfxgfmcatffsafwjzetnhecshvnsrixdohuaxniukvbajqytugrxegduerqqwwbdurfbuldnuhopnhijuwshhzpnomxkqbwxvwfizxujaxfaolxodgqsowhadgaufphjwrsgbvitosyohxsejpepxiwtwhjfofdnjkkiqgglsuvph", expect : "未知" },
+            { param : "peftxylsseopntszwuwrugksyrizvatuwgiarugnmypheecnproenzyksusehuujvnpqwwqnuhdogeqnfnhdbhatcuaaniteuwhsmpmrzfxekstssaynzzvmqwdhwtnizwiejjkfovscneouvjsljzfkmtrhunaxgcaswfajczlnhacsajozjwpoqjtdcaqsubbntxlpayebjfbzjiaoiyjbmzktcnscxyhpdkfexnjfrngjesbtwnmasnwvauzlzkompxkgifxsavzfhwvdjausccrjfpnzordyfgjdyawqzbfbizqvecrbhupkdudvxdknkqwjynyrutzhcnmfabwwaerdirsnufhlktojnyrefumfhvkolrybjpadpowjoqhhbzqpmpcmrddtrplgezihshtvpnqxikgsiiqnmezybjzktpdzsmribdkvlfbvicrgnblqnaylcijqbxjcnmjdrsfpcdojwcanvkgfaappivqnocobyeavoifqgnroagelmfjprxkupbdrwnycnhffgchclumhpxnlbbbmfsjmqoxuwkzwwksraxhlvdvrnjmfqzdksnxyhbaquxidvlgpjhlskrvkbsizyfedhwqsrzlwkesslvduwksoreufeflbgodatiblhmmfeiwbtohurgprremycvkhecakofsmpiimdcecpcvuseiqkxifzktkfnaqnpshcfdrhgjalpwaqumixmrxwduhgxwtfxarwyfshsutxihpecwbgzghkfaukdfbyecpryqxooyjsurjstfwrpegyxtdbkoicorqe", expect : "ma" }
+        ]
+
+        /**
+         * @title 字符串有序全排列
+         * @desc 在满足字符是连续的情况下，输出字符串中所有的组成可能 
+         */
+         String.prototype.strOrderFullArrangement = function () {
+            const arr = [], len = this.length;
+            for ( let i = 0; i < len; i++ ){
+                let str = '';
+                for ( let x = i; x < len; x++ ){
+                    str += this[x];
+                    arr.push(str);
+                }
+            }
+            return arr;
+        }
+
+        /**
+         * @title 字符串重复性判断
+        */
+       String.prototype.strRepeatCheck = function (str) {
+            const index = this.indexOf(str);
+            return index !== this.lastIndexOf(str);
+       };
+
+       /**
+        * @title 字符串逐层分解重复比对
+       */
+       String.prototype.byLayerDecomposition = function (s) {
+            const len = s.length;
+            // 一级循环:定义共有多少层循环，每层字符串 length - 1
+            for ( let i = 1; i < len; i++ ){
+                // if (!s.strRepeatCheck(s[i])) continue;
+                // 二级循环：定义当前层字符串有几种可能
+                for ( let x = 0; x < (i + 1); x++ ){
+                    let str = '';
+                    // 三级循环：循环生成出当前层所有可能的字符串
+                    for ( let z = 0, y = x; z < (len - i); z++, y++ ){
+                        str += s[y];
+                    }
+                    if(this.indexOf(str) !== this.lastIndexOf(str)) return str;
+                    // if ( s.strRepeatCheck(str) ) return str;
+                }
+            }
+            return '';
+       }
+
+        /**
+         * @param {string} s
+         * @return {string}
+         * 方法思路：
+         * 直接暴力的将字符串拆解成所有顺序的可能，然后比对那个最长的重复存在。
+         * 在本地浏览器运行时，可以得到正常的结果，但是在LeetCode中运行时，单单 const after 的变量声明，就已经超出限制报错。
+         */
+        var longestDupSubstring_one = function(s) {
+            const after = s.strOrderFullArrangement();
+            // 判断最大的重复数字
+            const otherArr = [];
+            after.forEach( item => {
+                for ( let i = 0; i < 2; i++ ){
+                    const index = s.indexOf(item);
+                    if ( index !== s.lastIndexOf(item)){
+                        otherArr.push({ len: item.length, str: item });
+                    }
+                }
+            });
+            otherArr.sort((a,b) => { return b.len - a.len });
+            if (otherArr.length === 0) return '';
+            return otherArr[0]['str'];
+        };
+
+        /**
+         * @param {string} s
+         * @return {string}
+         * @方法思路
+         * 该方法试图用一些处理规避那些只出现过 1 次的字符，只计算那些出现多次的连续字符串，但就从实际效果来看，当字符串的字符较多时，已经几乎不存在单独出现的字母了。
+         * 而相关的判断处理，相对于“直接拆解原始字符串”来说，性能反而会慢于前者。
+         */
+         var longestDupSubstring_two = function(s) {
+            const hashMap = {}, statistics = [];
+            // 统计字符的出现次数
+            for ( let i = 0; i < s.length; i++ ){
+                if ( s[i] in hashMap ){
+                    hashMap[s[i]]++;
+                } else {
+                    hashMap[s[i]] = 1;
+                }
+            }
+            for ( let i = 0; i < s.length; i++ ){
+                statistics.push({
+                    name : s[i],
+                    count : hashMap[s[i]]
+                });
+            }
+
+            // 解析多次重复出现的字符串
+            const continuity = [];
+            let str = '';
+            statistics.forEach( (item,index) => {
+                if ( item['count'] > 1 ){
+                    str += item['name'];
+                    if ( index === s.length - 1) {
+                        continuity.push(str);
+                    }
+                };
+                if ( item['count'] === 1 ) {
+                    if ( str.length > 0 ) {
+                        continuity.push(str);
+                        str = '';
+                    }
+                }
+            });
+            let before = [];
+            continuity.forEach( item => {
+                if ( item.length > 1 ){
+                    const toArr = item.strOrderFullArrangement();
+                    before = [...before,...toArr];
+                } else {
+                    before.push(item);
+                }
+            })
+            const after = [...new Set(before)];
+
+            // 判断最大的重复数字
+            const otherArr = [];
+            after.forEach( item => {
+                for ( let i = 0; i < 2; i++ ){
+                    const index = s.indexOf(item);
+                    if ( index !== s.lastIndexOf(item)){
+                        otherArr.push({ len: item.length, str: item });
+                    }
+                }
+            });
+            otherArr.sort((a,b) => { return b.len - a.len });
+            if (otherArr.length === 0) return '';
+            return otherArr[0]['str'];
+        };
+
+        /**
+         * @param {string} s
+         * @return {string}
+         * 方法思路：
+         * 遵循从字符串较长的情况一层层，比较到字符串较少的情况。
+         * 该方法在字母较少时拥有极好的性能，但随着字符串长度增长（而答案实际上是一个极短字符串时），性能直线下降。
+         */
+         var longestDupSubstring_three = function(s) {
+            const len = s.length;
+            // 一级循环:定义共有多少层循环，每层字符串 length - 1
+            for ( let i = 1; i < len; i++ ){
+                // if (!s.strRepeatCheck(s[i])) continue;
+                // 二级循环：定义当前层字符串有几种可能
+                for ( let x = 0; x < (i + 1); x++ ){
+                    let str = '';
+                    // 三级循环：循环生成出当前层所有可能的字符串
+                    for ( let z = 0, y = x; z < (len - i); z++, y++ ){
+                        str += s[y];
+                    }
+                    if(s.indexOf(str) !== s.lastIndexOf(str)) return str;
+                    // if ( s.strRepeatCheck(str) ) return str;
+                }
+            }
+            return '';
+        };
+
+        /**
+         * @param {string} s
+         * @return {string}
+         * 方法思路：
+         * 遵循从字符串较长的情况一层层，比较到字符串较少的情况。
+         * 该方法在字母较少时拥有极好的性能，但随着字符串长度增长（而答案实际上是一个极短字符串时），性能直线下降。
+         */
+         var longestDupSubstring_four = function(s) {
+            const hashMap = {}, statistics = [];
+            // 统计字符的出现次数
+            for ( let i = 0; i < s.length; i++ ){
+                if ( s[i] in hashMap ){
+                    hashMap[s[i]]++;
+                } else {
+                    hashMap[s[i]] = 1;
+                }
+            }
+            for ( let i = 0; i < s.length; i++ ){
+                statistics.push({
+                    name : s[i],
+                    count : hashMap[s[i]]
+                });
+            }
+
+            // 解析多次重复出现的字符串
+            const continuity = [];
+            let str = '';
+            statistics.forEach( (item,index) => {
+                if ( item['count'] > 1 ){
+                    str += item['name'];
+                    if ( index === s.length - 1) {
+                        continuity.push(str);
+                    }
+                };
+                if ( item['count'] === 1 ) {
+                    if ( str.length > 0 ) {
+                        continuity.push(str);
+                        str = '';
+                    }
+                }
+            });
+            console.info(continuity)
+            // 分布解析
+            const a = [];
+            continuity.forEach( item => {
+                const val = s.byLayerDecomposition(item);
+                a.push({
+                    str : val,
+                    len : val.length
+                })
+            });
+            a.sort((a,b) => { return b.len - a.len });
+            if (a.length === 0) return '';
+            return a[0]['str'];
+        };
+
+        testList.forEach( item => {
+            // console.time();
+            // console.info('输出结果：' + longestDupSubstring_one(item['param']),'期望结果：' + item['expect']);
+            // console.timeEnd();
+            // console.time();
+            // console.info('输出结果：' + longestDupSubstring_two(item['param']),'期望结果：' + item['expect']);
+            // console.timeEnd();
+            // console.time();
+            // console.info('输出结果：' + longestDupSubstring_three(item['param']),'期望结果：' + item['expect']);
+            // console.timeEnd();
+            console.time();
+            console.info('输出结果：' + longestDupSubstring_four(item['param']),'期望结果：' + item['expect']);
+            console.timeEnd();
+        } );
+
+        
+        /**
+        * 特征思考：
+        * 1、如果某个字符只出现了一次，那么其必然不是重复字符串的组成部分。
+        * 2、可以利用连续性这一特征来思考，减少可能。
+        * 3、通过测试用例我们发现，需要罗列所有可能的重复排列组合，才能够通过部分测试用例。
+        *   全排列的需求，在算法中可谓是经常可以见到。
+        */
+    </script>
+</body>
+</html>
