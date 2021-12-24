@@ -40,6 +40,35 @@
             { param : ['a','b','c'], expect : '6' }
         ];
 
+         /**
+         * @title 元素全排列递归函数
+        */
+        var permute = function(nums) {
+            const res = [], path = [];
+            const used = new Array(nums.length).fill(false);
+
+            const dfs = () => {
+                if (path.length == nums.length) {
+                    res.push(path.slice());
+                    return;
+                }
+
+                for (let i = 0; i < nums.length; i++) {
+                    if (used[i]) continue;
+                    path.push(nums[i]);
+                    used[i] = true;
+                    dfs();
+                    // 回溯的过程中，将当前的节点从 path 中删除
+                    path.pop();
+                    used[i] = false;
+                }
+            }
+
+            dfs();
+            return res
+        };
+        // console.info(permute([0,1,2,3,4,5]));
+
         var fullPermutation = function (arr) {};
 
 
