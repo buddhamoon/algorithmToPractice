@@ -66,11 +66,7 @@
             { apples : [1,2,3,5,2], days: [3,2,1,4,2], expect: '7' },
             { apples : [2,1,10], days: [2,10,1], expect: 4 },
             { apples : [2,1,1,4,5], days: [10,10,6,4,2], expect: 8 },
-            { apples : [
-                1,10,17,10,12,6,20,8,8,22,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,5,2,1,0,0,0,0,0,0,23
-            ], days: [
-                19999,11,18,22,5,2,14,5,20,7,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,1,4,2,7,0,0,0,0,0,0,1
-            ], expect: 37 }
+            { apples : [1,10,17,10,12,6,20,8,8,22,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,5,2,1,0,0,0,0,0,0,23], days: [19999,11,18,22,5,2,14,5,20,7,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,1,4,2,7,0,0,0,0,0,0,1], expect: 37 }
         ];
 
         /**
@@ -101,9 +97,41 @@
         };
 
         /**
+         * @title 元素全排列递归函数
+        */
+        var permute = function(nums) {
+            const res = [], path = []
+            const used = new Array(nums.length).fill(false)
+
+            const dfs = () => {
+                if (path.length == nums.length) {
+                    res.push(path.slice())
+                    return
+                }
+
+                for (let i = 0; i < nums.length; i++) {
+                    if (used[i]) continue
+                    path.push(nums[i])
+                    used[i] = true
+                    dfs()
+                    // 回溯的过程中，将当前的节点从 path 中删除
+                    path.pop()
+                    used[i] = false
+                }
+            }
+
+            dfs()
+            return res
+        };
+        // console.info(permute([0,1,2,3,4,5]));
+        
+        /**
         * @param {number[]} apples
         * @param {number[]} days
         * @return {number}
+        * 执行用时：984 ms, 在所有 JavaScript 提交中击败了50.00%的用户
+        * 内存消耗：49.2 MB, 在所有 JavaScript 提交中击败了50.00%的用户
+        * 思路：原本第二个方法已经成功，只不过在中间有一个环境多写了 x++ 导致问题被绕了很久
         */
         var eatenApples_two = function(apples, days) {
             const n = apples.length;
@@ -111,21 +139,22 @@
                 return { apple: apples[index], beforeDay: index, itemDays : days[index], lastDay : days[index] + index };
             }).sort((a,b) => { return a['lastDay'] - b['lastDay'] });
             const arr = new Array(lastDayArr[lastDayArr.length - 1]['lastDay']).fill(0);
-            console.info(lastDayArr)
+          
             for (let i = 0; i < n; i++ ){
                 const { apple, beforeDay, itemDays } = lastDayArr[i];
-                for (let x = 0, a = apple; x < itemDays; x++, a-- ){
+                for (let x = 0, a = apple; x < itemDays; x++ ){
                     if ( arr[beforeDay + x] === 1 ){
-                        x++;
-                        a++;
+                        // x++;
+                        // 原本在这里试图使用 x++ 跳过空位，但后来分析发现其实是多余的操作，只要 continue 不做什么，就是跳过了。
                         continue;
                     }
                     if (a > 0){
                         arr[beforeDay + x] = 1;
+                        a--;
                     }
                     
                 }
-                console.info('序号：' + i, arr)
+                // console.info('序号：' + i, arr)
             }
             console.info( 'over', arr)
             return arr.reduce((a,b) => { return a + b });
@@ -136,49 +165,29 @@
         * @param {number[]} days
         * @return {number}
         */
-        var eatenApples = function(apples, days) {
+        const eatenApples_three = function(apples, days) {
             const n = apples.length;
+            const orderArr = [];
             const lastDayArr = days.map( (item,index) => {
+                orderArr.push(index);
                 return { apple: apples[index], beforeDay: index, itemDays : days[index], lastDay : days[index] + index };
             }).sort((a,b) => { return a['lastDay'] - b['lastDay'] });
-            const arr = new Array(lastDayArr[lastDayArr.length - 1]['lastDay']).fill(0);
-            const test = [1,2,3];
-            const testEnd = [];
-            // 全排列循环
-            while (d--) {
-                for (let i = 0, len = test.length - 1; i < len; ++i) {
-                        var f1 = arr[i + 1];
-                        arr[i + 1] = arr[i];
-                        arr[i] = f1;
-                        trace(arr);
-                    }
-            }
-
+            const maxDays = lastDayArr[lastDayArr.length - 1]['lastDay'];
+            // const arr = new Array(lastDayArr[lastDayArr.length - 1]['lastDay']).fill(0);
+            let ans = 0;
+            // const orderList = permute(orderArr);
             console.info(lastDayArr)
-            for (let i = 0; i < n; i++ ){
-                const { apple, beforeDay, itemDays } = lastDayArr[i];
-                for (let x = 0, a = apple; x < itemDays; x++, a-- ){
-                    if ( arr[beforeDay + x] === 1 ){
-                        x++;
-                        a++;
-                        continue;
-                    }
-                    if (a > 0){
-                        arr[beforeDay + x] = 1;
-                    }
-                    
-                }
-                console.info('序号：' + i, arr)
-            }
-            console.info( 'over', arr)
-            return arr.reduce((a,b) => { return a + b });
+           
+            return ans;
         };
 
+
+        const execConfig = eatenApples_two;
 
         // 测试用例执行
         testList.forEach( item => {
             console.time();
-            console.info('输出结果：' + eatenApples(item['apples'],item['days']),'期望结果：' + item['expect']);
+            console.info('输出结果：' + execConfig(item['apples'],item['days']),'期望结果：' + item['expect']);
             console.timeEnd();
         });
     </script>

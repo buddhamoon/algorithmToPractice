@@ -33,7 +33,23 @@
     -->
     <script>
 
-        
+        /**
+        * @title 测试用例
+        */
+        const testList = [
+            { param : ['a','b','c'], expect : '6' }
+        ];
+
+        var fullPermutation = function (arr) {};
+
+
+        const execConfig = fullPermutation;
+        // 测试用例执行
+        testList.forEach( item => {
+            console.time('test running time');
+            console.info('输出：' + execConfig(item['param']), '期待：' + item['expect']);
+            console.timeEnd('test running time');
+        });
 
     </script>
 </body>
