@@ -69,6 +69,45 @@
         };
         // console.info(permute([0,1,2,3,4,5]));
 
+
+        // 去重全排列
+        /**
+         * @param {number[]} nums
+         * @return {number[][]}
+         */
+        var permuteUnique = function(nums) {
+            const res = [], path = [];
+            const used = new Array(nums.length).fill(false);
+            const dfs = () => {
+                if (path.length == nums.length) {
+                    res.push(path.slice());
+                    return;
+                }
+
+                for (let i = 0; i < nums.length; i++) {
+                    if (used[i]) continue;
+                    path.push(nums[i]);
+                    used[i] = true;
+                    dfs();
+                    // 回溯的过程中，将当前的节点从 path 中删除
+                    path.pop();
+                    used[i] = false;
+                }
+            }
+
+            dfs();
+
+            // 去重
+            const ref = { }, ans = [];
+            res.forEach( item => {
+                ref[item.join('')] = item;
+            })
+            for ( let i in ref ){
+                ans.push(ref[i]);
+            }
+            return ans;
+        };
+
         var fullPermutation = function (arr) {};
 
 
