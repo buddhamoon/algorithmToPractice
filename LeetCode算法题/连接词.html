@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>连接词</title>
+</head>
+<body>
+    <!--
+
+        给你一个 不含重复 单词的字符串数组 words ，请你找出并返回 words 中的所有 连接词 。
+        连接词 定义为：一个完全由给定数组中的至少两个较短单词组成的字符串。
+
+        示例 1：
+        输入：words = ["cat","cats","catsdogcats","dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"]
+        输出：["catsdogcats","dogcatsdog","ratcatdogcat"]
+        解释："catsdogcats" 由 "cats", "dog" 和 "cats" 组成; 
+            "dogcatsdog" 由 "dog", "cats" 和 "dog" 组成; 
+            "ratcatdogcat" 由 "rat", "cat", "dog" 和 "cat" 组成。
+        示例 2：
+        输入：words = ["cat","dog","catdog"]
+        输出：["catdog"]
+         
+
+        提示：
+        1 <= words.length <= 104
+        0 <= words[i].length <= 1000
+        words[i] 仅由小写字母组成
+        0 <= sum(words[i].length) <= 105
+
+        Think：
+        这是一道被 leetCode 标注为困难的题目，一般题目一旦被标注为困难，往往预示着即使你理解的题意，但在解题过程中，往往会遇到一些难以处理的暗坑
+        已知暗坑：
+        1、存在诸如 cat 与 cats 这样的子词，很容易在判断字词时，造成误判，因为题目要求拼接词必须严格是完全由子词拼接而成。
+        2、相对于 a b 两个子词来说，abs 并不是他们的拼接词，因为 s 没有出现在数组中。
+
+    -->
+
+    <script>
+
+        // @子方法 1 ：双层轮询 for 循环
+        // @desc 一般用于以某个数组元素为基础，轮询比对该数组中的其他元素
+        // for ( let i = 0; i < len; i++ ) {
+        //     for ( let x = 0, z = (i + 1); x < (len - 1); x++, z++ ) {
+        //         if ( z === len ) z = 0;
+        //     };
+        // };
+
+        // @子方法 2：
+        // 利用 while 循环不断探查某一元素中，存在多少个重复元素
+        // let index = -1;
+        // let indexCheck = true;
+        // while ( indexCheck ) {
+        //     const item = words[i].indexOf( words[z], index + 1 );
+        //     if ( item > -1 ){
+        //         count++;
+        //         checkNum += words[z].length;
+        //         index = item;
+        //     } else {
+        //         break;
+        //     }
+        // }
+
+    </script>
+</body>
+</html>
