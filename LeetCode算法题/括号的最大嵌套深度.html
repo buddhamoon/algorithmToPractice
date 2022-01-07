@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>括号的最大嵌套深度</title>
+</head>
+<body>
+    <!--
+
+        如果字符串满足以下条件之一，则可以称之为 有效括号字符串（valid parentheses string，可以简写为 VPS）：
+        字符串是一个空字符串 ""，或者是一个不为 "(" 或 ")" 的单字符。
+        字符串可以写为 AB（A 与 B 字符串连接），其中 A 和 B 都是 有效括号字符串 。
+        字符串可以写为 (A)，其中 A 是一个 有效括号字符串 。
+        类似地，可以定义任何有效括号字符串 S 的 嵌套深度 depth(S)：
+
+        depth("") = 0
+        depth(C) = 0，其中 C 是单个字符的字符串，且该字符不是 "(" 或者 ")"
+        depth(A + B) = max(depth(A), depth(B))，其中 A 和 B 都是 有效括号字符串
+        depth("(" + A + ")") = 1 + depth(A)，其中 A 是一个 有效括号字符串
+        例如：""、"()()"、"()(()())" 都是 有效括号字符串（嵌套深度分别为 0、1、2），而 ")(" 、"(()" 都不是 有效括号字符串 。
+
+        给你一个 有效括号字符串 s，返回该字符串的 s 嵌套深度 。
+         
+        示例 1：
+        输入：s = "(1+(2*3)+((8)/4))+1"
+        输出：3
+        解释：数字 8 在嵌套的 3 层括号中。
+
+        示例 2：
+        输入：s = "(1)+((2))+(((3)))"
+        输出：3
+
+        示例 3：
+        输入：s = "1+(2*3)/(2-1)"
+        输出：1
+
+        示例 4：
+        输入：s = "1"
+        输出：0
+         
+
+        提示：
+        1 <= s.length <= 100
+        s 由数字 0-9 和字符 '+'、'-'、'*'、'/'、'('、')' 组成
+        题目数据保证括号表达式 s 是 有效的括号表达式
+
+        小感：
+        这是一道leetCode上的简单题，大致扫了一眼解题，确实大多数人都写的比较简单，我有意没有去看问题的实现方法与细节，心想，既然是简单题，以我的分析和推理
+        应该不难解出来，但实际上这道题绕了我很长时间，似乎自己被卡在了一个死胡同，怎么都走不出来。
+        这让我内心渐渐浮起了一些感悟。
+        1、道业的局限性：想想不小心摔一跤而去世的人，我们能够说他不会走路么 ？ 但即使他再会走路 ，某一天，只因为摔了一跤 ，他就去世了。
+        怎么说呢，导致其去世这件事，在恰好的时间，恰好的地点，恰好他没有走好那一步，理论上他本该可以走好的那一步。
+        2、即使你每天很努力，其实依然后很多盲区，有很多东西你会遗忘，会生疏，有时候成事，更像是恰好在某一个节点，所有成功的因素都恰好汇聚在了一起。
+        3、可否成而不败 ？ 可否败而不成，其实都不能 ，一切都在变化 ，我们尽力做好自己能够做好的那些事 ，其他的很多因素，我们是控制不了的。
+
+    -->
+
+    <script>
+
+        const testList = [
+            { param : '(1+(2*3)+((8)/4))+1', expect: '3' },
+            { param : '(1)+((2))+(((3)))', expect: '3' },
+            { param : '1+(2*3)/(2-1)', expect: '1' },
+            { param : '1', expect: '0' },
+            { param : "8*((1*(5+6))*(8/6))", expect: '3' },
+            { param : "1*((3+8-9)/(1/8-3)-4-5*(2-4+3)+4)+(4+3)*(1-3)", expect: '2' },
+            { param : "(1+2)/(5+((4-9+8)*((1+8+(5*7)*4)/(7+9-5)))/(7/3-8-4-8))", expect: '5' }
+        ];
+
+        /**
+         * Think:
+         * 1、实际上题解是统计左 or 右括号最大连续的括号，就是层数。
+         * 2、在运算中，要考虑计算抵消的情况。
+        */
+
+        /**
+         * @param {string} s
+         * @return {number}
+         * 执行用时：68 ms, 在所有 JavaScript 提交中击败了 90.98% 的用户
+         * 内存消耗：37.8 MB, 在所有 JavaScript 提交中击败了94.26%的用户
+         */
+        var maxDepth = function(s) {
+            let len = s.length, left = 0, leftCookie = 0, right = 0, rightCookie = 0; 
+            for ( let i = 0; i < len; i++ ){
+                console.info({ left,leftCookie,right,rightCookie})
+                // 左括号统计
+                if (s[i] === '(' ) {
+                    leftCookie++;
+                    if (rightCookie > right) {
+                        right = rightCookie;
+                    };
+                    rightCookie--;
+                    // if ( leftCookie > left ) left = leftCookie;
+                };
+                // 右括号统计
+                if (s[i] === ')') {
+                    rightCookie++;
+                    // 当右括号出现时，结算左括号的连续统计
+                    if (leftCookie > left) {
+                        left = leftCookie;
+                    };
+                    // 使用 -- 来逐一抵消，而不是直接清零，否则无法通过一些测试用例
+                    leftCookie--;
+                    if (rightCookie > right) {
+                        right = rightCookie;
+                    };
+                };
+                // if (rightCookie > right) right = rightCookie;
+            }
+            return Math.max( left, right );
+        };
+
+        testList.forEach(item => {
+            console.time();
+            console.info('实际输出：' + maxDepth(item['param']), '期望结果：' + item['expect']);
+            console.timeEnd();
+        });
+    </script>
+</body>
+</html>
