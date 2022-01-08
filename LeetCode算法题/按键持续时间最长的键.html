@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按键持续时间最长的键</title>
+</head>
+<body>
+    <!--
+
+        LeetCode 设计了一款新式键盘，正在测试其可用性。测试人员将会点击一系列键（总计 n 个），每次一个。
+        给你一个长度为 n 的字符串 keysPressed ，其中 keysPressed[i] 表示测试序列中第 i 个被按下的键。releaseTimes 是一个升序排列的列表，其中 releaseTimes[i] 表示松开第 i 个键的时间。字符串和数组的 下标都从 0 开始 。第 0 个键在时间为 0 时被按下，接下来每个键都 恰好 在前一个键松开时被按下。
+        测试人员想要找出按键 持续时间最长 的键。第 i 次按键的持续时间为 releaseTimes[i] - releaseTimes[i - 1] ，第 0 次按键的持续时间为 releaseTimes[0] 。
+        注意，测试期间，同一个键可以在不同时刻被多次按下，而每次的持续时间都可能不同。
+        请返回按键 持续时间最长 的键，如果有多个这样的键，则返回 按字母顺序排列最大 的那个键。
+
+        示例 1：
+        输入：releaseTimes = [9,29,49,50], keysPressed = "cbcd"
+        输出："c"
+        解释：按键顺序和持续时间如下：
+        按下 'c' ，持续时间 9（时间 0 按下，时间 9 松开）
+        按下 'b' ，持续时间 29 - 9 = 20（松开上一个键的时间 9 按下，时间 29 松开）
+        按下 'c' ，持续时间 49 - 29 = 20（松开上一个键的时间 29 按下，时间 49 松开）
+        按下 'd' ，持续时间 50 - 49 = 1（松开上一个键的时间 49 按下，时间 50 松开）
+        按键持续时间最长的键是 'b' 和 'c'（第二次按下时），持续时间都是 20
+        'c' 按字母顺序排列比 'b' 大，所以答案是 'c'
+
+        示例 2：
+        输入：releaseTimes = [12,23,36,46,62], keysPressed = "spuda"
+        输出："a"
+        解释：按键顺序和持续时间如下：
+        按下 's' ，持续时间 12
+        按下 'p' ，持续时间 23 - 12 = 11
+        按下 'u' ，持续时间 36 - 23 = 13
+        按下 'd' ，持续时间 46 - 36 = 10
+        按下 'a' ，持续时间 62 - 46 = 16
+        按键持续时间最长的键是 'a' ，持续时间 16
+
+        提示：
+        releaseTimes.length == n
+        keysPressed.length == n
+        2 <= n <= 1000
+        1 <= releaseTimes[i] <= 109
+        releaseTimes[i] < releaseTimes[i+1]
+        keysPressed 仅由小写英文字母组成
+
+    -->
+
+    <script>
+
+        const testList = [
+            { param01 : [10,19,20,21,22,32], param02 : 'abodzo' , expect : 'o' },
+            { param01 : [1,2], param02 : 'ba' , expect : 'b' }
+        ];
+
+        // 获取值为最大数字的
+        Object.prototype.maxNumber = function () {
+            let max = 0;
+            for (let i in this){
+                if (this[i] > max) max = this[i];
+            }
+            return max;
+        }
+
+        var slowestKey_01 = function(releaseTimes, keysPressed) {
+            const len = releaseTimes.length;
+            const hashMap = {};
+            let ans = '';
+            for ( let i = 0; i < len; i++ ) {
+                // 首位初始化判断
+                if ( i === 0 ){
+                    hashMap[keysPressed[i]] = releaseTimes[i];
+                    continue;
+                };
+                const value = releaseTimes[i] - releaseTimes[i - 1];
+                // 次位判断
+                if ( keysPressed[i] in hashMap ) {
+                    if (hashMap[keysPressed[i]] < value) hashMap[keysPressed[i]] = value;
+                } else {
+                    hashMap[keysPressed[i]] = value;
+                }
+            };
+            const max = hashMap.maxNumber();
+            // console.info( {hashMap , max } )
+            // hash 数组化解析
+            for ( let i in hashMap ) {
+                console.info()
+                if (hashMap[i] === max) return i;
+            }
+        };
+
+        var slowestKey_02 = function(releaseTimes, keysPressed) {
+            const n = releaseTimes.length;
+            let ans = keysPressed[0];
+            let maxTime = releaseTimes[0];
+            for (let i = 1; i < n; i++) {
+                const key = keysPressed[i];
+                const time = releaseTimes[i] - releaseTimes[i - 1];
+                console.info('2号', key, time, maxTime,ans)
+                if (time > maxTime || (time === maxTime && key > ans)) {
+                    ans = key;
+                    maxTime = time;
+                }
+            }
+            return ans;
+        };
+
+        
+
+        testList.forEach( item => {
+            console.info('测试 01 输出：' + slowestKey_01( item['param01'], item['param02']), '期待：' + item['expect']);
+            console.info('测试 02 输出：' + slowestKey_02( item['param01'], item['param02']), '期待：' + item['expect']);
+        })
+
+        /**
+         * 这道题，我做的想骂人，想骂出题人。
+         * 按照题目理解，所谓的按键字母顺序，逻辑上，应该取决于 keysPressed 中罗列出的顺序，当存在相同最大值时，谁最先按，谁出线
+         * 然而，写出算法 slowestKey_01 后，如何也通不过某些测试用例
+         * 逐而看了一下官方解题
+         * 发现，题目中描述的所谓字母顺序，就是值字符的比较，也就是 "a" > "b" ? 
+         * 看到这里，真的是想骂出题人，而且是破口大骂的那种骂 ，为什么 ？
+         * 故弄玄虚的搞出一个所谓的“按字母顺序排列最大”，但又不说清楚什么是你所谓的“按字母顺序排列最大”。
+         * 然后再举例说明中，明显出现误导性逻辑，让人很容易的任务，这里的排列顺序，就是按照 keysPressed 的排列顺序来的。
+         * 这就像一个人做人做事，旗号大的光明正大，然后在一些关键地方故意埋坑搞陷阱坑人，浪费别人的时间与精力。
+         * */ 
+
+    </script>
+</body>
+</html>
