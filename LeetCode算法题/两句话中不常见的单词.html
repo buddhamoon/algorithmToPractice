@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>两句话中不常见的单词</title>
+</head>
+<body>
+    <!--
+
+        句子 是一串由空格分隔的单词。每个 单词 仅由小写字母组成。
+        如果某个单词在其中一个句子中恰好出现一次，在另一个句子中却 没有出现 ，那么这个单词就是 不常见的 。
+        给你两个 句子 s1 和 s2 ，返回所有 不常用单词 的列表。返回列表中单词可以按 任意顺序 组织。
+
+        示例 1：
+        输入：s1 = "this apple is sweet", s2 = "this apple is sour"
+        输出：["sweet","sour"]
+
+        示例 2：
+        输入：s1 = "apple apple", s2 = "banana"
+        输出：["banana"]
+         
+
+        提示：
+        1 <= s1.length, s2.length <= 200
+        s1 和 s2 由小写英文字母和空格组成
+        s1 和 s2 都不含前导或尾随空格
+        s1 和 s2 中的所有单词间均由单个空格分隔
+
+    -->
+
+    <script>
+        /**
+         * @param {string} s1
+         * @param {string} s2
+         * @return {string[]}
+         */
+        var uncommonFromSentences = function(s1, s2) {
+            const hashMap = {}, ans = [];
+            const spS1 = s1.split(' ');
+            const spS2 = s2.split(' ');
+            spS1.forEach( item => {
+                if ( item in hashMap ){
+                    hashMap[item]++;
+                } else {
+                    hashMap[item] = 1;
+                }
+            })
+            spS2.forEach( item => {
+                if ( item in hashMap ){
+                    hashMap[item]++;
+                } else {
+                    hashMap[item] = 1;
+                }
+            })
+            for ( let i in hashMap ){
+                if ( hashMap[i] === 1 ) ans.push(i);
+            }
+            return ans;
+        };
+    </script>
+</body>
+</html>
