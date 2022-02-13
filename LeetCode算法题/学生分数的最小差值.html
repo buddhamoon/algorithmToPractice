@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生分数的最小差值</title>
+</head>
+<body>
+    <!--
+
+        给你一个 下标从 0 开始 的整数数组 nums ，其中 nums[i] 表示第 i 名学生的分数。另给你一个整数 k 。
+        从数组中选出任意 k 名学生的分数，使这 k 个分数间 最高分 和 最低分 的 差值 达到 最小化 。
+        返回可能的 最小差值 。
+
+        示例 1：
+        输入：nums = [90], k = 1
+        输出：0
+        解释：选出 1 名学生的分数，仅有 1 种方法：
+        - [90] 最高分和最低分之间的差值是 90 - 90 = 0
+        可能的最小差值是 0
+        示例 2：
+        输入：nums = [9,4,1,7], k = 2
+        输出：2
+        解释：选出 2 名学生的分数，有 6 种方法：
+        - [9,4,1,7] 最高分和最低分之间的差值是 9 - 4 = 5
+        - [9,4,1,7] 最高分和最低分之间的差值是 9 - 1 = 8
+        - [9,4,1,7] 最高分和最低分之间的差值是 9 - 7 = 2
+        - [9,4,1,7] 最高分和最低分之间的差值是 4 - 1 = 3
+        - [9,4,1,7] 最高分和最低分之间的差值是 7 - 4 = 3
+        - [9,4,1,7] 最高分和最低分之间的差值是 7 - 1 = 6
+        可能的最小差值是 2
+
+        提示：
+        1 <= k <= nums.length <= 1000
+        0 <= nums[i] <= 105
+
+    -->
+
+    <script>
+
+        const testList = [
+            { param_one : [87063,61094,44530,21297,95857,93551,9918], param_two : 6, expect : '74560' }
+        ]
+        /**
+        * @param {number[]} nums
+        * @param {number} k
+        * @return {number}
+        */
+        var minimumDifference = function(nums, k) {
+            const len = nums.length - (k - 1);
+            if (len < 2) return 0;
+            nums.sort((a,b) => { return a - b });
+            let arr = [];
+            for ( let i = 0; i < len; i++ ) {
+                let ans = nums[i];
+                for ( let x = 0; x < (k - 1); x++ ) {
+                    console.info(x ,nums[i + x + 1])
+                    ans = Math.abs(ans - nums[i + x + 1]);
+                };
+                arr.push(ans)
+            };
+            console.info(arr)
+            return Math.min(...arr);
+        };
+
+        testList.forEach( item => {
+            console.log( minimumDifference(item['param_one'], item['param_two'] ), item['expect'])
+        })
+    </script>
+</body>
+</html>
