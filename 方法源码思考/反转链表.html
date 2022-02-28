@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反转链表</title>
+</head>
+<body>
+    <!--
+
+        反转链表（又称：链表的逆置）。
+        
+        链表数据的大致结构
+
+        {
+            value : 1,
+            next : {
+                value : 2,
+                next : null
+            }
+        }
+
+    -->
+
+    <script>
+
+        // 创建链表
+        // create linked list
+        function createLinkedList (num) {
+            const node = { value : 0, next : null };
+            for ( let i = 0; i < num; i++ ) {
+
+            };
+            return node;
+        }
+
+        // 递归法创建链表数据结构
+        function recursionCreateLinkedList (num , node = { val: 0, next: null}, start = 1) {
+            if (num < start) return node;
+            node['next'] = { val : start, next : null };
+            start++;
+            recursionCreateLinkedList( num, node['next'], start);
+            return node;
+        }
+
+        console.info(recursionCreateLinkedList(10));
+
+        // 链表反转算法
+        function linkedListReverse (node) {
+            if ( !!node['next'] ) return linkedListReverse( node['next'] );
+            
+
+        };
+
+    </script>
+</body>
+</html>
