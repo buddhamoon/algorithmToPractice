@@ -54,6 +54,17 @@
             const value = arr.reduce((a,b) => { return Number(a) + Number(b) });
             return addDigits(value);
         };
+
+        /**
+        * @param {number} num
+        * @return {number}
+        * 数学的方法
+        */
+        var addDigits = function(num) {
+            return (num - 1) % 9 + 1;
+        };
+
+        // 如果单纯的使用 num % 9 则会在类似于 18 这样的测试用例时，产生非预期结果。
     </script>
 </body>
 </html>
