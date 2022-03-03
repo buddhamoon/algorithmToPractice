@@ -21,6 +21,13 @@
             }
         }
 
+        链表反转有两种思路：
+
+        1、遍历出链表的 value 然后反转值数组，然后再生成一遍这个链表。
+        （这样做存在一个问题，那就是这样实际上是利用值的获取，重新创建了一遍数组，是逻辑上的反转，原链表实际上并没有被反转）
+
+        2、使用递归的编程思路，逐层反转链表。
+
     -->
 
     <script>
@@ -47,7 +54,15 @@
         console.info( recursionCreateLinkedList(10) );
 
         // 链表反转算法
-        function linkedListReverse (node) {
+        function linkedListReverse_one ( node, arr = [] ) {
+            if ( !node ) return;
+            arr.push(node['value']);
+            linkedListReverse_one( node['next'], arr );
+            return arr;
+        };
+
+        // 链表反转算法
+        function linkedListReverse_two (node) {
             if ( !!node['next'] ) return linkedListReverse( node['next'] );
 
 
