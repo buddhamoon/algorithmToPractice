@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>概率游戏</title>
+</head>
+<body>
+    
+    <div id="app">
+        在多次调用指定概率时间后，实际成功率总体的贴近指定成功率的
+    </div>
+
+    <script>
+        class CodeFun {
+            constructor () {
+
+            }
+            /**
+             * 多次调用成功率判断函数
+             * @param { number } num 计算次数
+             * @param { number } probability 约定计算成功率 1 ~ 100
+             * @returns 
+             */
+            async loopCall ( num, probability ) {
+                const errMessage = { success : false , errorMessage : "参数错误" };
+                if ( typeof num !== 'number' ) return errMessage;
+                if ( typeof probability !== 'number' ) return errMessage;
+                const res = {
+                    success : true,
+                    result : {
+                        successCount : 0,
+                        failureCount : 0,
+                        successRate : 0
+                    }
+                };
+                // 循环调用成功率判断函数
+                for ( let i = 0; i < num; i++ ) {
+                    const judge = await this.successRate(probability);
+                    if (!!judge.success) {
+                        if ( !!judge.result ) {
+                            res['result']['successCount'] ++;
+                        } else {
+                            res['result']['failureCount'] ++;
+                        }
+                    }
+                }
+                // 计算成功率
+                res['result']['successRate'] = res['result']['successCount'] /  num * 100;
+                return res;
+            }
+
+            /**
+             * 概率判断函数
+             * @param { number } probability 约定计算成功率 1 ~ 100
+             * @returns { object } 
+             */
+            async successRate (probability) {
+                if ( typeof probability !== 'number' ) return { success : false , errorMessage : "参数错误" };
+                if ( (probability < 0) || (probability > 100) ) return { success : false , errorMessage : "概率值超出范围" };
+                const value = Math.floor(Math.random() * 100 );
+                if ( value <= probability ) {
+                    return { success : true, result : true };
+                } else {
+                    return { success : true, result : false };
+                }
+            }
+        }
+
+        const testFun = new CodeFun();
+        console.info(testFun)
+        
+    </script>
+
+</body>
+</html>
